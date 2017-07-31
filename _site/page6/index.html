@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于前端与设计、黑客与画家 | 黄玄，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="python, web, 后端">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>KevinHuang的博客 | KevinHuang Blog</title>
+
+    <link rel="canonical" href="http://huangxuan.me/page6/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KevinHuang Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>KevinHuang Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">一生想做浪漫极客</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- PostList Container -->
+    		<div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                postlist-container
+            ">
+    			
+<div class="post-preview">
+    <a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2016/06/19/redhat7e4b88brdoe696b9e5bc8fe5ae89e8a385openstacke7ac94e8aeb0/">
+        <h2 class="post-title">
+            redhat7下rdo方式安装openstack笔记
+        </h2>
+        
+        <div class="post-content-preview">
+            
+学习openstack在安装过程中也遇到了很多的问题，，在此记录一下：
+
+  首先查看硬件是否支持虚拟化：
+linux下：
+
+
+
+grep -E 'svm|vmx' /proc/cpuinfo
+
+
+
+有输出信息说明支持，然后在bios中开启虚拟化
+如果不支持虚拟化，openstack会默认使用软件虚拟化技术qemu来创建虚拟机，性能上和kvm差距很大，并且个人赶脚比较占内存；
+
+  先用 ...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on June 19, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/06/12/e794a8nginxe5928cuwsgie69da5e983a8e7bdb2djangoe9a1b9e79bae/">
+        <h2 class="post-title">
+            用nginx和uwsgi来部署django项目
+        </h2>
+        
+        <div class="post-content-preview">
+            
+#用nginx和uwsgi来部署django项目
+##1. 安装基本软件
+
+
+sudo apt-get install python-dev
+sudo apt-get install nginx
+pip install uwsgi
+
+
+
+##2.配置uwsgi和django的集成
+vim test.py 创建test.py,添加如下代码
+
+
+def application(env, sta...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on June 12, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/linux/2016/05/31/linuxe7b3bbe7bb9fe4b88be5b8b8e794a8e591bde4bba4e680bbe7bb93-ubuntu-centos6-5/">
+        <h2 class="post-title">
+            linux系统下常用命令总结 ubuntu CentOS6.5
+        </h2>
+        
+        <div class="post-content-preview">
+            
+python环境相http方式共享文件命令：
+
+
+python -m SimpleHTTPServer
+
+
+
+根据端口杀死进程命令：
+
+
+kill `lsof -i :9077 | awk '{print $2}' | grep -v PID`
+
+
+
+1.获取文本中含有某个字符串的上一行：
+
+grep 'old mode 100644' -B 1 filename
+
+
+含有摸个字符串的下一...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 31, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/%E6%8A%80%E6%9C%AF/2016/05/26/centos6-5e9858de7bdaee69cace59cb0openstacke6ba90/">
+        <h2 class="post-title">
+            CentOS6.5配置本地openstack源
+        </h2>
+        
+        <div class="post-content-preview">
+            
+6.5搭建本地OpenStack软件源
+
+1、把相关软件包全部下载到本地机器
+
+
+wget -np -nH –cut-dirs=1 -r -c -L –exclude-directories=repodata –accept=rpm,gz,xml http://repos.Fedorapeople.org/repos/openstack/openstack-icehouse/epel-6/...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/05/26/centos6-5e4b88be6b7bbe58aa0epele6ba90/">
+        <h2 class="post-title">
+            CentOS6.5下添加epel源
+        </h2>
+        
+        <div class="post-content-preview">
+            
+0.安装yum优先级插件
+
+yum install yum-priorities
+
+
+1.epel简介: https://fedoraproject.org/wiki/EPEL/zh-cn
+
+rpm -Uvh http://mirrors.ustc.edu.cn/fedora/epel/6/x86_64/epel-release-6-8.noarch.rpm rpm -Uvh http:/...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/05/26/e588b6e4bd9clinuxe8bf98e58e9fe9959ce5838f/">
+        <h2 class="post-title">
+            制作linux还原镜像
+        </h2>
+        
+        <div class="post-content-preview">
+            
+ghost和g4l
+
+安装操作系统，速度太慢，整个过程太冗长乏味了。
+
+安装过程中，需要回答若干问题，系统需要安装无数个软件，创建和写入无数的文件。因为涉及到大量的文件定位和读写，速度一定是快不起来的。
+
+Windows下我们常常使用ghost系统来备份和刻录操作系统。ghost可以clone整个系统的镜像，然后在新的电脑上恢复，相当简单。用ghost系统安装操作系统比使用安装光盘安装系统...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/05/26/mysqle4b8ade6b2a1e69c89mysqle695b0e68daee5ba93/">
+        <h2 class="post-title">
+            mysql中没有mysql数据库
+        </h2>
+        
+        <div class="post-content-preview">
+            
+mysql安装完之后，登陆后发现只有两个数据库：mysql&gt; show databases;
+
++——————–+
+
+
+  
+    
+      Database
+    
+  
+
+
++——————–+
+
+
+  
+    
+      information_schema
+    
+  
+
+
+
+  
+    
+      test
+    
+  
+
+
++——————–+
+
+，mys...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/linux/2016/05/26/ubuntue4bfaee694b9etcfstabe69687e4bbb6e697a0e6b395e8bf9be585a5e7b3bbe7bb9f/">
+        <h2 class="post-title">
+            ubuntu修改/etc/fstab文件无法进入系统
+        </h2>
+        
+        <div class="post-content-preview">
+            
+ubuntu修改/etc/fstab文件无法进入系统：
+
+重启进入第二个选项：
+
+进入drop to root shell prompt
+
+#mount -o remount,rw /
+
+然后vim /etc/fstab修改配置文件保存退出，重启即可。
+
+redhat：
+
+在虚拟机刚开启时按e键，进入到界面，有如下条目
+
+Enterprise linux (2.6.18-128.el5)
+...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 26, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/05/25/centos6-6e5ae89e8a385e9858de7bdaewordpress/">
+        <h2 class="post-title">
+            CentOS6.6安装配置wordpress
+        </h2>
+        
+        <div class="post-content-preview">
+            
+1.安装配置php环境：
+
+yum install mysql-server php php-mysql httpd -y
+
+a. 启动mysql，创建数据库和用户：
+
+mysql
+
+create database db_name;
+
+grant all on db_name.* to username@localhost identified by ‘passwd’;
+
+
+  下载安装w...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on May 25, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/2015/01/29/hello-2015/">
+        <h2 class="post-title">
+            Hello 2015
+        </h2>
+        
+        <h3 class="post-subtitle">
+             "Hello World, Hello Blog"
+        </h3>
+        
+        <div class="post-content-preview">
+            
+  “Yeah It’s on. ”
+
+
+前言
+
+Hux 的 Blog 就这么开通了。
+
+跳过废话，直接看技术实现 
+
+2015 年，Hux 总算有个地方可以好好写点东西了。
+
+作为一个程序员， Blog 这种轮子要是挂在大众博客程序上就太没意思了。一是觉得大部分 Blog 服务都太丑，二是觉得不能随便定制不好玩。之前因为太懒没有折腾，结果就一直连个写 Blog 的地儿都没有。
+
+在玩了一...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Hux on January 29, 2015
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    <li class="previous">
+        <a href="/page5">&larr; Newer Posts</a>
+    </li>
+    
+    
+</ul>
+
+
+    		</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                                <a href="/tags/#linux" title="linux" rel="14">
+                                    linux
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#centos" title="centos" rel="5">
+                                    centos
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#ubuntu" title="ubuntu" rel="5">
+                                    ubuntu
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#系统" title="系统" rel="5">
+                                    系统
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#mysql" title="mysql" rel="3">
+                                    mysql
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#数据库" title="数据库" rel="4">
+                                    数据库
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#镜像" title="镜像" rel="2">
+                                    镜像
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#epel" title="epel" rel="3">
+                                    epel
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#redhat" title="redhat" rel="3">
+                                    redhat
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#openstack" title="openstack" rel="2">
+                                    openstack
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#云计算" title="云计算" rel="2">
+                                    云计算
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#django" title="django" rel="7">
+                                    django
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#python" title="python" rel="30">
+                                    python
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#centos7" title="centos7" rel="2">
+                                    centos7
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#算法" title="算法" rel="4">
+                                    算法
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#redis" title="redis" rel="2">
+                                    redis
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#面向对象" title="面向对象" rel="2">
+                                    面向对象
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#django rest framework" title="django rest framework" rel="2">
+                                    django rest framework
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#casperjs" title="casperjs" rel="2">
+                                    casperjs
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+                        
+                            <img src="/img/avatar-hux.jpg" />
+                        
+                        
+                            <p>写写代码，做做设计，看看产品。世界那么大，我想去看看。</p>
+                        
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="http://weibo.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.facebook.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://github.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+    		</div>
+        
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; KevinHuang Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

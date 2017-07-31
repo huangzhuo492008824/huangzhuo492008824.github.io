@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于前端与设计、黑客与画家 | 黄玄，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="python, web, 后端">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>ubuntu安装ss客户端 - KevinHuang的博客 | KevinHuang Blog</title>
+
+    <link rel="canonical" href="http://huangxuan.me/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KevinHuang Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#shadowsocks" title="shadowsocks">shadowsocks</a>
+                        
+                        <a class="tag" href="/tags/#ubuntu" title="ubuntu">ubuntu</a>
+                        
+                    </div>
+                    <h1>ubuntu安装ss客户端</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by huangzhuo on August 22, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				
+<h5 id="文章目录">文章目录</h5>
+
+<ul>
+  <li>第一种
+    <ul>
+      <li>ubuntu安装shadowsocks</li>
+      <li>启动shadowsocks</li>
+    </ul>
+  </li>
+  <li>第二种</li>
+  <li>配置浏览器
+    <ul>
+      <li>安装插件</li>
+      <li>设置代理地址</li>
+      <li>设置自动切换</li>
+    </ul>
+  </li>
+  <li>开机后台自动运行ss</li>
+</ul>
+
+<p>之前介绍过用<a href="http://aitanlu.com/vps-bandwagonhost-openvpn-shadowsocks-server.html">搬瓦工的vps</a>可以轻松的搭建shadowsocks服务，然后在windows上和安卓手机平板等上轻松科学上网，只要下载对应的程序即可，当来到ubuntu上怎么配置shadowsocks来科学上网呢？有两种方法可行</p>
+
+<p>1.安装shadowsocks命令行程序，配置命令。</p>
+
+<p>2.安装shadowsocks GUI图形界面程序，配置。</p>
+
+<p>个人推荐第一种，配置好后基本不用管。但使用的前提是 你的服务端已经搭建好或者你有别人提供的SS 服务（我也不知道该不该写这文章…）</p>
+
+<h2 id="第一种">第一种</h2>
+
+<h3 id="ubuntu安装shadowsocks">ubuntu安装shadowsocks</h3>
+
+<p>用PIP安装很简单，</p>
+
+<pre><code>
+
+  1. 
+```pln 
+sudo apt-get update  
+
+</code></pre>
+
+<ol>
+  <li>```pln <br />
+sudo apt-get install python-pip</li>
+</ol>
+
+<pre><code>
+  3. 
+```pln 
+sudo apt-get install python-setuptools m2crypto
+</code></pre>
+
+<pre><code>
+
+
+
+
+接着安装shadowsocks
+
+
+
+
+
+```prettyprint prettyprinted 
+pip install shadowsocks
+</code></pre>
+
+<p>如果是ubuntu16.04 直接 (16.04 里可以直接用apt 而不用 apt-get 这是一项改进）</p>
+
+<p>```prettyprint prettyprinted <br />
+sudo apt install shadowsocks</p>
+<pre><code>
+
+
+
+
+当然你在安装时候肯定有提示需要安装一些依赖比如python-setuptools m2crypto ，依照提示安装然后再安装就好。也可以网上搜索有很多教程的。
+
+
+
+
+### 启动shadowsocks
+
+
+
+
+安装好后，在本地我们要用到sslocal ，终端输入sslocal --help 可以查看帮助，像这样
+
+
+
+
+![sslocal](https://aitanlu.com/wp-content/uploads/2016/04/sslocal.png)
+
+
+
+
+通过帮助提示我们知道各个参数怎么配置，比如 sslocal -c 后面加上我们的json配置文件，或者像下面这样直接命令参数写上运行。
+
+
+
+
+比如 sslocal -s 11.22.33.44 -p 50003 -k "123456" -l 1080 -t 600 -m aes-256-cfb
+
+
+
+
+-s表示服务IP, -p指的是服务端的端口，-l是本地端口默认是1080, -k 是密码（要加""）, -t超时默认300,-m是加密方法默认aes-256-cfb，
+
+
+
+
+**为了方便我推荐直接用sslcoal -c 配置文件路径 这样的方式，简单好用。**
+
+
+
+
+我们可以在/home/mudao/ 下新建个文件shadowsocks.json  (mudao是我在我电脑上的用户名，这里路径你自己看你的)。内容是这样：
+
+
+
+
+
+</code></pre>
+
+<ol>
+  <li>```pun <br />
+{</li>
+</ol>
+
+<pre><code>
+  2. 
+```str 
+"server":"11.22.33.44",  
+
+</code></pre>
+
+<ol>
+  <li>```str <br />
+“server_port”:50003,</li>
+</ol>
+
+<pre><code>
+  4. 
+```str 
+"local_port":1080,  
+
+</code></pre>
+
+<ol>
+  <li>```str <br />
+“password”:”123456”,</li>
+</ol>
+
+<pre><code>
+  6. 
+```str 
+"timeout":600,  
+
+</code></pre>
+
+<ol>
+  <li>```str <br />
+“method”:”aes-256-cfb”</li>
+</ol>
+
+<pre><code>
+  8. 
+```pun 
+}  
+
+</code></pre>
+
+<pre><code>
+
+
+
+
+server  你服务端的IP  
+
+servier_port  你服务端的端口  
+
+local_port  本地端口，一般默认1080  
+
+passwd  ss服务端设置的密码  
+
+timeout  超时设置 和服务端一样  
+
+method  加密方法 和服务端一样
+
+
+
+
+确定上面的配置文件没有问题，然后我们就可以在终端输入 sslocal -c /home/mudao/shadowsocks.json 回车运行。如果没有问题的话，下面会是这样...
+
+
+![sslocal](https://aitanlu.com/wp-content/uploads/2016/04/sslocal-1.png)（如果继续请不要关闭这个终端）
+
+
+如果你选择这一种请跳过第二种。你可以去系统的代理设置按照说明设置代理，但一般是全局的，然而我们访问baidu,taobao等着些网站如果用代理就有点绕了，而且还会浪费服务器流量。我们最好配置我们的浏览器让它可以自动切换，该用代理用代理该直接连接自动直接连接。所以请看配置浏览器。
+
+
+
+
+## 第二种
+
+
+
+
+安装GUI 图形界面程序，然后按照提示配置相对应的参数。安装教程地址：[shadowsocks-qt5 安装指南](https://github.com/shadowsocks/shadowsocks-qt5/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)
+
+
+
+
+在ubuntu上可以这样，通过PPA源安装，仅支持Ubuntu 14.04或更高版本。
+
+
+
+
+
+</code></pre>
+
+<ol>
+  <li>```pln <br />
+sudo add-apt-repository ppa:hzwhuang/ss-qt5</li>
+</ol>
+
+<pre><code>
+  2. 
+```pln 
+sudo apt-get update  
+
+</code></pre>
+
+<ol>
+  <li>
+    <pre><code class="language-pln">sudo apt-get install shadowsocks-qt5
+</code></pre>
+  </li>
+</ol>
+
+<pre><code>
+
+
+
+
+由于是图形界面，配置和windows基本没啥差别就不赘述了。经过上面的配置，你只是启动了sslocal 但是要上网你还需要配置下浏览器到指定到代理端口比如1080才可以正式上网。
+
+
+
+
+## 配置浏览器
+
+
+
+
+假如你上面任选一种方式已经开始运行sslocal了，火狐那个代理插件老是订阅不了gfwlist所以配置自动模式的话不好使。这里用的是chrome，你可以在Ubuntu软件中心下载得到。
+
+
+
+
+### 安装插件
+
+
+
+
+我们需要给chrome安装SwitchyOmega插件，但是没有代理之前是不能从谷歌商店安装这个插件的，但是我们可以从Github上直接下载最新版 [https://github.com/FelisCatus/SwitchyOmega/releases/](https://github.com/FelisCatus/SwitchyOmega/releases/) （这个是chrome的）然后浏览器地址打开chrome://extensions/，将下载的插件托进去安装。
+
+
+
+
+### 设置代理地址
+
+
+
+
+安装好插件会自动跳到设置选项，有提示你可以跳过。左边新建情景模式-选择代理服务器-比如命名为SS（叫什么无所谓）其他默认之后创建，之后在代理协议选择SOCKS5，地址为127.0.0.1,端口默认1080 。然后保存即应用选项。
+
+
+
+
+![shadowsocks-0](https://aitanlu.com/wp-content/uploads/2016/04/shadowsocks-0.png)
+
+
+
+
+![shadowsocks-1](https://aitanlu.com/wp-content/uploads/2016/04/shadowsocks-1.png)
+
+
+
+
+### 设置自动切换
+
+
+
+
+接着点击自动切换 ( Auto switch）上面的不用管，在按照规则列表匹配请求后面选择刚才新建的SS，默认情景模式选择直接连接。点击应用选项保存。再往下规则列表设置选择AutoProxy 然后将**[这个地址](https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt)**填进去，点击下面的立即更新情景模式，会有提示更新成功！
+
+
+![shadowsocks-2](https://aitanlu.com/wp-content/uploads/2016/04/shadowsocks-2.png)sorry编辑图片时候少了一步，就是填好规则列表地址后先点击立即更新情景模式 后再应用选项保存
+
+
+https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt
+
+
+
+
+点击浏览器右上角的SwitchyOmega图标，下面选择自动切换，然后打开google.com试试，其他的就不在这贴图了。
+
+
+
+
+![shadowsocks-3](https://aitanlu.com/wp-content/uploads/2016/04/shadowsocks-3.png)
+
+
+
+
+## 开机后台自动运行ss
+
+
+
+
+如果你选择了第二种可以不管这个
+
+
+
+
+如果你上面可以代理上网了可以进行这一步，之前我让你不要关掉终端，因为关掉终端的时候代理就随着关闭了，之后你每次开机或者关掉终端之后，下次你再想用代理就要重新在终端输入这样的命令 sslocal  -c /home/mudao/shadowsocks.json ，挺麻烦是不？
+
+
+
+
+我们现在可以在你的ubuntu上安装一个叫做supervisor的程序来管理你的sslocal启动。关于supervisor更多点击这
+
+
+
+
+
+```prettyprint prettyprinted 
+sudo apt-get install supervisor
+</code></pre>
+
+<p>安装好后我们可以在/etc/supervisor/目录下找到supervisor.conf配置文件，我们可以用以下命令来编辑</p>
+
+<p>```prettyprint prettyprinted <br />
+sudo gedit /etc/supervisor/supervisor.conf</p>
+<pre><code>
+
+
+
+
+在这个文件的最后加上以下内容
+
+
+
+
+
+</code></pre>
+
+<ol>
+  <li>```pun <br />
+[program:shadowsocks]</li>
+</ol>
+
+<pre><code>
+  2. 
+```pln 
+command=sslocal -c /home/mudao/shadowsocks.json  
+
+</code></pre>
+
+<ol>
+  <li>```pln <br />
+autostart=true</li>
+</ol>
+
+<pre><code>
+  4. 
+```pln 
+autorestart=true  
+
+</code></pre>
+
+<ol>
+  <li>```pln <br />
+user=root</li>
+</ol>
+
+<pre><code>
+  6. 
+```pln 
+log_stderr=true  
+
+</code></pre>
+
+<ol>
+  <li>
+    <pre><code class="language-pln">logfile=/var/log/shadowsocks.log
+</code></pre>
+  </li>
+</ol>
+
+<pre><code>
+
+
+
+
+当然在16.04里你可以直接在/etc/supervisor/conf.d/下新建个文件比如ss.conf然后加入上面内容。
+
+
+
+
+command = 这里json文件的路径根据你的文件路径来填写。确认无误后记得保存。sslocal 和ssserver这两个命令是被存在 /usr/local/bin/下面的，我们要拷贝一份命令文件到/bin
+
+
+
+
+
+```prettyprint prettyprinted 
+sudo cp /usr/local/bin/sslocal /bin  
+</code></pre>
+<p>(注意空格)</p>
+
+<p>注意：16.04 命令在 /usr/bin/下所以就用</p>
+
+<p>```prettyprint prettyprinted <br />
+sudo cp /usr/bin/sslocal /bin</p>
+<pre><code>(注意空格)
+
+
+
+
+现在关掉你之前运行sslocal命令的终端，再打开终端输入sudo service supervisor restart 然后去打开浏览器看看可不可以继续代理上网。你也可以用ps -ef|grep sslocal命令查看sslocal是否在运行。
+
+
+
+
+这个时候我们需要在/etc下编辑一个叫rc.local的文件 ，让supervisor开机启动。
+
+
+
+
+
+```prettyprint prettyprinted 
+sudo gedit /etc/rc.local 
+</code></pre>
+
+<p>在这个配置文件的exit 0前面一行加上 service supervisor start 保存。看你是否配置成功你可以在现在关机重启之后直接打开浏览器看是否代理成功。</p>
+
+<p>4.86941</p>
+
+<pre><code>  [ _66_](javascript:;)
+  [ _3_](javascript:;)
+</code></pre>
+
+<p>评论加载中</p>
+
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf"
+                    data-title="ubuntu安装ss客户端"
+                    data-url="http://huangxuan.me/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf/"
+                    data-images="http://huangxuan.me/img/home-bg.jpg"
+                    data-content="
+文章目录
+
+
+  第一种
+    
+      ubuntu安装shadowsocks
+      启动shadowsocks
+    
+  
+  第二... | KevinHuang的博客 | KevinHuang Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/django/python/2016/08/22/djangoe4b8ade88eb7e58f96e8afb7e6b182e5a4b4header/" data-toggle="tooltip" data-placement="top" title="Django中获取请求头header">
+                        Previous<br>
+                        <span>Django中获取请求头header</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/python/2016/09/01/pythone4b8ade7b1bbe680bbe7bb93/" data-toggle="tooltip" data-placement="top" title="Python中类总结">
+                        Next<br>
+                        <span>Python中类总结</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf"
+                        data-title="ubuntu安装ss客户端"
+                        data-url="http://huangxuan.me/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#linux" title="linux" rel="14">
+                                    linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos" title="centos" rel="5">
+                                    centos
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#ubuntu" title="ubuntu" rel="5">
+                                    ubuntu
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#系统" title="系统" rel="5">
+                                    系统
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#mysql" title="mysql" rel="3">
+                                    mysql
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#数据库" title="数据库" rel="4">
+                                    数据库
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#镜像" title="镜像" rel="2">
+                                    镜像
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#epel" title="epel" rel="3">
+                                    epel
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#redhat" title="redhat" rel="3">
+                                    redhat
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#openstack" title="openstack" rel="2">
+                                    openstack
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#云计算" title="云计算" rel="2">
+                                    云计算
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django" title="django" rel="7">
+                                    django
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#python" title="python" rel="30">
+                                    python
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos7" title="centos7" rel="2">
+                                    centos7
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#算法" title="算法" rel="4">
+                                    算法
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#redis" title="redis" rel="2">
+                                    redis
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#面向对象" title="面向对象" rel="2">
+                                    面向对象
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django rest framework" title="django rest framework" rel="2">
+                                    django rest framework
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#casperjs" title="casperjs" rel="2">
+                                    casperjs
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'huxblog';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; KevinHuang Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

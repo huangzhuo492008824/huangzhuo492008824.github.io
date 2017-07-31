@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于前端与设计、黑客与画家 | 黄玄，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="python, web, 后端">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>KevinHuang的博客 | KevinHuang Blog</title>
+
+    <link rel="canonical" href="http://huangxuan.me/page4/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KevinHuang Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>KevinHuang Blog</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">一生想做浪漫极客</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- PostList Container -->
+    		<div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                postlist-container
+            ">
+    			
+<div class="post-preview">
+    <a href="/linux/2016/08/19/linuxe4b88biptablese5b08fe7bb93/">
+        <h2 class="post-title">
+            linux下iptables小结
+        </h2>
+        
+        <div class="post-content-preview">
+            
+iptables作用
+
+
+  
+    过滤请求，根据条件决定通过或拒绝
+  
+  
+    网络地址转换
+  
+  
+    修改头信息
+  
+
+
+iptables的组成部分
+
+
+  
+    table：根据类型分了3种，分别是filter,nat,mangle。filter用来过滤，nat用来地址转换，mangle用来改ttl之类的头信息【不常用】。
+  
+  
+    chain：...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 19, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/18/e794a8dfae7ae97e6b395e69da5e5ae9ee78eb0e6958fe6849fe8af8de6b187e79a84e8bf87e6bba4/">
+        <h2 class="post-title">
+            用DFA算法来实现敏感词汇的过滤
+        </h2>
+        
+        <div class="post-content-preview">
+            
+工作中遇到一个过滤敏感词汇的问题，网上找了一下主要解决方法有3种思路：
+【可行思路】
+1、暴力匹配–这个就算了，只是说说而已，实际应用中很少的。
+2、正则表达式，暂时没有用过
+3、利用DFA实现文字过滤，
+本文主要研究的就是DFA算法，在计算理论中，确定有限状态自动机或确定有限自动机（英语：deterministic finite automation, DFA）是一个能实现状态转移的自动...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 18, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/17/pythone4b8ade79a84collectionse6a8a1e59d97e5ada6e4b9a0/">
+        <h2 class="post-title">
+            python中的collections模块学习
+        </h2>
+        
+        <div class="post-content-preview">
+            
+Python在一些内置的数据类型，比如str, int, list, tuple, dict等，之后又提供了比较高级的额外的数据类型， 共有以下几种：`Counter
+，`deque
+
+，`defaultdict
+，`namedtuple
+
+，`OrderedDict
+
+
+
+
+
+
+那么接下来一个个的攻克它们。
+
+
+
+
+
+# 一.namedtuple
+
+
+
+
+
+namedtuple的函数原型...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 17, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93/">
+        <h2 class="post-title">
+            redis常用命令总结
+        </h2>
+        
+        <div class="post-content-preview">
+            
+在平时的工作中，需要根据需求对Redis数据库进行一些操作。
+
+可以参考Redis官网http://redis.io/commands 进行详细了解
+
+1.SELECT 切换数据库
+
+
+
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[1]&gt; HELP SELECT
+```
+
+
+
+```plai...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 17, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/python/2016/08/16/e588a9e794a8type-hinte68f90e58d87pythone7a88be5ba8fe5bc80e58f91e69588e78e87/">
+        <h2 class="post-title">
+            利用Type Hint提升Python程序开发效率
+        </h2>
+        
+        <div class="post-content-preview">
+            
+Type Hint（或者叫做PEP-484）提供了一种针对Python程序的类型标注标准。
+
+为什么使用Type Hint？对于动态语言而言，常常出现的情况是当你写了一段代码后，隔段时间你可能忘记这个方法的原型是什么样子的了，你也不清楚具体应该传入什么类型的参数，这样往往需要你去阅读代码才能定义每个类型具体是什么。或者当你使用一个文档并不是特别完全的第三方库，你不知道这个库应该如何使用，这...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 16, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E4%BA%91%E8%AE%A1%E7%AE%97/2016/08/16/e8bf9ee68ea5vmware-workstatione5ad90e8999ae68b9fe69cbae588b0e4ba92e88194e7bd91efbc9f/">
+        <h2 class="post-title">
+            连接VMware Workstation子虚拟机到互联网？
+        </h2>
+        
+        <div class="post-content-preview">
+            
+VMware Workstation是桌面或笔记本上的用于独立实验测试环境的理想桌面应用。使用Workstation，你可以创建多个专用网络，连接虚拟机到主机，桥接网络到局域网（LAN）或使用Network Address Translation协议（NAT）连接网络到LAN。
+
+其实，VMware Workstation的虚拟网络配置能力正是Workstation的魅力所在。但同时，虚拟...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 16, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/11/pythone4b8ade79a84e587a0e7a78de8aebee8aea1e6a8a1e5bc8f/">
+        <h2 class="post-title">
+            Python中的几种设计模式
+        </h2>
+        
+        <div class="post-content-preview">
+            
+1.单例模式：
+法一：通过类的__new__()方法，但是个人感觉没有装饰器方便
+
+
+class Singleton(object):
+    __instance = None
+    
+    def __init__(self):
+        pass
+
+    def __new__(cls, *args, **kwd):
+        if Singleton.__inst...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 11, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/python/2016/08/09/pythone4b8ade5af86e7a081e79a84e4bf9de5ad98/">
+        <h2 class="post-title">
+            python中密码的保存和token的生成验证itsdangerous模块
+        </h2>
+        
+        <div class="post-content-preview">
+            
+密码的保存：
+
+import hashlib
+
+hashlib.sha1(config.SECRET_KEY+password).hexdigest()
+
+
+
+token的生成和保存：
+
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 9, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/09/geohashe6a0b8e5bf83e58e9fe79086e8a7a3e69e90/">
+        <h2 class="post-title">
+            GeoHash核心原理解析
+        </h2>
+        
+        <div class="post-content-preview">
+            
+机机是个好动又好学的孩子，平日里就喜欢拿着手机地图点点按按来查询一些好玩的东西。某一天机机到北海公园游玩，肚肚饿了，于是乎打开手机地图，搜索北海公园附近的餐馆，并选了其中一家用餐。
+
+
+
+　　饭饱之后机机开始反思了，地图后台如何根据自己所在位置查询来查询附近餐馆的呢？苦思冥想了半天，机机想出了个方法：计算所在位置P与北京所有餐馆的距离，然后返回距离&lt;=1000米的餐馆。小得意了一会儿...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 9, 2016
+    </p>
+</div>
+<hr>
+
+<div class="post-preview">
+    <a href="/%E6%8A%80%E6%9C%AF/2016/08/09/e69fa5e689bee99984e8bf91e79a84e4babae58a9fe883bde5ae9ee78eb0/">
+        <h2 class="post-title">
+            查找附近的人功能实现
+        </h2>
+        
+        <div class="post-content-preview">
+            
+查找附近的人是移动开发非常流行的功能，最近在给移动端写后台接口，上午查了很多资料发现用geohash算法的人居多，本来想自己设计数据库来实现以下geohash的，但是项目赶得紧，正好发现新版的redis支持geo的地理位置的操作：
+
+
+  安装最新版的redis3.2.3+
+2.redis的geo模块支持的操作有：
+
+
+添加位置和获取位置
+为了进行地理位置相关操作， 我们首先需要将具体的地...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by huangzhuo on August 9, 2016
+    </p>
+</div>
+<hr>
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    <li class="previous">
+        <a href="/page3">&larr; Newer Posts</a>
+    </li>
+    
+    
+    <li class="next">
+        <a href="/page5">Older Posts &rarr;</a>
+    </li>
+    
+</ul>
+
+
+    		</div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                                <a href="/tags/#linux" title="linux" rel="14">
+                                    linux
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#centos" title="centos" rel="5">
+                                    centos
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#ubuntu" title="ubuntu" rel="5">
+                                    ubuntu
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#系统" title="系统" rel="5">
+                                    系统
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#mysql" title="mysql" rel="3">
+                                    mysql
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#数据库" title="数据库" rel="4">
+                                    数据库
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#镜像" title="镜像" rel="2">
+                                    镜像
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#epel" title="epel" rel="3">
+                                    epel
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#redhat" title="redhat" rel="3">
+                                    redhat
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#openstack" title="openstack" rel="2">
+                                    openstack
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#云计算" title="云计算" rel="2">
+                                    云计算
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#django" title="django" rel="7">
+                                    django
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#python" title="python" rel="30">
+                                    python
+                                </a>
+                            
+                        
+                            
+                                <a href="/tags/#centos7" title="centos7" rel="2">
+                                    centos7
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#算法" title="算法" rel="4">
+                                    算法
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#redis" title="redis" rel="2">
+                                    redis
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#面向对象" title="面向对象" rel="2">
+                                    面向对象
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#django rest framework" title="django rest framework" rel="2">
+                                    django rest framework
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                                <a href="/tags/#casperjs" title="casperjs" rel="2">
+                                    casperjs
+                                </a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+                        
+                            <img src="/img/avatar-hux.jpg" />
+                        
+                        
+                            <p>写写代码，做做设计，看看产品。世界那么大，我想去看看。</p>
+                        
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa  fa-stack-1x fa-inverse">知</i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="http://weibo.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://www.facebook.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                            <li>
+                                <a target="_blank" href="https://github.com/huxpro">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+    		</div>
+        
+	</div>
+</div>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; KevinHuang Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

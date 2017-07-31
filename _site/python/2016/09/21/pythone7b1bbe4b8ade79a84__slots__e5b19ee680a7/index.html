@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于前端与设计、黑客与画家 | 黄玄，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="python, web, 后端">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>python类中的__slots__属性 - KevinHuang的博客 | KevinHuang Blog</title>
+
+    <link rel="canonical" href="http://huangxuan.me/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KevinHuang Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#python" title="python">python</a>
+                        
+                        <a class="tag" href="/tags/#面向对象" title="面向对象">面向对象</a>
+                        
+                    </div>
+                    <h1>python类中的__slots__属性</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by huangzhuo on September 21, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				
+<h2 id="一句话说明">一句话说明</h2>
+
+<p>`<strong>slots</strong></p>
+<pre><code> 是用来限制实例的属性的， `__slots__
+</code></pre>
+<p>可以规定实例是否应该有 `<strong>dict</strong></p>
+<pre><code> 属性； `__slots__
+</code></pre>
+<p>不能限制类的属性。</p>
+
+<h2 id="只有__slots__列表内的这些变量名可赋值为实例属性">只有__slots__列表内的这些变量名可赋值为实例属性。</h2>
+
+<pre><code>class A:
+    __slots__=['name']
+    def __init__(self):
+        self.name='js'
+        self.age=22
+a=A()
+
+</code></pre>
+
+<p>运行结果：</p>
+
+<pre><code>Traceback (most recent call last):
+  File "a.py", line 6, in 
+    a=A()
+  File "a.py", line 5, in __init__
+    self.age=22
+AttributeError: 'A' object has no attribute 'age'
+</code></pre>
+
+<h2 id="__slots__只是限制实例对类对象没有影响">__slots__只是限制实例，对类对象没有影响</h2>
+
+<pre><code>class A:
+  __slots__=['name','city']
+  age=22
+  def __init__(self):
+    self.name='js'
+a=A()
+print('A __slots__: ', A.__slots__)
+print('a __slots__: ', a.__slots__)
+print('A __dict__: ', A.__dict__)
+print('a __dict__: ', a.__dict__)
+
+</code></pre>
+
+<p>运行结果如下：</p>
+
+<pre><code>A __slots__:  ['name', 'city']
+a __slots__:  ['name', 'city']
+#事实上，所有定义在__slots__中的属性都会放置在类的__dict__当中，即使没有使用的属性(city)也是如此。
+#而当实例需要取对象时，总是会先到类的__dict__中进行检查，如果类的__dict__中的属性是一个对象且该对象对属性的读取做了一些限制，那么就会直接影响到实例是否能够调用该属性。__slots__的工作原理是如此，后面介绍的描述符类亦是如此。
+#在类的__dict__中，也会存入__slots__属性。
+A __dict__:  {'age': 22, '__init__': , 'name': &lt;member 'name' of 'A' objects&gt;, 'city': &lt;member 'city' of 'A' objects&gt;, '__slots__': ['name', 'city'], '__module__': '__main__', '__doc__': None}
+#当我们试图调用a.__dict__时，出现错误，因为该属性没有出现在__slots__中，所以禁止赋值或者访问。
+Traceback (most recent call last):
+  File "a.py", line 10, in 
+    print('a __dict__: ', a.__dict__)
+AttributeError: 'A' object has no attribute '__dict__'
+</code></pre>
+
+<h2 id="可以同时存在__slots__和__dict__吗">可以同时存在__slots__和__dict__吗？</h2>
+
+<p>可以，如果把 `<strong>dict</strong></p>
+<pre><code> 属性存入 `__slots__
+</code></pre>
+<p>中，那么就允许使用 `<strong>dict</strong></p>
+<pre><code>属性了。
+
+这时，如果所有 `__slots__
+</code></pre>
+<p>中定义的属性存在 `<strong>slots</strong></p>
+<pre><code> 中，如果没有定义的属性，那么存在 `__dict__
+</code></pre>
+<p>中，从而实现属性的分别管理。</p>
+
+<p>dir函数获取所有定义在 `<strong>slots</strong></p>
+<pre><code> 和 `__dict__
+</code></pre>
+<p>中的属性。或者通过list(getattr(X, ‘ <strong>dict</strong> ‘, [])) + getattr(X, ‘ <strong>slots</strong> ‘, [])来得到所有的属性。</p>
+
+<pre><code>class A:
+  __slots__=('name','city','__dict__')
+  def __init__(self):
+    self.name='js'
+    self.age=22
+a=A()
+print('A __slots__: ', A.__slots__)
+print('a __slots__: ', a.__slots__)
+print('A __dict__: ', A.__dict__)
+print('a __dict__: ', a.__dict__)
+
+</code></pre>
+
+<p>运行结果如下：</p>
+
+<pre><code>A __slots__: ('name', 'city', '__dict__')
+a __slots__: ('name', 'city', '__dict__')
+#连__dict__都会保存在类的__dict__中，且属性值是一个object。
+A __dict__: {'city': &lt;member 'city' of 'A' objects&gt;, 'name': &lt;member 'name' of 'A' objects&gt;, '__module__': '__main__', '__doc__': None, '__init__': , '__slots__': ('name', 'city', '__dict__'), '__dict__': &lt;attribute '__dict__' of 'A' objects&gt;}
+#由于现在age没有出现在__slots__中，且允许存在__dict__，所以属性age出现在实例本身的__dict__中。
+a __dict__: {'age': 22}
+
+</code></pre>
+
+<p>如果子类中没有__slots__，但是超类中有</p>
+
+<pre><code>class Super:
+__slots__=['name']
+pass
+class Sub(Super):
+def __init__(self):
+self.name='js'
+self.age=22
+a=Sub()
+print('Sub __slots__: ', Sub.__slots__)
+print('a __slots__: ', a.__slots__)
+print('Sub __dict__: ', Sub.__dict__)
+print('a __dict__: ', a.__dict__)
+
+</code></pre>
+
+<p>运行结果如下：</p>
+
+<pre><code>#顺利继承到了Super的__slots__属性
+Sub __slots__:  ['name']
+a __slots__:  ['name']
+#此时Python用了大量的黑暗魔法，这时我们看到Sub的__dict__中居然出现了__dict__属性，且值为特殊的对象，相当于Sub.__slots__=Super.__slots__+['__dict__']，从而实现如果在__slots__中出现的属性存在__slots__中，没有出现的存在Sub的实例的__dict__中。
+Sub __dict__:  {'__module__': '__main__', '__dict__': &lt;attribute '__dict__' of 'Sub' objects&gt;, '__weakref__': &lt;attribute '__weakref__' of 'Sub' objects&gt;, '__doc__': None, '__init__': }
+#我们确实看到了age存在了子类的实例的__dict__中。
+a __dict__:  {'age': 22}
+
+
+</code></pre>
+
+<h2 id="如果子类和父类都有__slots__">如果子类和父类都有__slots__…</h2>
+
+<pre><code>class Super:
+    __slots__=['name','age']
+class Sub(Super):
+    __slots__=['city']
+print('Sub __slots__: ', Sub.__slots__)
+print('Sub __dict__: ', Sub.__dict__)
+
+#父类中的__slots__没有对子类产生影响
+Sub __slots__:  ['city']
+#再次证明了上面的说法，如果一定需要父类的__slots__进行叠加，那么需要手动设置为__slots__=Super.__slots__ + ['city']，所以可以看出Python通过了大量的黑暗魔法，从而达到__slots__不具有常规的继承特性。
+Sub __dict__:  {'__slots__': ['city'], '__module__': '__main__', 'city': &lt;member 'city' of 'Sub' objects&gt;, '__doc__': None}
+
+
+</code></pre>
+
+<h2 id="如果一个子类继承自一个没有__slots__的超类">如果一个子类继承自一个没有__slots__的超类…</h2>
+
+<p>如果一个子类继承自一个没有__slots <strong>的超类，那么超类的</strong> dict <strong>属性总是可以访问的，使得子类中的一个</strong> slots__无意义。</p>
+
+<p>留给你自己验证一下吧。</p>
+
+<h2 id="总结">总结</h2>
+
+<ol>
+  <li>`<strong>slots</strong>
+    <pre><code> 用来设计成对实例的 `__dict__
+</code></pre>
+    <p>的限制，只有 `<strong>dict</strong></p>
+    <pre><code> 出现在 `__slots__
+</code></pre>
+    <p>中，实例才会有 `<strong>dict</strong></p>
+    <pre><code> 属性。
+否则，只有出现在 `__slots__
+</code></pre>
+    <p>中的属性才可以被使用。</p>
+  </li>
+  <li>Python特意设计成 `<strong>slots</strong>
+    <pre><code> 没有常规的继承特性，所以只有超类具有 `__slots__
+</code></pre>
+    <p>且其 `<strong>dict</strong></p>
+    <pre><code> 属性没有出现在其中，这时子类的 `__slots__
+</code></pre>
+    <p>才有意义，且子类的 `<strong>slots</strong></p>
+    <pre><code> 不继承父类的 `__slots__
+</code></pre>
+    <p>。</p>
+  </li>
+</ol>
+
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7"
+                    data-title="python类中的__slots__属性"
+                    data-url="http://huangxuan.me/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7/"
+                    data-images="http://huangxuan.me/img/home-bg.jpg"
+                    data-content="
+一句话说明
+
+`slots
+ 是用来限制实例的属性的， `__slots__
+
+可以规定实例是否应该有 `dict
+ 属性； `__slots__
+
+不... | KevinHuang的博客 | KevinHuang Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/python/2016/09/20/mysqle4b8ade5ad98e582a8e8a1a8e68385e7aca6e58fb7/" data-toggle="tooltip" data-placement="top" title="数据库相关奇淫巧技">
+                        Previous<br>
+                        <span>数据库相关奇淫巧技</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/%E5%85%B6%E5%AE%83/2016/10/11/restful-apie8aebee8aea1e8a784e58899/" data-toggle="tooltip" data-placement="top" title="restful api设计规则">
+                        Next<br>
+                        <span>restful api设计规则</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7"
+                        data-title="python类中的__slots__属性"
+                        data-url="http://huangxuan.me/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#linux" title="linux" rel="14">
+                                    linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos" title="centos" rel="5">
+                                    centos
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#ubuntu" title="ubuntu" rel="5">
+                                    ubuntu
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#系统" title="系统" rel="5">
+                                    系统
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#mysql" title="mysql" rel="3">
+                                    mysql
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#数据库" title="数据库" rel="4">
+                                    数据库
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#镜像" title="镜像" rel="2">
+                                    镜像
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#epel" title="epel" rel="3">
+                                    epel
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#redhat" title="redhat" rel="3">
+                                    redhat
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#openstack" title="openstack" rel="2">
+                                    openstack
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#云计算" title="云计算" rel="2">
+                                    云计算
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django" title="django" rel="7">
+                                    django
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#python" title="python" rel="30">
+                                    python
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos7" title="centos7" rel="2">
+                                    centos7
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#算法" title="算法" rel="4">
+                                    算法
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#redis" title="redis" rel="2">
+                                    redis
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#面向对象" title="面向对象" rel="2">
+                                    面向对象
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django rest framework" title="django rest framework" rel="2">
+                                    django rest framework
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#casperjs" title="casperjs" rel="2">
+                                    casperjs
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'huxblog';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; KevinHuang Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

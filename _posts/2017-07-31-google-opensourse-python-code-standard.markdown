@@ -1,0 +1,42 @@
+---
+author: huangzhuo
+comments: true
+date: 2017-07-31 17:49:32+00:00
+layout: post
+slug: google-opensourse-python-code-standard
+title: google开源python代码规范
+---
+- **1. 行长度**
+    * 每行不超过80个字符(例外 a.长的导入模块语句; b. 注释里的url)
+    * Python会将 圆括号, 中括号和花括号中的行隐式的连接起来 ：
+``` python
+In [2]: print('hello'
+   ...: 'world')
+helloworld
+```
+- **2. 文件和sockets**
+    > 在文件和sockets结束时, 显式的关闭它.
+
+  * 推荐使用 “with”语句 以管理文件;
+  * 对于不支持使用”with”语句的类似文件的对象,使用 contextlib.closing():
+``` python
+import contextlib
+with contextlib.closing(urllib.urlopen("http://www.python.org/")) as front_page:
+    for line in front_page:
+        print line
+```
+- **3. todo注释**
+    > 为临时代码使用TODO注释, 它是一种短期解决方案. 不算完美, 但够好了.
+
+- **4. 导入格式**
+    >每个导入应该独占一行
+    * 导入顺序：
+        * 标准库导入
+        * 第三方库导入
+        * 应用程序指定导入
+- **5. 命名约定**
+    * 所谓"内部(Internal)"表示仅模块内可用, 或者, 在类内是保护或私有的.
+    * 用单下划线(_)开头表示模块变量或函数是protected的(使用import * from时不会包含).
+    * 用双下划线(__)开头的实例变量或方法表示类内私有.
+    * 将相关的类和顶级函数放在同一个模块里. 不像Java, 没必要限制一个类一个模块.
+    * 对类名使用大写字母开头的单词(如CapWords, 即Pascal风格), 但是模块名应该用小写加下划线的方式(如lower_with_under.py). 尽管已经有很多现存的模块使用类似于CapWords.py这样的命名, 但现在已经不鼓励这样做, 因为如果模块名碰巧和类名一致, 这会让人困扰.

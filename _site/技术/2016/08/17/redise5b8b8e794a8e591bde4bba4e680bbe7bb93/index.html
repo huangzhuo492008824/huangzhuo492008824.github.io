@@ -1,0 +1,3062 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于前端与设计、黑客与画家 | 黄玄，Web & Mobile Lover，Front-End Engineer，UX Designer | 这里是 @Hux黄玄 的个人博客，与你一起发现更大的世界。">
+    <meta name="keywords"  content="python, web, 后端">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>redis常用命令总结 - KevinHuang的博客 | KevinHuang Blog</title>
+
+    <link rel="canonical" href="http://huangxuan.me/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Github CSS -->
+    <link rel="stylesheet" href="/css/syntax.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="http://cdn.staticfile.org/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">KevinHuang Blog</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/about/">About</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/portfolio/">Portfolio</a>
+                    </li>
+                    
+                    <li>
+                        <a href="/tags/">Tags</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    var __HuxNav__ = {
+        close: function(){
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        },
+        open: function(){
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+
+    // Bind Event
+    $toggle.addEventListener('click', function(e){
+        if ($navbar.className.indexOf('in') > 0) {
+            __HuxNav__.close()
+        }else{
+            __HuxNav__.open()
+        }
+    })
+
+    /**
+     * Since Fastclick is used to delegate 'touchstart' globally
+     * to hack 300ms delay in iOS by performing a fake 'click',
+     * Using 'e.stopPropagation' to stop 'touchstart' event from 
+     * $toggle/$collapse will break global delegation.
+     * 
+     * Instead, we use a 'e.target' filter to prevent handler
+     * added to document close HuxNav.  
+     *
+     * Also, we use 'click' instead of 'touchstart' as compromise
+     */
+    document.addEventListener('click', function(e){
+        if(e.target == $toggle) return;
+        if(e.target.className == 'icon-bar') return;
+        __HuxNav__.close();
+    })
+</script>
+
+
+    <!-- Image to hack wechat -->
+<!-- <img src="/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="/img/home-bg.jpg" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        position: relative;
+        background-image: url('/img/home-bg.jpg')
+    }
+
+    
+</style>
+<header class="intro-header" >
+    <div class="header-mask"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                        
+                        <a class="tag" href="/tags/#数据库" title="数据库">数据库</a>
+                        
+                    </div>
+                    <h1>redis常用命令总结</h1>
+                    
+                    
+                    <h2 class="subheading"></h2>
+                    
+                    <span class="meta">Posted by huangzhuo on August 17, 2016</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+				
+<p>在平时的工作中，需要根据需求对Redis数据库进行一些操作。</p>
+
+<p>可以参考Redis官网<a href="http://redis.io/commands">http://redis.io/commands</a> 进行详细了解</p>
+
+<p>1.SELECT 切换数据库</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[1]&gt; HELP SELECT
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+SELECT index
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Change the selected database for the current connection
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: connection
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[1]&gt; SELECT 2
+```
+
+
+
+```plain plain 
+OK
+```
+
+
+</td></tr></tbody></table>
+
+<p>2.LLEN 得到一个列表的长度</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP LLEN
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+LLEN key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the length of a list
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: list
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; LLEN bi
+```
+
+
+
+```plain plain 
+(integer) 412
+```
+
+
+</td></tr></tbody></table>
+
+<p>3.LRANGE 获取一个列表的所有元素</p>
+
+<p>LRANGE 索引是以0开始的，0表示第一个元素，-1表示最后一个元素</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP LRANGE
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+LRANGE key start stop
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get a range of elements from a list
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: list
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; LRANGE bi 0 5
+```
+
+
+</td></tr></tbody></table>
+
+<p>4.LPUSH 将一个或多个值添加到一个列表的开头</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP LPUSH
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+LPUSH key value [value ...]
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Prepend one or multiple values to a list
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: list
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; LPUSH bi http://abc.com/logUserLogin?event_id=25&amp;uid=de721bcef5cba1fc182d18
+```
+
+
+</td></tr></tbody></table>
+
+<p>5.RPUSH 将一个或多个值追加到一个列表的末尾</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP RPUSH
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+RPUSH key value [value ...]
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Append one or multiple values to a list
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: list
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; RPUSH bi http://abc.com/logUserLogin?event_id=25&amp;uid=de721bcef5cba1fc182d18
+```
+
+
+</td></tr></tbody></table>
+
+<p>6.SAVE 同步数据到磁盘</p>
+
+<p>SAVE命令执行的时候会阻塞连接，所以生成环境最好使用BGSAVE命令</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP SAVE
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+SAVE -
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Synchronously save the dataset to disk
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; SAVE
+```
+
+
+
+```plain plain 
+OK
+```
+
+
+
+```plain plain 
+(1.33s)
+```
+
+
+</td></tr></tbody></table>
+
+<p>7.BGSAVE 异步数据到磁盘</p>
+
+<p>使用BGSAVE,Redis将会在后台执行保存数据的操作，不影响正常的客户端连接，Redis将会fork出一个子进程用于保存数据，父进程继续处理客户端请求。</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP BGSAVE
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+BGSAVE -
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Asynchronously save the dataset to disk
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; BGSAVE
+```
+
+
+
+```plain plain 
+Background saving started
+```
+
+
+</td></tr></tbody></table>
+
+<p>8.TYPE 判断一个KEY的类型</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; HELP TYPE
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+TYPE key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Determine the type stored at key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[2]&gt; TYPE bi
+```
+
+
+
+```plain plain 
+list
+```
+
+
+</td></tr></tbody></table>
+
+<p>9.BGREWRITEAOF</p>
+
+<p>异步重写AOF文件，Redis将会创建一个对当前AOF文件优化过的AOF版本。</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help BGREWRITEAOF
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+BGREWRITEAOF -
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Asynchronously rewrite the append-only file
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+</td></tr></tbody></table>
+
+<p>10.CONFIG GET</p>
+
+<p>获取某个配置项的值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help config get
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+CONFIG GET parameter
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the value of a configuration parameter
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 2.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; config get maxmemory
+```
+
+
+
+```plain plain 
+1) "maxmemory"
+```
+
+
+
+```plain plain 
+2) "0"
+```
+
+
+</td></tr></tbody></table>
+
+<p>11.CONFIG SET</p>
+
+<p>设置某个参数的值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help config set
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+CONFIG SET parameter value
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Set a configuration parameter to the given value
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 2.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; config set maxmemory 200000000
+```
+
+
+
+```plain plain 
+OK
+```
+
+
+</td></tr></tbody></table>
+
+<p>12.DBSIZE</p>
+
+<p>返回当前数据库的KEY值得数量</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379[3]&gt; HELP DBSIZE
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+DBSIZE -
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Return the number of keys in the selected database
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379[3]&gt; dbsize
+```
+
+
+
+```plain plain 
+(integer) 12502
+```
+
+
+</td></tr></tbody></table>
+
+<p>13.DEL</p>
+
+<p>删除一个KEY值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help del
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+DEL key [key ...]
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Delete a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; del foo
+```
+
+
+
+```plain plain 
+(integer) 1
+```
+
+
+</td></tr></tbody></table>
+
+<p>14.EXISTS</p>
+
+<p>检查一个KEY是否存在</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help exists
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+EXISTS key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Determine if a key exists
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; exists foo
+```
+
+
+
+```plain plain 
+(integer) 1
+```
+
+
+</td></tr></tbody></table>
+
+<p>15.SET 命令</p>
+
+<p>设置一个KEY的值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help set
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+SET key value
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Set the string value of a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: string
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; set foo test
+```
+
+
+
+```plain plain 
+OK
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt;
+```
+
+
+</td></tr></tbody></table>
+
+<p>16.PERSIST</p>
+
+<p>删除一个KEY的过期时间</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+</td>
+<td class="code">
+
+
+```plain plain 
+edis 127.0.0.1:6379&gt; help persist
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+PERSIST key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Remove the expiration from a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 2.2.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+</td></tr></tbody></table>
+
+<p>17.RENAME</p>
+
+<p>重新命名一个KEY</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help rename
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+RENAME key newkey
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Rename a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; rename foo footest
+```
+
+
+
+```plain plain 
+OK
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt;
+```
+
+
+</td></tr></tbody></table>
+
+<p>18.EXPIRE</p>
+
+<p>为一个KEY设置一个TTL过期时间</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help expire
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+EXPIRE key seconds
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Set a key's time to live in seconds
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; expire footest 300
+```
+
+
+
+```plain plain 
+(integer) 1
+```
+
+
+</td></tr></tbody></table>
+
+<p>19.TTL</p>
+
+<p>获取过期时间</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help ttl
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+TTL key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the time to live for a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl footest
+```
+
+
+
+```plain plain 
+(integer) 289
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl footest
+```
+
+
+
+```plain plain 
+(integer) 285
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl footest
+```
+
+
+
+```plain plain 
+(integer) 283
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl footest
+```
+
+
+
+```plain plain 
+(integer) 282
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl footest
+```
+
+
+
+```plain plain 
+(integer) 282
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt;
+```
+
+
+</td></tr></tbody></table>
+
+<p>20.EXPIREAT</p>
+
+<p>设置一个KEY的过期时间，以UNIX时间戳表示</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help expireat
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+EXPIREAT key timestamp
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Set the expiration for a key as a UNIX timestamp
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.2.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: generic
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; expireat foo 1431532800
+```
+
+
+
+```plain plain 
+(integer) 1
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; ttl foo
+```
+
+
+
+```plain plain 
+(integer) 3210141
+```
+
+
+</td></tr></tbody></table>
+
+<p>21.GET</p>
+
+<p>获取一个KEY的值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help get
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+GET key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the value of a key
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: string
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; get foo
+```
+
+
+
+```plain plain 
+"test"
+```
+
+
+</td></tr></tbody></table>
+
+<p>22.HGET</p>
+
+<p>获取一个哈希字段的值</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help hget
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+HGET key field
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the value of a hash field
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 2.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: hash
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; hset myhash field1 "foo"
+```
+
+
+
+```plain plain 
+(integer) 1
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; hget myhash field1
+```
+
+
+
+```plain plain 
+"foo"
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; hget myhash field2
+```
+
+
+
+```plain plain 
+(nil)
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt;
+```
+
+
+</td></tr></tbody></table>
+
+<p>23.LASTSAVE</p>
+
+<p>上次成功保存数据到磁盘的UNIX时间戳</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help lastsave
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+LASTSAVE -
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Get the UNIX time stamp of the last successful save to disk
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: server
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; lastsave
+```
+
+
+
+```plain plain 
+(integer) 1428373205
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt;
+```
+
+
+</td></tr></tbody></table>
+
+<p>24.LPUSH</p>
+
+<p>将一个或多个值附加到一个Redis列表中</p>
+
+<table cellpadding="0" cellspacing="0" border="0"><tbody><tr>
+<td class="gutter">
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+12
+
+13
+
+14
+
+15
+
+16
+
+17
+
+18
+
+19
+
+20
+
+</td>
+<td class="code">
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; help lpush
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+LPUSH key value [value ...]
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+summary: Prepend one or multiple values to a list
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+since: 1.0.0
+```
+
+
+
+```plain spaces 
+
+```
+
+```plain plain 
+group: list
+```
+
+
+
+```plain spaces 
+
+```
+
+
+
+```plain spaces 
+
+```
+
+
+
+```plain spaces 
+
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; lpush mylist a b c
+```
+
+
+
+```plain plain 
+(integer) 6
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; LRANGE mylist 0 -1
+```
+
+
+
+```plain plain 
+1) "c"
+```
+
+
+
+```plain plain 
+2) "b"
+```
+
+
+
+```plain plain 
+3) "a"
+```
+
+
+
+```plain plain 
+4) "c"
+```
+
+
+
+```plain plain 
+5) "b"
+```
+
+
+
+```plain plain 
+6) "a"
+```
+
+
+
+```plain plain 
+redis 127.0.0.1:6379&gt; llen mylist
+```
+
+
+
+```plain plain 
+(integer) 6
+```
+
+
+</td></tr></tbody></table>
+
+
+
+                <hr>
+
+                
+                <!-- 多说 Share start -->
+                </style>
+                <div class="ds-share"
+                    style="text-align: right"
+                    data-thread-key="/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93"
+                    data-title="redis常用命令总结"
+                    data-url="http://huangxuan.me/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93/"
+                    data-images="http://huangxuan.me/img/home-bg.jpg"
+                    data-content="
+在平时的工作中，需要根据需求对Redis数据库进行一些操作。
+
+可以参考Redis官网http://redis.io/commands 进行详细了解
+
+... | KevinHuang的博客 | KevinHuang Blog " >
+                    <div class="ds-share-inline">
+                      <ul  class="ds-share-icons-16">
+                        <li data-toggle="ds-share-icons-more"><a class="ds-more" href="#">分享到：</a></li>
+                        <li><a class="ds-wechat flat" href="javascript:void(0);" data-service="wechat">微信</a></li>
+                        <li><a class="ds-weibo flat" href="javascript:void(0);" data-service="weibo">微博</a></li>
+                        <li><a class="ds-douban flat" href="javascript:void(0);" data-service="douban">豆瓣</a></li>
+                      </ul>
+                      <div class="ds-share-icons-more">
+                      </div>
+                    </div>
+                <hr>
+                </div>
+                <!-- 多说 Share end-->
+                
+
+
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/python/2016/08/16/e588a9e794a8type-hinte68f90e58d87pythone7a88be5ba8fe5bc80e58f91e69588e78e87/" data-toggle="tooltip" data-placement="top" title="利用Type Hint提升Python程序开发效率">
+                        Previous<br>
+                        <span>利用Type Hint提升Python程序开发效率</span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/%E6%8A%80%E6%9C%AF/2016/08/17/pythone4b8ade79a84collectionse6a8a1e59d97e5ada6e4b9a0/" data-toggle="tooltip" data-placement="top" title="python中的collections模块学习">
+                        Next<br>
+                        <span>python中的collections模块学习</span>
+                        </a>
+                    </li>
+                    
+                </ul>
+
+
+                
+                <!-- 多说评论框 start -->
+                <div class="comment">
+                    <div class="ds-thread"
+                        data-thread-key="/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93"
+                        data-title="redis常用命令总结"
+                        data-url="http://huangxuan.me/%E6%8A%80%E6%9C%AF/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93/" >
+                    </div>
+                </div>
+                <!-- 多说评论框 end -->
+                
+
+                
+
+            </div>  
+
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <hr class="hidden-sm hidden-xs">
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+        				
+                            
+        				
+                            
+                				<a href="/tags/#linux" title="linux" rel="14">
+                                    linux
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos" title="centos" rel="5">
+                                    centos
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#ubuntu" title="ubuntu" rel="5">
+                                    ubuntu
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#系统" title="系统" rel="5">
+                                    系统
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#mysql" title="mysql" rel="3">
+                                    mysql
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#数据库" title="数据库" rel="4">
+                                    数据库
+                                </a>
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#镜像" title="镜像" rel="2">
+                                    镜像
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#epel" title="epel" rel="3">
+                                    epel
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#redhat" title="redhat" rel="3">
+                                    redhat
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#openstack" title="openstack" rel="2">
+                                    openstack
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#云计算" title="云计算" rel="2">
+                                    云计算
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django" title="django" rel="7">
+                                    django
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#python" title="python" rel="30">
+                                    python
+                                </a>
+                            
+        				
+                            
+                				<a href="/tags/#centos7" title="centos7" rel="2">
+                                    centos7
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#算法" title="算法" rel="4">
+                                    算法
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#redis" title="redis" rel="2">
+                                    redis
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#面向对象" title="面向对象" rel="2">
+                                    面向对象
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#django rest framework" title="django rest framework" rel="2">
+                                    django rest framework
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+                				<a href="/tags/#casperjs" title="casperjs" rel="2">
+                                    casperjs
+                                </a>
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+                            
+        				
+        			</div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+                    
+                        <li><a href="http://su.gallery/">Su</a></li>
+                    
+                        <li><a href="http://mida.re/">乱序</a></li>
+                    
+                        <li><a href="http://qianduan.guru/">前端外刊评论</a></li>
+                    
+                        <li><a href="http://lingyu.wang/">天镶的博客</a></li>
+                    
+                        <li><a href="http://hmqk1995.github.io">Luke 的自留地</a></li>
+                    
+                        <li><a href="http://ebnbin.com/">Ebn's Blog</a></li>
+                    
+                        <li><a href="http://blog.smdcn.net">SmdCn's Blog</a></li>
+                    
+                        <li><a href="http://xieminis.me/">解旻的博客</a></li>
+                    
+                        <li><a href="http://dhong.co">DHong Say</a></li>
+                    
+                        <li><a href="http://ingf.github.io/">尹峰以为</a></li>
+                    
+                        <li><a href="http://wepiaofei.github.io/blog/">前端神盾局</a></li>
+                    
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    // dynamic User by Hux
+    var _user = 'huxblog';
+
+    // duoshuo comment query.
+    var duoshuoQuery = {short_name: _user };
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0]
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("http://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+                    
+
+                    <!-- add Weibo, Zhihu by Hux, add target = "_blank" to <a> by Hux -->
+                    
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="http://weibo.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+
+
+                    
+                    <li>
+                        <a target="_blank" href="https://www.facebook.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/huxpro">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; KevinHuang Blog 2017
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=huxpro&repo=huxpro.github.io&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js "></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js "></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js "></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/ 
+     - https://github.com/jneen/rouge/wiki/list-of-supported-languages-and-lexers   
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async('/js/jquery.tagcloud.js',function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("http://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
