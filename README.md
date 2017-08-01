@@ -259,11 +259,11 @@ From V1.5, we support Google Analytics and Baidu Tongji officially with a deathl
 
 ```
 # Baidu Analytics
-ba_track_id: 4cc1f2d8f3067386cc5cdb626a202900
+ba_track_id: 4964074496f64a25a39f8b205270162e
 
 # Google Analytics
-ga_track_id: 'UA-49627206-1'            # Format: UA-xxxxxx-xx
-ga_domain: huangxuan.me
+ga_track_id: 'UA-78356082-2'            # Format: UA-xxxxxx-xx
+ga_domain: myhuangzhuo.com 
 ```
 
 Just checkout the code offered by Google/Baidu, and copy paste here, all the rest is already done for you.
