@@ -2,9 +2,226 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0fe573fd-3822-4f86-98df-c6d2998673db" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/img/avatar-kevin.jpg" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_posts/2014-01-29-hello-2015.markdown" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/2015/01/29/hello-2015/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/2017/08/01/google-opensourse-python-code-standard/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/404.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/CNAME" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/LICENSE" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/about/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2015_Hux_SDE_cn.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2015_Hux_SDE_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2015_Hux_UX &amp; PD_cn.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2015_Hux_UX &amp; PD_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2016_Hux_DEV_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2016_Hux_en_PD.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/attach/2016_Hux_en_SE.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/css/bootstrap.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/css/bootstrap.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/css/hux-blog.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/css/hux-blog.min.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/css/syntax.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/2016/12/12/djangoe4b8ade4b8bbe5a496e994aee58581e8aeb8e4b8bae7a9ba/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/python/2016/08/22/djangoe4b8ade88eb7e58f96e8afb7e6b182e5a4b4header/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/python/2016/09/05/djangoe4b8ade79a84e5a49ae5ad97e6aeb5e5a496e994aee585b3e88194e5908ce4b880e5bca0e8a1a8/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/python/2016/12/21/djangoe4b8adurle8b7afe5be84e79a84e997aee9a298/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/python/2017/01/03/jse68f90e4baa4e695b0e68daee79a84headerse8aebee7bdae/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/django/python/2017/06/22/webe7ab99e782b9e79bb8e585b3e8a7a3e586b3e696b9e6a188/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/feed.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/fonts/glyphicons-halflings-regular.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/fonts/glyphicons-halflings-regular.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/fonts/glyphicons-halflings-regular.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/fonts/glyphicons-halflings-regular.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/fonts/glyphicons-halflings-regular.woff2" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/404-bg.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/about-bg.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/avatar-hux.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/avatar-sea-hux.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/blog-desktop.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/blog-keynote.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/blog-md-navbar.gif" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/blog-sidebar.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/contact-bg.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/favicon.ico" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/home-bg-art.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/home-bg-geek.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/home-bg-o.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/home-bg.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/icon_wechat.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/forcify.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/open-source-license.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.013.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.014.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.016.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.018.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.019.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.020.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.021.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.023.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.026.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.028.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.029.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.030.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-alitrip-pd/post-alitrip-pd.031.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-c-u-ali-079717.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-c-u-ali-memo.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-c-u-ali-team.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-js-version/javascript-java.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-js-version/keep-calm-and-learn-javascript.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-kuaidi-1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-kuaidi-2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-metro-panorama.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-metro-real.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/in-post/post-metro-ui.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-2015.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-alibaba.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-alitrip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-android.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-apple-event-2015.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-digital-native.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-e2e-ux.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-ios9-web.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-js-module.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-js-version.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-kuaidi.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-miui-ux.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-miui6.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-os-metro.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-re-vs-ng2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-rwd.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-see-u-ali.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-universe.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-bg-unix-linux.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/post-sample-image.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/img/tag-bg.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/animatescroll.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/bootstrap.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/bootstrap.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/hux-blog.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/hux-blog.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/jquery.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/jquery.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/jquery.nav.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/js/jquery.tagcloud.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/linux/2016/05/26/ubuntue4bfaee694b9etcfstabe69687e4bbb6e697a0e6b395e8bf9be585a5e7b3bbe7bb9f/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/linux/2016/05/31/linuxe7b3bbe7bb9fe4b88be5b8b8e794a8e591bde4bba4e680bbe7bb93-ubuntu-centos6-5/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/linux/2016/08/19/linuxe4b88biptablese5b08fe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/linux/2016/08/22/ubuntue5ae89e8a385shadowsockse5aea2e688b7e7abaf/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/mac/python/2016/11/16/mysqle591bde4bba4e8a18ce695b0e68daee5ba93e79a84e5afbce587bae5928ce5afbce585a5/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/page2/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/page3/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/page4/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/page5/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/page6/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/css/timeline.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/fonts/huxico.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/fonts/huxico.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/fonts/huxico.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/fonts/huxico.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/hux_avatar.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/intern-alitrip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/intern-lxu.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/logo-jquery.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/logo-kissy.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/logo-react.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/logo-vue.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/newmedia.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/senova.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-busyweek.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-hslider.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-puzzle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-truth.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-uihome.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/images/work-wepiao-bo.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/portfolio/js/modernizr.custom.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/06/20/e794a8pythone69da5e586995e7a78de68e92e5ba8fe696b9e6b395/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/08/09/pythone4b8ade5af86e7a081e79a84e4bf9de5ad98/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/08/16/e588a9e794a8type-hinte68f90e58d87pythone7a88be5ba8fe5bc80e58f91e69588e78e87/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/08/19/pythone4bdbfe794a8uuide5ba93e7949fe68890e594afe4b880id/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/08/22/pythone6a8a1e68b9fe7949fe789a9e8bf9be58c96e5928ce98197e4bca0e7ae97e6b395/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/09/01/pythone4b8ade7b1bbe680bbe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/09/06/pythone4b88be68e92e5ba8fe680bbe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/09/07/python-formate794a8e6b395/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/09/20/mysqle4b8ade5ad98e582a8e8a1a8e68385e7aca6e58fb7/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2016/09/21/pythone7b1bbe4b8ade79a84__slots__e5b19ee680a7/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2017/01/23/pythone4b8ade79a84e4b880e4ba9be9ad94e6b395/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/2017/05/25/matplotlib-runtimeerror-python-is-not-installed-as-a-framework-e99499e8afafe8a7a3e586b3e696b9e6a188/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/python/其它/2017/06/19/python-legne4bd9ce794a8e59f9fe680bbe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/tags/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/windows/2016/08/21/win8e4b88bgpte58886e58cbae5ae89e8a385win7e7b3bbe7bb9f/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/云计算/2016/06/19/redhat7e4b88brdoe696b9e5bc8fe5ae89e8a385openstacke7ac94e8aeb0/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/云计算/2016/08/16/e8bf9ee68ea5vmware-workstatione5ad90e8999ae68b9fe69cbae588b0e4ba92e88194e7bd91efbc9f/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/云计算/技术/2016/05/26/centos6-5e9858de7bdaee69cace59cb0openstacke6ba90/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2016/08/21/ubuntu14-04e5ae89e8a385numpye7ac94e8aeb0/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2016/10/11/pythone4b8ade8a385e9a5b0e599a8efbc8ce8bfade4bba3e599a8e5928ce7949fe68890e599a8/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2016/10/11/restful-apie8aebee8aea1e8a784e58899/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2016/10/25/mace4b88be5ae89e8a385pythone8bf9ee68ea5mysqle5b7a5e585b7mysqldb/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2017/07/05/e7949fe68890pdfe69687e6a1a3/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/其它/2017/07/06/dockere5ada6e4b9a0e680bbe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/05/25/centos6-6e5ae89e8a385e9858de7bdaewordpress/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/05/26/centos6-5e4b88be6b7bbe58aa0epele6ba90/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/05/26/e588b6e4bd9clinuxe8bf98e58e9fe9959ce5838f/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/05/26/mysqle4b8ade6b2a1e69c89mysqle695b0e68daee5ba93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/12/e794a8nginxe5928cuwsgie69da5e983a8e7bdb2djangoe9a1b9e79bae/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/20/djangoe6b7bbe58aa0e5af8ce69687e69cace7bc96e8be91e599a8djangoueditor/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/21/pythone4b8ade79a84e4b8ade88bb1e69687e6b7b7e690ade5ad97e7aca6e4b8b2e4b8ade69687e79a84e68f90e58f96/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/23/vime5ae9ee794a8e68a80e5b7a7/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/24/pythone4b8ade4bdbfe794a8argse5928ckwargse8afade6b395/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/06/29/e4b8a4e6acbexshelle4b8ade79a84e6af94e8be83e7be8ee8a782e79a84e9858de889b2e696b9e6a188/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/07/20/apachee9858de7bdaee4bc98e58c96/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/07/22/pythone5ad97e7aca6e4b8b2e79a84e997aee9a298/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/03/centose4b88bpythone59fbae69cace78eafe5a283/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/09/e69fa5e689bee99984e8bf91e79a84e4babae58a9fe883bde5ae9ee78eb0/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/09/geohashe6a0b8e5bf83e58e9fe79086e8a7a3e69e90/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/11/pythone4b8ade79a84e587a0e7a78de8aebee8aea1e6a8a1e5bc8f/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/17/pythone4b8ade79a84collectionse6a8a1e59d97e5ada6e4b9a0/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/17/redise5b8b8e794a8e591bde4bba4e680bbe7bb93/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/08/18/e794a8dfae7ae97e6b395e69da5e5ae9ee78eb0e6958fe6849fe8af8de6b187e79a84e8bf87e6bba4/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/2016/09/06/iptablese8afa6e8a7a3/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/技术/爬虫/2016/07/06/pythone5afb9e697b6e997b4e697a5e69c9fe5819ae6a0bce5bc8fe58c96/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/爬虫/2017/04/14/casperjse688aae58f96e9aa8ce8af81e7a081e59bbee78987e5928ce8aebee7bdaecookiesefbc8cheadersefbc8ce6a8a1e68b9fe9bca0e6a087e782b9e587bbselected/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/爬虫/2017/04/18/casperjse4bca0e58f82/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/_site/生活/2016/12/28/e8af95e79d80e58ebbe5819ae4b880e4ba9be4ba8be584bfefbc8ce8aea9e887aae5b7b1e68890e4b8bae4b880e4b8aae69c89e8b6a3e584bfe79a84e4baba/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2015_Hux_SDE_cn.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2015_Hux_SDE_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2015_Hux_UX &amp; PD_cn.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2015_Hux_UX &amp; PD_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2016_Hux_DEV_en.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2016_Hux_en_PD.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/attach/2016_Hux_en_SE.pdf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/css/timeline.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/fonts/huxico.eot" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/fonts/huxico.svg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/fonts/huxico.ttf" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/fonts/huxico.woff" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/hux_avatar.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/intern-alitrip.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/intern-lxu.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/logo-jquery.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/logo-kissy.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/logo-react.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/logo-vue.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/newmedia.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/senova.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-busyweek.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-hslider.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-puzzle.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-truth.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-uihome.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/images/work-wepiao-bo.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/portfolio/js/modernizr.custom.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/img/favicon.ico" afterPath="$PROJECT_DIR$/img/favicon.ico" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/CNAME" afterPath="$PROJECT_DIR$/CNAME" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.zh.md" afterPath="$PROJECT_DIR$/README.zh.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/_config.yml" afterPath="$PROJECT_DIR$/_config.yml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/about.html" afterPath="$PROJECT_DIR$/about.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
     </list>
     <ignored path="huangzhuo492008824.github.io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -24,32 +241,22 @@
     <favorites_list name="huangzhuo492008824.github.io" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file leaf-file-name="2017-07-05-e7949fe68890pdfe69687e6a1a3.markdown" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/_posts/2017-07-05-e7949fe68890pdfe69687e6a1a3.markdown">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CNAME" pinned="false" current-in-tab="false">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="CNAME" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CNAME">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+              <caret line="0" column="8" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="feed.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/feed.xml">
+      <file leaf-file-name="keynote.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_layouts/keynote.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="11" column="25" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="25" />
+            <state relative-caret-position="108">
+              <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -59,30 +266,55 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="0">
-                <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <first_editor relative-caret-position="3753">
+                <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
                 <folding />
               </first_editor>
               <second_editor />
             </state>
           </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="tags.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tags.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-              <folding />
+          <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor>
+                <js_state />
+              </second_editor>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Gruntfile.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Gruntfile.js">
+      <file leaf-file-name="README.zh.md" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/README.zh.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="243">
+                <caret line="97" column="18" selection-start-line="97" selection-start-column="18" selection-end-line="97" selection-end-column="18" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+          <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+            <state split_layout="SPLIT">
+              <first_editor relative-caret-position="0">
+                <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor>
+                <js_state />
+              </second_editor>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="page.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_layouts/page.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+            <state relative-caret-position="108">
+              <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -91,18 +323,25 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="297">
-              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+            <state relative-caret-position="162">
+              <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/package.json">
+      <file leaf-file-name="favicon.ico" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/img/favicon.ico">
+          <provider selected="true" editor-type-id="images">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="post.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/_layouts/post.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="10" column="46" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
+            <state relative-caret-position="324">
+              <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -111,9 +350,11 @@
       <file leaf-file-name="_config.yml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_config.yml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="81">
-              <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-              <folding />
+            <state relative-caret-position="405">
+              <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+              <folding>
+                <marker date="1501558932000" expanded="true" signature="466:479" ph="kevinhuang..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -121,8 +362,8 @@
       <file leaf-file-name="about.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/about.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="243">
-              <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
+            <state relative-caret-position="378">
+              <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
               <folding />
             </state>
           </provider>
@@ -140,9 +381,15 @@
         <option value="$PROJECT_DIR$/_posts/2017-07-31-python代码规范.markdown" />
         <option value="$PROJECT_DIR$/_posts/2017-07-31-google开源python代码规范.markdown" />
         <option value="$PROJECT_DIR$/_posts/2017-07-31-google-opensourse-python-code-standard.markdown" />
-        <option value="$PROJECT_DIR$/_config.yml" />
-        <option value="$PROJECT_DIR$/about.html" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/README.md" />
+        <option value="$PROJECT_DIR$/README.zh.md" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/about.html" />
+        <option value="$PROJECT_DIR$/_config.yml" />
+        <option value="$PROJECT_DIR$/_site/404.html" />
+        <option value="$PROJECT_DIR$/_site/index.html" />
+        <option value="$PROJECT_DIR$/CNAME" />
       </list>
     </option>
   </component>
@@ -153,8 +400,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
     <option name="width" value="1440" />
-    <option name="height" value="900" />
+    <option name="height" value="793" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -181,6 +429,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -200,23 +449,8 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="huangzhuo492008824.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="huangzhuo492008824.github.io" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="_posts" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -225,10 +459,10 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../exitwp" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
-    <property name="FullScreen" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/img" />
       <recent name="$PROJECT_DIR$/_posts" />
     </key>
   </component>
@@ -316,6 +550,12 @@
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
       <method />
     </configuration>
     <configuration default="true" type="js.build_tools.npm" factoryName="npm">
@@ -439,6 +679,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="0fe573fd-3822-4f86-98df-c6d2998673db" name="Default" comment="" />
@@ -450,25 +693,25 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <frame x="0" y="23" width="1440" height="793" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25178826" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36051503" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35783133" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3192771" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25249642" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
@@ -489,218 +732,36 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/img/avatar-hux.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/blog-desktop.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/blog-md-navbar.gif">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/contact-bg.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/home-bg-o.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/post-bg-digital-native.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2015-04-14-unix-linux-note.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="268">
-          <caret line="199" column="17" selection-start-line="199" selection-start-column="17" selection-end-line="199" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/post-bg-miui6.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/about-bg.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/404-bg.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/in-post/open-source-license.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/in-post/post-c-u-ali-079717.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/in-post/post-c-u-ali-memo.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/in-post/post-kuaidi-1.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/img/in-post/post-metro-real.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2014-01-29-hello-2015.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="64" column="13" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2016-05-25-centos6-6e5ae89e8a385e9858de7bdaewordpress.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="108">
-          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_includes/JB/setup">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="5" column="12" selection-start-line="5" selection-start-column="12" selection-end-line="5" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.zh.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="297">
-            <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2017-06-19-python-legne4bd9ce794a8e59f9fe680bbe7bb93.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2017-06-22-webe7ab99e782b9e79bb8e585b3e8a7a3e586b3e696b9e6a188.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="6" column="18" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2017-04-14-casperjse688aae58f96e9aa8ce8af81e7a081e59bbee78987e5928ce8aebee7bdaecookiesefbc8cheadersefbc8ce6a8a1e68b9fe9bca0e6a087e782b9e587bbselected.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="12" column="7" selection-start-line="12" selection-start-column="7" selection-end-line="12" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2017-07-31-python代码规范.markdown">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="31" column="10" selection-start-line="31" selection-start-column="10" selection-end-line="31" selection-end-column="10" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/_posts/2017-07-31-python代码规范.markdown" />
     <entry file="file://$PROJECT_DIR$/_posts/2017-07-06-dockere5ada6e4b9a0e680bbe7bb93.markdown">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_posts/2017-07-31-google-opensourse-python-code-standard.markdown">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="297">
-            <caret line="11" column="9" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
-            <folding />
-          </first_editor>
-          <second_editor />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/_posts/2017-07-05-e7949fe68890pdfe69687e6a1a3.markdown">
-      <provider selected="true" editor-type-id="text-editor">
+      <provider editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="0">
             <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tags.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="15" column="13" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/_config.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="1" selection-start-line="3" selection-start-column="1" selection-end-line="3" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/about.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="9" column="29" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/CNAME">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-          <folding />
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
         </state>
       </provider>
     </entry>
@@ -716,22 +777,362 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="10" column="46" selection-start-line="10" selection-start-column="46" selection-end-line="10" selection-end-column="46" />
+        <state relative-caret-position="135">
+          <caret line="5" column="48" selection-start-line="5" selection-start-column="48" selection-end-line="5" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/avatar-hux.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LICENSE">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-864">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/404-bg.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/about-bg.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/avatar-kevin.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/home-bg-o.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/post-sample-image.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/post-bg-unix-linux.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/post-bg-universe.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/post-bg-see-u-ali.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/post-bg-rwd.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/tag-bg.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="12" column="27" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/intern-lxu.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/logo-vue.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/senova.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-busyweek.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-hslider.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-puzzle.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-truth.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-uihome.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/work-wepiao-bo.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/hux_avatar.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/images/logo-kissy.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/portfolio/css/timeline.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="9" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tags.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-437">
+          <caret line="12" column="23" selection-start-line="12" selection-start-column="23" selection-end-line="12" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_posts/2016-05-31-linuxe7b3bbe7bb9fe4b88be5b8b8e794a8e591bde4bba4e680bbe7bb93-ubuntu-centos6-5.markdown">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_posts/2017-07-31-google-opensourse-python-code-standard.markdown">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="162">
+            <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_includes/nav.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_includes/head.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="6" column="24" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_includes/footer.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="6" column="23" selection-start-line="6" selection-start-column="23" selection-end-line="6" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_layouts/default.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="103">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_layouts/keynote.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="5" column="20" selection-start-line="5" selection-start-column="20" selection-end-line="5" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_layouts/page.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="5" column="21" selection-start-line="5" selection-start-column="21" selection-end-line="5" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_layouts/post.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="33" column="18" selection-start-line="33" selection-start-column="18" selection-end-line="33" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_site/404.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="79" column="0" selection-start-line="79" selection-start-column="0" selection-end-line="79" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_site/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="83" column="19" selection-start-line="83" selection-start-column="19" selection-end-line="83" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="3753">
+            <caret line="139" column="20" selection-start-line="139" selection-start-column="20" selection-end-line="139" selection-end-column="20" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/_config.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="25" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+          <folding>
+            <marker date="1501558932000" expanded="true" signature="466:479" ph="kevinhuang..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.zh.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="243">
+            <caret line="97" column="18" selection-start-line="97" selection-start-column="18" selection-end-line="97" selection-end-column="18" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+      <provider editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor>
+            <js_state />
+          </second_editor>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="8" column="15" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/about.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="57" column="32" selection-start-line="57" selection-start-column="32" selection-end-line="57" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/img/favicon.ico">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/CNAME">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="8" selection-start-line="0" selection-start-column="8" selection-end-line="0" selection-end-column="8" />
           <folding />
         </state>
       </provider>
