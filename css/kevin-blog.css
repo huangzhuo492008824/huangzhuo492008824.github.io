@@ -1,3 +1,8 @@
+/*!
+ * Kevin Blog v1.0.0 (http://huangzhuo492008824.github.io)
+ * Copyright 2017 Kevin <huangzhuo492008824@gmail.com>
+ */
+
 @media (min-width: 1200px) {
   .post-container,
   .sidebar-container {
@@ -1087,6 +1092,9 @@ img::-moz-selection {
 .page-fullscreen footer .copyright a:hover {
   color: #ddd;
 }
-.read-status{
+.read-status {
   color: red;
+}
+.read-status-finished {
+  color: blue;
 }
