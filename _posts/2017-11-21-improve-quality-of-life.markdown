@@ -3,7 +3,7 @@ author: kevinhuang
 comments: true
 date: 2017-11-21 11:49:32+00:00
 layout: post
-slug: python for else
+slug: 改善程序员生活质量的 3+10 习惯
 title: 改善程序员生活质量的 3+10 习惯
 ---
 
