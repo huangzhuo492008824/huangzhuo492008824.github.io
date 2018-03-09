@@ -1,0 +1,7 @@
+###git 命令搜集
+## 下载git项目下某个目录下的文件例如：想下载链接https://github.com/grpc/grpc/tree/master/examples/python/helloworld这个目录
+``` shell
+tree/master 改为 trunk
+svn checkout https://github.com/grpc/grpc/trunk/examples/python/helloworld
+```
+
