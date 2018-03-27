@@ -47,4 +47,5 @@ print result
 
 新手上路多多指教
 
-![正则图]({{ IMAGE_PATH }}2016/06/正则图-1.png)
+###![正则图]({{ IMAGE_PATH }}2016/06/正则图-1.png)
+![正则图]({{ IMAGE_PATH }}home-bg.jpg)
