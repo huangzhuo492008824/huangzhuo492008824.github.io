@@ -1,0 +1,25 @@
+### flask设置永久访问token
+```python
+from flask_httpauth import HTTPTokenAuth
+auth = HTTPTokenAuth(scheme='Bearer')
+ 
+ tokens = {
+     "12aaa0c64bc5dbc2026be1071df5c0db47659d45": "user1",
+     "23370cec94ddc0dc2a50432a90500b2bc55d014e": "user2",
+ }
+ 
+ 
+ @auth.verify_token
+ def verify_token(token):
+     g.user = None
+     if token in tokens:
+         g.user = tokens[token]
+         return True
+     return False
+     
+class ContactOcr(Resource):
+    @auth.login_required
+    def post(self):
+        logger.info(u'user:{} reconginzed: {}'.format(g.user, res))
+        return {'res': res}, 200
+```
