@@ -7,7 +7,7 @@ slug: selenium python
 title: selenium python笔记
 ---
 
-# selenium python
+### selenium python
 - 最新版selenium 3.x已经不支持phantomjs了，桑心；需要用phantomjs的可以用selenium2.x
 - selenium调用webdriver可以是本地的浏览器也可以是远程的，本地的webdriver(chrome,firefox)都需要下载driver，远程的需要下载一个selenium-stand，然后java -jar selenium-server-standalone-3.12.0.jar
 
