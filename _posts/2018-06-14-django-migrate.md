@@ -7,6 +7,7 @@ slug: django python migrate
 title: django migrate
 ---
 
+### django migrate
 ```python
 # 删除本地migrate文件
 rm apps/*/migrations/*.py
