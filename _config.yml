@@ -5,7 +5,7 @@ header-img: img/home-bg.jpg
 email: huangzhuo492008824@gmail.com
 description: "stay hungry stay foolish"
 keyword: "python, web, 后端"
-url: "http://myhuangzhuo.com"              # your host, for absolute URL
+url: "http://blog.myhuangzhuo.com"              # your host, for absolute URL
 baseurl: ""                             # for example, '/blog' if your blog hosted on 'host/blog'
 
 
@@ -65,7 +65,7 @@ netease_comment: false
 ba_track_id: 4964074496f64a25a39f8b205270162e
 # Google Analytics
 ga_track_id: 'UA-78356082-2'            # Format: UA-xxxxxx-xx
-ga_domain: myhuangzhuo.com
+ga_domain: blog.myhuangzhuo.com
 
 
 
