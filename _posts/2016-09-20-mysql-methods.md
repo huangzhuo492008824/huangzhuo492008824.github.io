@@ -4,7 +4,7 @@ comments: true
 date: 2016-09-20 08:36:00+00:00
 layout: post
 slug: mysql%e4%b8%ad%e5%ad%98%e5%82%a8%e8%a1%a8%e6%83%85%e7%ac%a6%e5%8f%b7
-title: 数据库相关奇淫巧技
+title: 数据库相关技巧
 wordpress_id: 243
 categories:
 - python
