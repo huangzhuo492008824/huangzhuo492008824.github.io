@@ -1,19 +1,16 @@
 ---
-author: kevinhuang
-comments: true
 date: 2018-07-21 9:49:32+00:00
-layout: post
-categories: [git, cmd, summery]
+categories: [git, cmd, summary]
 title: git常用命令总结
 ---
 
 ## 版本控制系统（VCS）
 * 版本控制系统（Version Control System）是一种记录一个或若干文件内容变化历史的系统。
-![集中式VCS](/img/in-post/git-cmd-summary/one-center.jpg)
+![集中式VCS](/uploads/git-cmd-summary/one-center.jpg)
 *集中化的版本控制系统(CVS，SVN)*
 
 
-![分布式VCS](/img/in-post/git-cmd-summary/distribute.jpg)
+![分布式VCS](/uploads/git-cmd-summary/distribute.jpg)
 *分布式版本控制系统（Git)*
 ## Git 的诞生 ##
 * Git是目前世界上最先进的分布式版本控制系统（没有之一）
@@ -26,16 +23,16 @@ title: git常用命令总结
 * GitHub： 是一个面向开源及私有软件项目的托管平台, 私有项目收费；
 * GitLab： 社区版相当于私有版的github，可以自己搭建GitLab仓库服务器，企业版收费；
 * Gitee：码云(gitee.com)是开源中国推出的代码托管平台,支持 Git 和 SVN,提供免费的私有仓库托管；
-![linus大叔pic](/img/in-post/git-cmd-summary/linus.jpg)
+![linus大叔pic](/uploads/git-cmd-summary/linus.jpg)
 *linus大叔*
 
 ## Git基本原理
-![](/img/in-post/git-cmd-summary/git-basic1.png)
+![](/uploads/git-cmd-summary/git-basic1.png)
 * git add files 把当前文件放入暂存区域。
 * git commit 给暂存区域生成快照并提交。
 * git reset -- files 用来撤销最后一次git add files，你也可以用git reset 撤销所有暂存区域文件。
 * git checkout -- files 把文件从暂存区域复制到工作目录，用来丢弃本地修改。
-![](/img/in-post/git-cmd-summary/git-basic2.png)
+![](/uploads/git-cmd-summary/git-basic2.png)
 * git commit -a 相当于运行 git add 把所有当前目录下的文件加入暂存区域再运行git commit.
 * git commit files 进行一次包含最后一次提交加上工作目录中文件快照的提交。并且文件被添加到暂存区域。
 * git checkout HEAD -- files 回滚到复制最后一次提交。

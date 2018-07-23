@@ -1,0 +1,1548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+
+    
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/08/03/2017-08-03-CentOS7-shadowsocks-set-start/</loc>
+    <lastmod>2018-07-23T14:54:27.478Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS7设置ss开机启动</title>
+        <pubTime>2017-08-03T01:49:32.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="centos7" url="http://myhuangzhuo.com/categories/centos7/"/>
+          
+             
+              <breadCrumb title="ss" url="http://myhuangzhuo.com/categories/centos7/ss/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/04/04/2018-04-4-flask-token/</loc>
+    <lastmod>2018-07-23T14:52:47.907Z</lastmod>
+    <data>
+        <display>
+        <title>flask设置永久访问token</title>
+        <pubTime>2018-04-04T01:49:32.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="gflask" url="http://myhuangzhuo.com/categories/gflask/"/>
+          
+             
+              <breadCrumb title="token" url="http://myhuangzhuo.com/categories/gflask/token/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/07/21/2018-7-21-git-cmd-summary/</loc>
+    <lastmod>2018-07-23T14:51:21.393Z</lastmod>
+    <data>
+        <display>
+        <title>git常用命令总结</title>
+        <pubTime>2018-07-21T01:49:32.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="git" url="http://myhuangzhuo.com/categories/git/"/>
+          
+             
+              <breadCrumb title="cmd" url="http://myhuangzhuo.com/categories/git/cmd/"/>
+          
+             
+              <breadCrumb title="summary" url="http://myhuangzhuo.com/categories/git/cmd/summary/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+    
+    
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/06/2016-09-06-python-sort/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python下排序总结</title>
+        <pubTime>2016-09-06T06:55:08.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/20/2016-06-20-django-add-DjangoUeditor/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Django添加富文本编辑器DjangoUeditor</title>
+        <pubTime>2016-06-19T20:02:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+        <tag>DjangoUeditor</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/20/2016-06-20-five-methods-sort-in-python/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>用Python来写5种排序方法</title>
+        <pubTime>2016-06-19T17:20:05.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>python</tag>
+         
+        <tag>算法</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/19/2016-06-19-redhat-rdo-install-openstack/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>redhat7下rdo方式安装openstack笔记</title>
+        <pubTime>2016-06-19T05:01:04.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>epel</tag>
+         
+        <tag>openstack</tag>
+         
+        <tag>云计算</tag>
+         
+        <tag>centos7</tag>
+         
+        <tag>rdo</tag>
+         
+        <tag>redhat7</tag>
+         
+         
+           
+             
+              <breadCrumb title="云计算" url="http://myhuangzhuo.com/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/21/2016-06-21-python-search-ch-in-string/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python中的中英文混搭字符串中文的提取</title>
+        <pubTime>2016-06-21T06:30:54.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/23/2016-06-23-vim-methods/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Vim实用技巧</title>
+        <pubTime>2016-06-23T03:58:59.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>centos</tag>
+         
+        <tag>python</tag>
+         
+        <tag>centos7</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/07/06/2016-07-06-python-datetime-format/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python对时间日期做格式化</title>
+        <pubTime>2016-07-06T01:50:01.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+             
+              <breadCrumb title="爬虫" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/%E7%88%AC%E8%99%AB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/24/2016-06-24-python-use-args-kwargs/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python中使用*args和**kwargs语法</title>
+        <pubTime>2016-06-23T17:21:25.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/29/2016-06-29-xshell-display-fonts/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>两款xshell中的比较美观的配色方案</title>
+        <pubTime>2016-06-28T21:14:25.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>redhat</tag>
+         
+        <tag>ubuntu</tag>
+         
+        <tag>vim</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/07/22/2016-07-22-python-string/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python字符串的问题</title>
+        <pubTime>2016-07-22T01:54:44.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/03/2016-08-03-centos-python-env/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS下python基本环境</title>
+        <pubTime>2016-08-03T02:46:06.000Z</pubTime>
+        
+        <tag>centos</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/07/20/2016-07-20-apache-config/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Apache配置优化</title>
+        <pubTime>2016-07-19T19:04:19.000Z</pubTime>
+        
+        <tag>redhat</tag>
+         
+        <tag>apache</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/09/2016-08-09-itsdangerous/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python中密码的保存和token的生成验证itsdangerous模块</title>
+        <pubTime>2016-08-09T00:53:37.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>itsdangerous</tag>
+         
+        <tag>token</tag>
+         
+        <tag>数字</tag>
+         
+        <tag>签名</tag>
+         
+        <tag>过期</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/09/2016-08-09-find-somebody-in-map/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>查找附近的人功能实现</title>
+        <pubTime>2016-08-09T00:20:53.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>系统</tag>
+         
+        <tag>python</tag>
+         
+        <tag>redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/11/2016-08-11-python-design-patterns/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python中的几种设计模式</title>
+        <pubTime>2016-08-10T22:41:04.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/09/2016-08-09-geohash/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>GeoHash核心原理解析</title>
+        <pubTime>2016-08-09T00:43:16.000Z</pubTime>
+        
+        <tag>算法</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/16/2016-08-16-use-type-hint-in-python/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>利用Type Hint提升Python程序开发效率</title>
+        <pubTime>2016-08-16T01:26:14.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/16/2016-08-16-link-vmware-workstation-in-vms/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>连接VMware Workstation子虚拟机到互联网？</title>
+        <pubTime>2016-08-16T01:16:13.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>虚拟化</tag>
+         
+         
+           
+             
+              <breadCrumb title="云计算" url="http://myhuangzhuo.com/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/17/2016-08-17-python-collections/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python中的collections模块学习</title>
+        <pubTime>2016-08-16T22:31:23.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>collections</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/18/2016-08-18-DFA-filter-words/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>用DFA算法来实现敏感词汇的过滤</title>
+        <pubTime>2016-08-18T00:26:49.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>算法</tag>
+         
+        <tag>DFA</tag>
+         
+        <tag>过滤敏感词</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/19/2016-08-19-python-uuid-gen-id/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python使用UUID库生成唯一ID</title>
+        <pubTime>2016-08-19T05:49:00.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>uuid</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/19/2016-08-19-linux-iptables/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>linux下iptables小结</title>
+        <pubTime>2016-08-18T23:26:32.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="linux" url="http://myhuangzhuo.com/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/21/2016-08-21-python-Simulated-biological-evolution/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python模拟生物进化和遗传算法</title>
+        <pubTime>2016-08-21T08:00:30.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>算法</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/17/2016-08-17-redis-cmd/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>redis常用命令总结</title>
+        <pubTime>2016-08-16T21:03:33.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>redis</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/21/2016-08-21-ubuntu14-install-numpy/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu14.04安装numpy笔记</title>
+        <pubTime>2016-08-21T01:49:39.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/22/2016-08-22-django-get-header/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Django中获取请求头header</title>
+        <pubTime>2016-08-21T23:39:23.000Z</pubTime>
+        
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/django/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/21/2016-08-21-win8-GPT-install-win7/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>win8下GPT分区安装win7系统</title>
+        <pubTime>2016-08-21T01:04:21.000Z</pubTime>
+        
+        <tag>系统</tag>
+         
+         
+           
+             
+              <breadCrumb title="windows" url="http://myhuangzhuo.com/categories/windows/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/01/2016-09-01-python-class/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python中类总结</title>
+        <pubTime>2016-09-01T07:39:27.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>class</tag>
+         
+        <tag>面向对象</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/05/2016-09-05-django-tables-related/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>django中的多字段外键关联同一张表</title>
+        <pubTime>2016-09-05T03:28:32.000Z</pubTime>
+        
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/django/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/08/22/2016-08-22-ubuntu-install-ss-client/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu安装ss客户端</title>
+        <pubTime>2016-08-22T07:06:35.000Z</pubTime>
+        
+        <tag>ubuntu</tag>
+         
+        <tag>shadowsocks</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://myhuangzhuo.com/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/26/2016-05-26-centos6-add-epel-resources/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.5下添加epel源</title>
+        <pubTime>2016-05-26T06:34:57.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>centos</tag>
+         
+        <tag>epel</tag>
+         
+        <tag>redhat</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/07/2016-09-07-python-format/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python format用法</title>
+        <pubTime>2016-09-06T17:26:12.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/21/2016-09-21-python-use-__slots__/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python类中的__slots__属性</title>
+        <pubTime>2016-09-21T06:45:52.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>面向对象</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/20/2016-09-20-mysql-methods/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>数据库相关技巧</title>
+        <pubTime>2016-09-20T00:36:00.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>mysql</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/10/11/2016-10-11-python-use-decrator-generator/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python中装饰器，迭代器和生成器</title>
+        <pubTime>2016-10-11T07:34:00.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/09/06/2016-09-06-iptables-content/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>iptables详解</title>
+        <pubTime>2016-09-06T06:32:36.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>系统</tag>
+         
+        <tag>防火墙</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/11/16/2016-11-16-mysql-import-and-export/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>mysql命令行数据库的导出和导入</title>
+        <pubTime>2016-11-16T00:18:18.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+        <tag>mac</tag>
+         
+        <tag>数据库导出</tag>
+         
+         
+           
+             
+              <breadCrumb title="mac" url="http://myhuangzhuo.com/categories/mac/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/mac/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/10/11/2016-10-11-restful-api/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>restful api设计规则</title>
+        <pubTime>2016-10-11T06:14:42.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/10/25/2016-10-25-mac-install-MySQLdb/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Mac下安装python连接mysql工具MySQLdb</title>
+        <pubTime>2016-10-24T23:17:31.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/12/12/2016-12-12-django-foreignkey/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>django中主外键允许为空</title>
+        <pubTime>2016-12-12T04:01:00.000Z</pubTime>
+        
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+        <tag>django rest framework</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/12/21/2016-12-21-django-url/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Django中url路径的问题</title>
+        <pubTime>2016-12-21T00:37:53.000Z</pubTime>
+        
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/django/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/01/03/2017-01-03-js-submit-headers-config/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>js提交数据的headers设置</title>
+        <pubTime>2017-01-03T02:54:21.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>前端js</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/django/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/01/23/2017-01-23-python-methods/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python中的一些魔法</title>
+        <pubTime>2017-01-23T00:27:21.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>Magic</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/04/14/2017-04-14-casperjs-get-Verification-code-pic/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>casperjs截取验证码图片和设置cookies，headers，模拟鼠标点击selected元素</title>
+        <pubTime>2017-04-14T02:32:48.000Z</pubTime>
+        
+        <tag>casperjs</tag>
+         
+        <tag>cookie</tag>
+         
+        <tag>截图</tag>
+         
+        <tag>验证码</tag>
+         
+         
+           
+             
+              <breadCrumb title="爬虫" url="http://myhuangzhuo.com/categories/%E7%88%AC%E8%99%AB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/12/28/2016-12-28-try-do-something/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>试着去做一些事儿，让自己成为一个有趣儿的人</title>
+        <pubTime>2016-12-28T03:15:06.000Z</pubTime>
+        
+        <tag>life</tag>
+         
+         
+           
+             
+              <breadCrumb title="生活" url="http://myhuangzhuo.com/categories/%E7%94%9F%E6%B4%BB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/04/18/2017-04-18-casperjs-pass-args/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>casperjs传参</title>
+        <pubTime>2017-04-17T18:52:32.000Z</pubTime>
+        
+        <tag>casperjs</tag>
+         
+        <tag>爬虫</tag>
+         
+         
+           
+             
+              <breadCrumb title="爬虫" url="http://myhuangzhuo.com/categories/%E7%88%AC%E8%99%AB/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/05/25/2017-05-25-matplotlib-runtimeerror-python-is-not-installed-as-a-framework-error/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>matplotlib RuntimeError: Python is not installed as a framework 错误解决方案</title>
+        <pubTime>2017-05-24T23:38:27.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>framework</tag>
+         
+        <tag>RuntimeError</tag>
+         
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/06/19/2017-06-19-python-LEGN-summary/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>Python LEGN作用域总结</title>
+        <pubTime>2017-06-19T04:49:12.000Z</pubTime>
+        
+         
+           
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/python/"/>
+          
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/python/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/06/22/2017-06-22-website-some-solution/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>web站点相关解决方案</title>
+        <pubTime>2017-06-21T23:49:32.000Z</pubTime>
+        
+        <tag>python</tag>
+         
+        <tag>django rest framework</tag>
+         
+         
+           
+             
+              <breadCrumb title="django" url="http://myhuangzhuo.com/categories/django/"/>
+          
+             
+              <breadCrumb title="python" url="http://myhuangzhuo.com/categories/django/python/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/07/05/2017-07-05-generate-pdf-doc/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>生成PDF文档</title>
+        <pubTime>2017-07-04T18:32:47.000Z</pubTime>
+        
+        <tag>PDF</tag>
+         
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/07/06/2017-07-06-docker-learn/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>docker学习总结</title>
+        <pubTime>2017-07-06T00:02:37.000Z</pubTime>
+        
+        <tag>docker</tag>
+         
+         
+           
+             
+              <breadCrumb title="其它" url="http://myhuangzhuo.com/categories/%E5%85%B6%E5%AE%83/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/07/31/2017-07-31-google-opensourse-python-code-standard/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>google开源python代码规范</title>
+        <pubTime>2017-07-31T09:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/25/2016-05-25-centos6-install-wordpress/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.6安装配置wordpress</title>
+        <pubTime>2016-05-24T17:24:52.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/09/12/2017-09-12-python-for-else/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python for else</title>
+        <pubTime>2017-09-12T09:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/26/2016-05-26-make-linux-iso/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>制作linux还原镜像</title>
+        <pubTime>2016-05-26T06:31:40.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>ghost</tag>
+         
+        <tag>ubuntu</tag>
+         
+        <tag>镜像</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/11/21/2017-11-21-improve-quality-of-life/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>改善程序员生活质量的 3+10 习惯</title>
+        <pubTime>2017-11-21T03:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2017/09/26/2017-09-27-Career-ABZ-Plan/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>PayPal和LinkedIn创始人Reid Hoffman的ABZ理论</title>
+        <pubTime>2017-09-26T08:18:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/03/27/2018-3-27-grpc/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>python中使用grpc</title>
+        <pubTime>2018-03-27T03:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/06/14/2018-06-14-django-migrate/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>django migrate</title>
+        <pubTime>2018-06-14T01:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/03/28/2018-3-28-get_http_only/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>获取http only数据</title>
+        <pubTime>2018-03-28T03:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/03/09/2018-3-9-git-cmd/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>git命令行操作</title>
+        <pubTime>2018-03-09T03:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2018/06/13/2018-6-13-selenium-python/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>selenium python笔记</title>
+        <pubTime>2018-06-13T03:49:32.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/26/2016-05-26-centos6-config-local-openstack-resources/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.5配置本地openstack源</title>
+        <pubTime>2016-05-26T06:41:03.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>centos</tag>
+         
+        <tag>镜像</tag>
+         
+        <tag>openstack</tag>
+         
+        <tag>云计算</tag>
+         
+         
+           
+             
+              <breadCrumb title="云计算" url="http://myhuangzhuo.com/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/"/>
+          
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E4%BA%91%E8%AE%A1%E7%AE%97/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/26/2016-05-26-mysql-not-found-mysql/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>mysql中没有mysql数据库</title>
+        <pubTime>2016-05-26T05:41:41.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>mysql</tag>
+         
+        <tag>数据库</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/31/2016-05-31-linux-cmd-ubuntu-centos6-5/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>linux系统下常用命令总结 ubuntu CentOS6.5</title>
+        <pubTime>2016-05-30T19:34:27.000Z</pubTime>
+        
+        <tag>epel</tag>
+         
+        <tag>find</tag>
+         
+        <tag>查找关键字</tag>
+         
+        <tag>系统</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://myhuangzhuo.com/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/05/26/2016-05-26-ubuntu-modify-fstab-not-enter-system/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>ubuntu修改/etc/fstab文件无法进入系统</title>
+        <pubTime>2016-05-26T05:32:03.000Z</pubTime>
+        
+        <tag>linux</tag>
+         
+        <tag>centos</tag>
+         
+        <tag>ubuntu</tag>
+         
+        <tag>系统</tag>
+         
+         
+           
+             
+              <breadCrumb title="linux" url="http://myhuangzhuo.com/categories/linux/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://myhuangzhuo.com/2016/06/12/2016-06-12-nginx-and-uwsgi-deploy-django/</loc>
+    <lastmod>2018-07-23T13:31:25.472Z</lastmod>
+    <data>
+        <display>
+        <title>用nginx和uwsgi来部署django项目</title>
+        <pubTime>2016-06-11T23:21:48.000Z</pubTime>
+        
+        <tag>ubuntu</tag>
+         
+        <tag>django</tag>
+         
+        <tag>python</tag>
+         
+         
+           
+             
+              <breadCrumb title="技术" url="http://myhuangzhuo.com/categories/%E6%8A%80%E6%9C%AF/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+</urlset>

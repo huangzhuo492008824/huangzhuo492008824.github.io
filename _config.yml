@@ -4,7 +4,7 @@
 
 # Site
 title: KevinHuang Blog
-subtitle:  KevinHuang的博客 | KevinHuang Blog
+subtitle:  KevinHuang的博客
 description: "stay hungry stay foolish"
 keywords: "python, web, 后端"
 author: Kevin Huang
@@ -15,7 +15,7 @@ avatar: /img/avatar-kevin.jpg
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://myhuangzhuo.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -72,6 +72,20 @@ time_format: HH:mm:ss
 per_page: 10
 pagination_dir: page
 
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
+Plugins:
+- hexo-generator-baidu-sitemap
+- hexo-generator-sitemap
+
+baidusitemap:
+    path: baidusitemap.xml
+sitemap:
+    path: sitemap.xml
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/

@@ -1,3 +1,8 @@
+---
+date: 2018-04-4 9:49:32+00:00
+categories: [gflask, token]
+title: flask设置永久访问token
+---
 ### flask设置永久访问token
 ```python
 from flask_httpauth import HTTPTokenAuth

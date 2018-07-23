@@ -1,4 +1,9 @@
-###CentOS7设置shadowsocks开机启动###
+---
+date: 2017-08-3 9:49:32+00:00
+categories: [centos7, ss]
+title: CentOS7设置ss开机启动
+---
+### CentOS7设置ss开机启动###
 - 配置自启动
 新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：
 ```
