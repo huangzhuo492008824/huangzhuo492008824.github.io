@@ -1,8 +1,0 @@
-{% capture jbcache %}
-  {% if site.JB.IMAGE_PATH %}
-    {% assign IMAGE_PATH = site.JB.IMAGE_PATH %}
-  {% else %}
-    {% capture IMAGE_PATH %}{{ BASE_PATH }}/img/{% endcapture %}
-  {% endif %}
-{% endcapture %}
-{% assign jbcache = nil %}
