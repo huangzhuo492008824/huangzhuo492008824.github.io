@@ -68,6 +68,26 @@ git stash :暂存当前编辑的代码
 git checkout hotfix
 git stash pop :切换到bug修复前的工作目录
 ```
+## 快捷键设置
+* 经常使用git命令,设置快捷键会方便很多,设置方式如下:
+``` shell
+git config --global alias.st status
+```
+* 或者:
+* 修改~/.gitconfig,加入以下部分:
+``` shell
+[alias]
+co = checkout
+ci = commit
+st = status
+br = branch
+sh = stash
+sp = stash pop
+pu = push
+pr = pull -r
+rb = rebase
+lg = log -p
+```
 * 更多命令：git help
 
 
