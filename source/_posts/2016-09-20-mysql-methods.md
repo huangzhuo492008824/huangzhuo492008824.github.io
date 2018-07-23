@@ -1,0 +1,81 @@
+---
+author: huangzhuo
+comments: true
+date: 2016-09-20 08:36:00+00:00
+layout: post
+slug: mysql%e4%b8%ad%e5%ad%98%e5%82%a8%e8%a1%a8%e6%83%85%e7%ac%a6%e5%8f%b7
+title: 数据库相关技巧
+wordpress_id: 243
+categories:
+- python
+tags:
+- linux
+- mysql
+- python
+---
+ 
+
+mysql中存储表情符号:
+聊天的业务中表情的支持比较重要，mysql对表情符号的支持貌似没有postgresql的好，但是历史遗留问题，换库太麻烦，新版本的mysql已经对表情符号支持了，只是需要服务器和客户端设置一下：
+数据库服务器设置utf8mb4 ：
+
+```
+
+[client]
+port        = 3306
+socket      = /var/run/mysqld/mysqld.sock
+default-character-set = utf8mb4
+
+# Here is entries for some specific programs
+# The following values assume you have at least 32M ram
+
+# This was formally known as [safe_mysqld]. Both versions are currently parsed.
+[mysqld_safe]
+socket      = /var/run/mysqld/mysqld.sock
+nice        = 0
+
+[mysqld]
+#
+# * Basic Settings
+#
+user        = mysql
+pid-file    = /var/run/mysqld/mysqld.pid
+socket      = /var/run/mysqld/mysqld.sock
+port        = 3306
+basedir     = /usr
+datadir     = /var/lib/mysql
+tmpdir      = /tmp
+lc-messages-dir = /usr/share/mysql
+skip-external-locking
+
+default-storage-engine = innodb
+innodb_file_per_table
+collation-server = utf8mb4_general_ci
+init-connect = 'SET NAMES utf8mb4'
+character-set-server = utf8mb4
+
+```
+
+
+
+客户端设置字符编码：
+mysql connector设置
+
+```
+
+mysql_con = 'mysql+mysqlconnector://%s:%s@%s:%s/%s?charset=utf8mb4' % (mysql_user, mysql_password, mysql_ip, mysql_port, db_name)
+
+Engine = create_engine(mysql_con, echo=False)
+
+```
+
+
+mysql中批量修改指定字段后缀：
+
+```
+
+update rp_main set alias=replace(alias, '.files', '.html') where alias like '%.files';
+
+```
+
+
