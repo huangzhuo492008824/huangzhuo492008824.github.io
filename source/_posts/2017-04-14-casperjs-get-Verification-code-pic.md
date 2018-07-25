@@ -2,10 +2,7 @@
 author: huangzhuo
 comments: true
 date: 2017-04-14 10:32:48+00:00
-layout: post
-slug: casperjs%e6%88%aa%e5%8f%96%e9%aa%8c%e8%af%81%e7%a0%81%e5%9b%be%e7%89%87%e5%92%8c%e8%ae%be%e7%bd%aecookies%ef%bc%8cheaders%ef%bc%8c%e6%a8%a1%e6%8b%9f%e9%bc%a0%e6%a0%87%e7%82%b9%e5%87%bbselected
 title: casperjs截取验证码图片和设置cookies，headers，模拟鼠标点击selected元素
-wordpress_id: 308
 categories:
 - 爬虫
 tags:

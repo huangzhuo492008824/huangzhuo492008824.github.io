@@ -1,9 +1,7 @@
 ---
-author: kevinhuang
-comments: true
 date: 2018-3-28 11:49:32+00:00
-layout: post
-slug: cookie
+categories: 爬虫
+tags: [cookie, 爬虫]
 title: 获取http only数据
 ---
 

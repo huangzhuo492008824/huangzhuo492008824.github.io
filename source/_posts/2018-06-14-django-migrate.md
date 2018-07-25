@@ -1,10 +1,8 @@
 ---
-author: huangzhuo
-comments: true
 date: 2018-06-14 9:49:32+00:00
-layout: post
-slug: django python migrate
+tags: django python migrate
 title: django migrate
+categories: django
 ---
 
 ### django migrate

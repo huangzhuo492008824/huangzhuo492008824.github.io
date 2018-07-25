@@ -1,7 +1,8 @@
 ---
 date: 2018-07-21 9:49:32+00:00
-categories: [git, cmd, summary]
+categories: git
 title: git常用命令总结
+tags: [git, cmd, VCS]
 ---
 
 ## 版本控制系统（VCS）

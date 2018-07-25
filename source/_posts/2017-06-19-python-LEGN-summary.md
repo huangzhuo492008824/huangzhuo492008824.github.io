@@ -1,14 +1,9 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-06-19 12:49:12+00:00
-layout: post
-slug: python-legn%e4%bd%9c%e7%94%a8%e5%9f%9f%e6%80%bb%e7%bb%93
+tags: [python,legn]
 title: Python LEGN作用域总结
-wordpress_id: 321
 categories:
 - python
-- 其它
 ---
 
 LEGB规则

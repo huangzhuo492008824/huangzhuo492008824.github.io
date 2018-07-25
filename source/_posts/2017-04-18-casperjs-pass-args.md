@@ -1,11 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-04-18 02:52:32+00:00
-layout: post
-slug: casperjs%e4%bc%a0%e5%8f%82
 title: casperjs传参
-wordpress_id: 311
 categories:
 - 爬虫
 tags:

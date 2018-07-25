@@ -1,19 +1,12 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-07-05 02:32:47+00:00
-layout: post
-slug: '%e7%94%9f%e6%88%90pdf%e6%96%87%e6%a1%a3'
 title: 生成PDF文档
-wordpress_id: 330
-categories:
-- 其它
-tags:
-- PDF
+categories: 文档
+tags: [python,文档]
 ---
 
 主要使用pdfkit模块：
-1.安装pdfkit：
+1. 安装pdfkit：
 
 ```
 
@@ -40,7 +33,7 @@ sudo chown root:root wkhtmltopdf-amd64
 ```
 
 
-2.基本原理功能：
+2. 基本原理功能：
 Pdfkit文档链接：https://pypi.python.org/pypi/pdfkit
 Pdfkit可以渲染url，file，string 成pdf文档，也支持多个file生产一个pdf文档
 

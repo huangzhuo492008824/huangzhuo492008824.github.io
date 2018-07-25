@@ -1,10 +1,8 @@
 ---
-author: huangzhuo
-comments: true
 date: 2018-06-13 11:49:32+00:00
-layout: post
-slug: selenium python
+categories: 爬虫
 title: selenium python笔记
+tags: [selenium, 爬虫]
 ---
 
 ### selenium python

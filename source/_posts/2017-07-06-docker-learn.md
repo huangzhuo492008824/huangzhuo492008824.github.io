@@ -1,12 +1,8 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-07-06 08:02:37+00:00
-layout: post
-slug: docker%e5%ad%a6%e4%b9%a0%e6%80%bb%e7%bb%93
+tags: [docker,linux]
 title: docker学习总结
-wordpress_id: 332
-categories:
+categories: linux
 - 其它
 tags:
 - docker

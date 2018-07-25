@@ -35,7 +35,7 @@ favicon:
   #ms_browserconfig: /images/browserconfig.xml
 
 # Set default keywords (Use a comma to separate)
-# keywords: "python, 后端"
+keywords: "python, 后端"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -75,7 +75,7 @@ footer:
 canonical: true
 
 # Change headers hierarchy on site-subtitle (will be main site description) and on all post/pages titles for better SEO-optimization.
-seo: false
+seo: true
 
 # If true, will add site-subtitle to index page, added in main hexo config.
 # subtitle: Subtitle
@@ -98,7 +98,8 @@ menu:
   categories: /categories/ || certificate
   archives: /archives/ || archive
   books: /books/ || book
-  # sitemap: /sitemap.xml || sitemap
+  sitemap: /sitemap.xml || sitemap
+  rss: /atom.xml || feed
   commonweal: /404/ || heartbeat
 
 # Enable/Disable menu icons.
@@ -112,9 +113,9 @@ menu_icons:
 
 # Schemes
 # scheme: Muse
-scheme: Mist
+# scheme: Mist
 # scheme: Pisces
-# scheme: Gemini
+scheme: Gemini
 
 
 # ---------------------------------------------------------------
@@ -147,11 +148,12 @@ social_icons:
 
 # Blog rolls
 links_icon: link
-links_title: Links
+links_title: 友情链接
 links_layout: block
 #links_layout: inline
 links:
-  Title: http://example.com/
+  求索: http://www.xiemx.com/
+  Sdandroid: http://www.sdandroid.com/
 
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
@@ -167,6 +169,10 @@ toc:
 
   # If true, all words will placed on next lines if header width longer then sidebar width.
   wrap: false
+
+# url
+url: http://myhuangzhuo.com
+description: "python 后端 web"
 
 # Creative Commons 4.0 International License.
 # http://creativecommons.org/
@@ -273,7 +279,7 @@ android_chrome_color: "#222"
 #   image: url-of-image   - Images's url
 custom_logo:
   enabled: false
-  image:
+  image: 
 
 # Code Highlight theme
 # Available value:
@@ -362,7 +368,7 @@ han: false
 
 # Disqus
 disqus:
-  enable: true
+  enable: false
   shortname:
   count: true
 
@@ -397,7 +403,7 @@ valine:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-#livere_uid: your uid
+livere_uid: MTAyMC8zODMwMC8xNDgyOA==
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -534,9 +540,9 @@ rating:
 # Show number of visitors to each article.
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
-  enable: false
-  app_id: #<app_id>
-  app_key: #<app_key>
+  enable: true
+  app_id: N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz #<app_id>
+  app_key: GS4clcC15beb1OAdUpnrp9mY #<app_key>
 
 # Another tool to show number of visitors to each article.
 # visit https://console.firebase.google.com/u/0/ to get apiKey and projectId
@@ -552,17 +558,17 @@ firestore:
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
 busuanzi_count:
   # count values only if the other configs are false
-  enable: false
+  enable: true
   # custom uv span for the whole site
   site_uv: true
-  site_uv_header: <i class="fa fa-user"></i>
-  site_uv_footer:
+  site_uv_header: <i class="fa fa-user">本站访客数</i>
+  site_uv_footer: 人次
   # custom pv span for the whole site
   site_pv: true
-  site_pv_header: <i class="fa fa-eye"></i>
-  site_pv_footer:
+  site_pv_header: <i class="fa fa-eye">本站总访问量</i>
+  site_pv_footer: 次
   # custom pv span for one page only
-  page_pv: true
+  page_pv: false
   page_pv_header: <i class="fa fa-file-o"></i>
   page_pv_footer:
 
@@ -575,7 +581,7 @@ busuanzi_count:
 
 
 # Enable baidu push so that the blog will push the url to baidu automatically which is very helpful for SEO
-baidu_push: false
+baidu_push: true
 
 # Google Calendar
 # Share your recent schedule to others via calendar page

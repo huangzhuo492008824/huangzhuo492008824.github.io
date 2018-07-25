@@ -1,11 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-05-25 07:38:27+00:00
-layout: post
-slug: matplotlib-runtimeerror-python-is-not-installed-as-a-framework-%e9%94%99%e8%af%af%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88
 title: 'matplotlib RuntimeError: Python is not installed as a framework 错误解决方案'
-wordpress_id: 317
 categories:
 - python
 tags:

@@ -1,14 +1,7 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-06-22 07:49:32+00:00
-layout: post
-slug: web%e7%ab%99%e7%82%b9%e7%9b%b8%e5%85%b3%e8%a7%a3%e5%86%b3%e6%96%b9%e6%a1%88
 title: web站点相关解决方案
-wordpress_id: 327
-categories:
-- django
-- python
+categories: python
 tags:
 - django rest framework
 - python

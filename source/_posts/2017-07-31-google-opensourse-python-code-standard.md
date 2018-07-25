@@ -1,9 +1,7 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-07-31 17:49:32+00:00
-layout: post
-slug: google-opensourse-python-code-standard
+categories: openstack
+tags: [google,opensourse,python]
 title: google开源python代码规范
 ---
 - **1. 行长度**

@@ -1,9 +1,7 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-09-12 17:49:32+00:00
-layout: post
-slug: python for else
+categories: python
+tags: [python, for, else]
 title: python for else
 ---
 ``` python

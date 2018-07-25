@@ -1,9 +1,7 @@
 ---
-author: huangzhuo
-comments: true
 date: 2017-09-26 16:18:32+00:00
-layout: post
-slug: ABZ plan
+categories: 职业规划
+tags: [ABZ,plan]
 title: PayPal和LinkedIn创始人Reid Hoffman的ABZ理论 
 ---
 我们一向把创业视为一件非常有风险的事。说起来挺矛盾，创业者经常看不起那些职场金领，但是前者在后者眼中也只是一群吃了上顿没下顿的流浪汉而已。所以这里最大的挑战就是：一个人如何让自己勇于拓展机会，但同时又不要冒太大风险，乃至于丢掉饭碗血本无归？讲到成功的把这两点结合在一起的方法，Reid Hoffman应该是最有发言权的。
