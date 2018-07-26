@@ -1,14 +1,8 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-07-06 09:50:01+00:00
-layout: post
-slug: python%e5%af%b9%e6%97%b6%e9%97%b4%e6%97%a5%e6%9c%9f%e5%81%9a%e6%a0%bc%e5%bc%8f%e5%8c%96
 title: python对时间日期做格式化
-wordpress_id: 113
 categories:
 - 技术
-- 爬虫
 tags:
 - django
 - python
@@ -16,8 +10,8 @@ tags:
 ---
  
 
-Python格式化日期时间的函数为datetime.datetime.strftime()；由字符串转为日期型的函数为：datetime.datetime.strptime()，两个函数都涉及日期时间的格式化字符串，列举如下：
-
+1. Python格式化日期时间的函数为datetime.datetime.strftime()；由字符串转为日期型的函数为：datetime.datetime.strptime()，两个函数都涉及日期时间的格式化字符串，列举如下：
+``` shell
 %a Abbreviated weekday name
 %A Full weekday name
 %b Abbreviated month name
@@ -40,7 +34,7 @@ Python格式化日期时间的函数为datetime.datetime.strftime()；由字符�
 %Y Year with century, as decimal number
 %z, %Z Time-zone name or abbreviation; no characters if time zone is unknown
 %% Percent sign
-
+```
 举一个例子：
 
 ebay中时间格式为‘Sep-21-09 16:34’
@@ -52,15 +46,12 @@ ebay中时间格式为‘Sep-21-09 16:34’
 datetime.datetime(2009, 9, 21, 16, 34)
 
 又如：datetime转换成字符串
-
-
 <blockquote>>> datetime.datetime.now().strftime('%b-%d-%y %H:%M:%S');
 'Sep-22-09 16:48:08'</blockquote>
 
+2. 获取指定日期的n个月之后（或之前）的日期
 
-2.获取指定日期的n个月之后（或之前）的日期
-
-```
+``` python
 def months(dt, months):  # 这里的months 参数传入的是正数表示往后 ，负数表示往前
     month = dt.month - 1 + months
     year = dt.year + month / 12
@@ -72,24 +63,18 @@ def months(dt, months):  # 这里的months 参数传入的是正数表示往后 
 求两天以前的日期：
 ```
 
-
-```
+``` python
 today = datetime.datetime.now()
 morning_day = datetime.datetime(today.year, today.month, today.day, 0, 0, 0)
-
 before_two_day = today - datetime.timedelta(days=2)
+```
 
-3.django utc时间格式不兼容的问题：RuntimeWarning: DateTimeField MonthlyStatistics.start_time received a naive datetime (2016-06-30 00:00:00) while time zone support is active.
+3. django utc时间格式不兼容的问题：RuntimeWarning: DateTimeField MonthlyStatistics.start_time received a naive datetime (2016-06-30 00:00:00) while time zone support is active.
  RuntimeWarning)
-
+``` python
 import pytz
-```
-
-
-```
 utc = pytz.timezone('UTC')
 today = datetime.date.today()
 today_start = datetime.datetime(today.year, today.month, today.day).replace(tzinfo=utc)
 end_day = today_start - datetime.timedelta(days=today_start.day)
 ```
-

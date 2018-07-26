@@ -13,33 +13,19 @@ tags:
 - redhat
 ---
  
-
-过滤配置文件中的注释信息：
-
-
+* 过滤配置文件中的注释信息：
 ```
-
 grep -v ‘^#\|^$\|#’ /etc/httpd/conf/httpd.conf
-
 ```
 
+* CentOS6.5下配置apache启动方式为worker：
 
-
-
-CentOS6.5下配置apache启动方式为worker：
-
-
-```
-
+``` shell
 mv /usr/sbin/httpd /usr/sbin/httpd.prefork
-
 mv /usr/sbin/httpd.worker /usr/sbin/httpd
-
 ```
 
-
-
-配置参数解读：
+* 配置参数解读：
 
 ServerTokens OS   当服务器响应主机头（header）信息时显示Apache的版本和
 
@@ -96,5 +82,3 @@ MaxRequestsPerChild 0
 将MaxRequestsPerChild设置成非零值有两个好处：
 1.可以防止(偶然的)内存泄漏无限进行，从而耗尽内存。
 2.给进程一个有限寿命，从而有助于当服务器负载减轻的时候减少活动进程的数量。
-
-

@@ -1,22 +1,14 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-08-21 16:00:30+00:00
-layout: post
-slug: python%e6%a8%a1%e6%8b%9f%e7%94%9f%e7%89%a9%e8%bf%9b%e5%8c%96%e5%92%8c%e9%81%97%e4%bc%a0%e7%ae%97%e6%b3%95
 title: python模拟生物进化和遗传算法
-wordpress_id: 215
 categories:
 - python
 tags:
 - python
 - 算法
 ---
- 
 
-
-```
-
+``` python
 #-*- coding:utf-8 -*-
 from PIL import Image as im  
 from os import path  
@@ -151,8 +143,4 @@ try:
 except Exception, err:  
     print 'main exception err:'.format(str(err))
     save_data()
-
-
 ```
-
-

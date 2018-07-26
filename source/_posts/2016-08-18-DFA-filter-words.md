@@ -1,11 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-08-18 08:26:49+00:00
-layout: post
-slug: '%e7%94%a8dfa%e7%ae%97%e6%b3%95%e6%9d%a5%e5%ae%9e%e7%8e%b0%e6%95%8f%e6%84%9f%e8%af%8d%e6%b1%87%e7%9a%84%e8%bf%87%e6%bb%a4'
 title: 用DFA算法来实现敏感词汇的过滤
-wordpress_id: 189
 categories:
 - 技术
 tags:
@@ -27,8 +22,7 @@ tags:
 
 python代码实现：
 
-```
-
+``` python
 class Node(object):
     def __init__(self):
         self.children = None
@@ -92,8 +86,7 @@ def dfa():
 
 14600个敏感词汇查询10000次，普通暴力和dfa对比测试结果：
 
-```
-
+``` shell
 ----------------dfa-----------
 ***message*** 224
 0.976715803146

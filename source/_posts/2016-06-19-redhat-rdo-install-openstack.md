@@ -1,12 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-06-19 13:01:04+00:00
-excerpt: 学习openstack在安装过程中也遇到了很多的问题，，在此记录一下：
-layout: post
-slug: redhat7%e4%b8%8brdo%e6%96%b9%e5%bc%8f%e5%ae%89%e8%a3%85openstack%e7%ac%94%e8%ae%b0
 title: redhat7下rdo方式安装openstack笔记
-wordpress_id: 84
 categories:
 - 云计算
 tags:
@@ -22,33 +16,20 @@ tags:
 学习openstack在安装过程中也遇到了很多的问题，，在此记录一下：
 1. 首先查看硬件是否支持虚拟化：
 linux下：
-
-```
-
-grep -E 'svm|vmx' /proc/cpuinfo
-
-```
+ grep -E 'svm|vmx' /proc/cpuinfo
 
 有输出信息说明支持，然后在bios中开启虚拟化
 如果不支持虚拟化，openstack会默认使用软件虚拟化技术qemu来创建虚拟机，性能上和kvm差距很大，并且个人赶脚比较占内存；
 2. 先用 YUM 安裝 RDO 及 openstack-packstack
 
-```
-
-# yum update -y
-# yum install -y http://rdo.fedorapeople.org/rdo-release.rpm
-# yum install -y openstack-packstack
-
+``` shell
+$ yum update -y
+$ yum install -y http://rdo.fedorapeople.org/rdo-release.rpm
+$ yum install -y openstack-packstack
 ```
 
 3. 本机设置成静态ip：
-
-```
-
-# vim /etc/sysconfig/network-scripts/ifcfg-eno16777736
-
-```
-
+$ vim /etc/sysconfig/network-scripts/ifcfg-eno16777736
 
 修改如下：
 
@@ -78,32 +59,23 @@ DNS1=114.114.114.114
 
 重启网卡：
 
-```
-# systemctl restart network
-```
+$ systemctl restart network
+
 
 4.生成安装配置文件：
 
-```
-# packstack --gen-answer-file=allinone.txt
-# vim allinone.txt
-```
+$ packstack --gen-answer-file=allinone.txt
+$ vim allinone.txt
 
 配置需要安装的服务和设置密码，根据个人需要设置，然后执行费时较长的最终安装：
 
-```
-# packstack --answer-file=allinone.txt
-```
+$ packstack --answer-file=allinone.txt
 
 国内安装过程中极有可能会中断，重新执行即可，直到安装成功。
+
 5.allinone方式安装成功以后需要配置网卡：
 
-```
-
-# vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 配置如下:
-
-```
-
+$ vim /etc/sysconfig/network-scripts/ifcfg-eno16777736 配置如下:
 
 ```
 HWADDR=00:0C:29:99:3C:45
@@ -131,14 +103,7 @@ DEVICETYPE=ovs
 OVS_BRIDGE=br-ex
 ```
 
-
-
-```
-
-# vim /etc/sysconfig/network-scripts/ifcfg-br-ex 配置如下：
-
-```
-
+vim /etc/sysconfig/network-scripts/ifcfg-br-ex 配置如下：
 
 ```
 DEVICE=br-ex
@@ -154,12 +119,9 @@ ONBOOT=yes
 
 重启网卡：
 
+``` shell 
+$ systemctl restart network
 ```
-
-# systemctl restart network
-
-```
-
 
 记录的一些问题：
 a. packstack --answer-file=xxx.txt安装过程，有可能因为源的原因中断，你可以修改一下netns.pp文件中延时。
@@ -170,7 +132,7 @@ c.登录云主机参照：http://www.chenshake.com/openstack-mirror-and-password
 
 d. DNS的错误，今天搭了CentOS6.5上RDO（Vlan）双节点安装Icehouse版本：总是报DNS的错误：
 
-```
+``` shell
 ERROR : Failed to run remote script, stdout: Loaded plugins: fastestmirror, security
 Loading mirror speeds from cached hostfile
 * epel: mirrors.neusoft.edu.cn

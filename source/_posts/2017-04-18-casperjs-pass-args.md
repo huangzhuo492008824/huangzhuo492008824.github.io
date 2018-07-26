@@ -10,7 +10,7 @@ tags:
 
 casperjs传递动态参数：
 
-```
+``` python
 
 var casper = require('casper').create({
     pageSettings: {

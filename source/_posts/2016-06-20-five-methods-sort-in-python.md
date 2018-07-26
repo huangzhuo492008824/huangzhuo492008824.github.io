@@ -1,11 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-06-20 01:20:05+00:00
-layout: post
-slug: '%e7%94%a8python%e6%9d%a5%e5%86%995%e7%a7%8d%e6%8e%92%e5%ba%8f%e6%96%b9%e6%b3%95'
-title: 用Python来写5种排序方法
-wordpress_id: 87
+title: 用Python来写5种排序方法冒泡，选择，插入，归并，快排
 categories:
 - python
 tags:
@@ -13,17 +8,10 @@ tags:
 - python
 - 算法
 ---
- 
-
-中C语言的毒太深了，目前在自学Python，一时兴起用Python写了五种排序
-
-
+## Python写五种排序
 #### 1.冒泡排序：
 
-
-
-```
-
+``` python
 def bubble(ori_list, n):
 	"""
 	冒泡排序	
@@ -35,16 +23,8 @@ def bubble(ori_list, n):
 
 ```
 
-
-
-
-
 #### 2.选择排序：
-
-
-
-```
-
+``` python
 def select(ori_list, n):
 	"""
 	选择排序
@@ -57,17 +37,10 @@ def select(ori_list, n):
 				min_num = j
 			j += 1
 		ori_list[i-1], ori_list[min_num] = ori_list[min_num], ori_list[i-1]
-
 ```
-
-
 
 #### 3.插入排序：
-
-
-
-```
-
+``` python
 def insert(ori_list, n):
 	"""
 	插入排序
@@ -80,17 +53,10 @@ def insert(ori_list, n):
 				ori_list[j+1] = ori_list[j]
 				ori_list[j] = tmp
 			j -= 1
-
 ```
-
-
 
 #### 4.归并排序：
-
-
-
-```
-
+``` python
 def merge(left, right):
 	"""
 	归并排序
@@ -118,14 +84,8 @@ def merge_sort(ori_list):
 
 ```
 
-
-
 #### 5.快速排序：
-
-
-
-```
-
+``` python
 def quick_sort(lists, left, right):
     # 快速排序
     if left >= right:
@@ -146,19 +106,13 @@ def quick_sort(lists, left, right):
     return lists
 res_list = quick_sort(ori_list, 0, len(ori_list)-1)
 print 'quick_sort:', res_list
-
 ```
-
-简易写法：
-
-```
-
+* 简易写法：
+``` python
 def qsort(q):
     if len(q) <= 1:
         return q
     else:
         p = q[0]
     return qsort([x for x in q[1:] if x < p]) + [p] + qsort([x for x in q[1:] if x >= p])
-
 ```
-

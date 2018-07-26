@@ -13,12 +13,8 @@ tags:
 - python
 ---
 
-1.将多个序列串放在一起遍历：
-
-
-
-```
-
+1. 将多个序列串放在一起遍历：
+``` python
 >>> from itertools import chain  
 >>> a = [1, 2, 3, 4]  
 >>> b = ['a', 'b', 'c']  
@@ -28,10 +24,8 @@ tags:
 
 ```
 
-2.python表示昨天的日期：
-
-```
-
+2. python表示昨天的日期：
+``` python
 #-*-coding:utf-8-*-  
 import datetime
 
@@ -40,18 +34,12 @@ def getYesterday():   #
    oneday=datetime.timedelta(days=1)  
    yesterday=today-oneday   
    return yesterday
-
 ```
 
-
-3.打印代码出错信息：
-
-```
-
+3. 打印代码出错信息：
+``` python
 import traceback
 traceback.format_exc()
-
 ```
-
 traceback.print_exc()跟traceback.format_exc()有什么区别呢？
 format_exc()返回字符串，print_exc()则直接给打印出来。

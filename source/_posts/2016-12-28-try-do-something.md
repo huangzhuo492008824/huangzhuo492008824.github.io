@@ -1,31 +1,13 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-12-28 11:15:06+00:00
-layout: post
-slug: '%e8%af%95%e7%9d%80%e5%8e%bb%e5%81%9a%e4%b8%80%e4%ba%9b%e4%ba%8b%e5%84%bf%ef%bc%8c%e8%ae%a9%e8%87%aa%e5%b7%b1%e6%88%90%e4%b8%ba%e4%b8%80%e4%b8%aa%e6%9c%89%e8%b6%a3%e5%84%bf%e7%9a%84%e4%ba%ba'
 title: 试着去做一些事儿，让自己成为一个有趣儿的人
-wordpress_id: 289
 categories:
 - 生活
 tags:
 - life
 ---
- 
-
-
-
-
-
-
-
-
 
 ![](http://upload-images.jianshu.io/upload_images/2204146-181081d2a2fc7036.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)  
-
-
-
-
 
 不知道从什么时候开始，大家喜欢以是否有趣来评价自己对一个人的印象。在整容风靡，美的价值观判断被颠覆之后，能恒久留存下来的，必定是你读过的书，走过的路，写在脸上的气质和刻在骨子里的趣味。
 
@@ -372,8 +354,3 @@ tags:
 前提是，你是真的喜欢他哦！
 
 而追到了他，你就已然成为一个有趣、优秀、美好的人啦！
-
-
-
-
-

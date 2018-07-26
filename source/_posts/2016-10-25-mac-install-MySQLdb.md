@@ -1,13 +1,9 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-10-25 07:17:31+00:00
-layout: post
-slug: mac%e4%b8%8b%e5%ae%89%e8%a3%85python%e8%bf%9e%e6%8e%a5mysql%e5%b7%a5%e5%85%b7mysqldb
 title: Mac下安装python连接mysql工具MySQLdb
-wordpress_id: 271
 categories:
 - 其它
+tags: [mac,xcode]
 ---
  
 

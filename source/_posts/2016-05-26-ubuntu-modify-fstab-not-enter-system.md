@@ -1,11 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-05-26 13:32:03+00:00
-layout: post
-slug: ubuntu%e4%bf%ae%e6%94%b9etcfstab%e6%96%87%e4%bb%b6%e6%97%a0%e6%b3%95%e8%bf%9b%e5%85%a5%e7%b3%bb%e7%bb%9f
 title: ubuntu修改/etc/fstab文件无法进入系统
-wordpress_id: 34
 categories:
 - linux
 tags:
@@ -15,80 +10,17 @@ tags:
 - 系统
 ---
 
-
-
 ubuntu修改/etc/fstab文件无法进入系统：
-
-
-
-
-
-
-
-
 
 重启进入第二个选项：
 
-
-
-
 进入drop to root shell prompt
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#mount -o remount,rw /
+$ mount -o remount,rw /
 
 然后vim /etc/fstab修改配置文件保存退出，重启即可。
 
 redhat：
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 在虚拟机刚开启时按e键，进入到界面，有如下条目
 
@@ -110,56 +42,9 @@ kernel /vmlinuz-2.6.18-128.el5 ro root=LABEL=/ rhgb quite linux quite
 
 系统是只读的（执行vi /etc/fstab后，无法保存，报错说read only），要运行下面的命令；
 
-#mount -o remount,rw /
+$ mount -o remount,rw /
 
 然后，执行如下操作，改正/etc/fstab，保存退出，重启
 
-#vi /etc/fstab
-#reboot
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$ vi /etc/fstab
+$ reboot

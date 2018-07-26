@@ -14,7 +14,7 @@ tags:
 
 casperjs设置headers：
 
-```
+``` python
 var casper = require('casper').create({
     pageSettings: {
      loadImages: true,

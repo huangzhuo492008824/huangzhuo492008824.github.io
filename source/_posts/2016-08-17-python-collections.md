@@ -1,92 +1,32 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-08-17 06:31:23+00:00
-layout: post
-slug: python%e4%b8%ad%e7%9a%84collections%e6%a8%a1%e5%9d%97%e5%ad%a6%e4%b9%a0
 title: python中的collections模块学习
-wordpress_id: 187
 categories:
 - 技术
 tags:
 - collections
 - python
 ---
- 
 
-Python在一些内置的数据类型，比如str, int, list, tuple, dict等，之后又提供了比较高级的额外的**数据类型**， 共有以下几种：`Counter
-```
-，`deque
-```
-，`defaultdict
-```
-，`namedtuple
-```
-，`OrderedDict
-```
-
-
-
-
-
+* Python在一些内置的数据类型，比如str, int, list, tuple, dict等，之后又提供了比较高级的额外的**数据类型**， 共有以下几种：Counter, deque, defaultdict, namedtuple, OrderedDict
 
 那么接下来一个个的攻克它们。
 
-
-
-
-
 # 一.namedtuple
-
-
-
-
-
 namedtuple的函数原型如下：
-
-
-
-
-```
-`def namedtuple(typename, field_names, verbose=False, rename=False):
+``` python
+def namedtuple(typename, field_names, verbose=False, rename=False):
     """Returns a new subclass of tuple with named fields.
 
 ```
 
-```
-
-
-
-
-作用就是通过将可迭代对象设置字段名，可使用名称来访问元素的数据对象。
-
-
-
-
-
+* 作用就是通过将可迭代对象设置字段名，可使用名称来访问元素的数据对象。
 比较重要参数释义：
-
-
-
-
-
-
-
   * typename: 自定义名，字符串类型
-
-
   * field_names： 字段名，list类型
 
-
-
-
-
 如下例子：
-
-
-
-
-```
+``` python
 `>>> Point = namedtuple('Point', ['x', 'y'])
 >>> Point.__doc__                   # 新类的文档字符串
 'Point(x, y)'
@@ -110,21 +50,11 @@ Point(x=11, y=22)
 
 >>> p._replace(x=100)               # _replace() is like str.replace() but targets named fields
 Point(x=100, y=22)
-
 ```
-
-```
-
-
-
 
 再举一个![:chestnut:](https://assets-cdn.github.com/images/icons/emoji/unicode/1f330.png)：
-
-
-
-
-```
-`from collections import namedtuple
+``` python 
+from collections import namedtuple
 
 tuples = [
     ('Bman', 22, 'Python'),
@@ -139,153 +69,43 @@ print p.__doc__     # Code(name, age, language)
 for i in tuples:
     _i = p._make(i)
     print i, _i, _i.name, _i.age, _i.language
-
 # ('Bman', 22, 'Python') Code(name='Bman', age=22, language='Python') Bman 22 Python
 # ('Jack', 24, 'C') Code(name='Jack', age=24, language='C') Jack 24 C
-
 ```
-
-```
-
-
-
 
 # 二.deque
+deque其实是 double-ended queue 的缩写，翻译过来就是双端队列，它最大的好处就是实现了从队列 头部快速增加和取出对象: popleft(),appendleft()
 
-
-
-
-
-deque其实是 double-ended queue 的缩写，翻译过来就是双端队列，它最大的好处就是实现了从队列 头部快速增加和取出对象: `.popleft()
-```
-, `.appendleft()
-```
- 。该类的原型如下：
-
-
-
-
-```
-`deque([iterable[, maxlen]]) --> deque object
-
+* 该类的原型如下：
+``` python
+deque([iterable[, maxlen]]) --> deque object
 ```
 
-```
+* 该类有以下方法：
+append: 添加元素到右侧的双端队列
+appendleft: 添加元素到左侧的双端队列
+clear: 移除所有元素
+count: D.count(value) -> integer, 返回出现的值数
+extend: 通过可迭代元素扩展右侧的双端队列
+extendleft: 与上相反
+pop: 删除并返回最右边的元素
 
-
-
-
-该类有以下方法：
-
-
-
-
-
-
-
-  * `append
-```
-: 添加元素到右侧的双端队列
-
-
-  * `appendleft
-```
-: 添加元素到左侧的双端队列
-
-
-  * `clear
-```
-: 移除所有元素
-
-
-  * `count
-```
-: D.count(value) -> integer, 返回出现的值数
-
-
-  * `extend
-```
-: 通过可迭代元素扩展右侧的双端队列
-
-
-  * `extendleft
-```
-: 与上相反
-
-
-  * `pop
-```
-:删除并返回最右边的元素
-
-
-  * `popleft
-```
-:与上相反
-
-
-  * `remove
-```
-:D.remove(value). 移除第一次出现的值
-
-
-  * `reverse
-```
-:取反
-
-
-  * `rotate
-```
-: rotate是回转的意思，旋转双端队列n步向右（默认值n=1）。如果n是负的，向左旋转时
-
-
-
-
-
-虽然原生的list也可以从头部添加和取出对象等方法：
-
-
-
-
-```
-`lis.insert(0, v)
+* 虽然原生的list也可以从头部添加和取出对象等方法：
+``` python
+lis.insert(0, v)
 lis.pop(0)
-
 ```
+* 但是与list不同的是**list对象的这两种用法的时间复杂度是 O(n) ，也就是说随着元素数量的增加耗时呈线性上升。而使用deque对象则是 O(1) 的复杂度，所以当你的代码有这样的需求的时候， 一定要记得使用deque。**
 
-```
-
-
-
-
-但是与list不同的是**list对象的这两种用法的时间复杂度是 O(n) ，也就是说随着元素数量的增加耗时呈线性上升。而使用deque对象则是 O(1) 的复杂度，所以当你的代码有这样的需求的时候， 一定要记得使用deque。**
-
-
-
-
-
-我们可以创建一个空的deque对象：
-
-
-
-
-```
-`d = deque()
+* 我们可以创建一个空的deque对象：
+``` python
+d = deque()
 # deque([])
-
 ```
-
-```
-
-
-
 
 然后进行操作：
-
-
-
-
-```
-`d.append(1)
+``` python
+d.append(1)
 d.append('2')
 print d, len(d)     # deque([1, '2']) 2
 print d[0]          # 1
@@ -313,30 +133,18 @@ print d
 for i in range(len(d)):
     d.rotate()
     print i, d
-
 # 输出：
-
 deque(['a', 'b', 'c', 'd', 'e'])
 0 deque(['e', 'a', 'b', 'c', 'd'])
 1 deque(['d', 'e', 'a', 'b', 'c'])
 2 deque(['c', 'd', 'e', 'a', 'b'])
 3 deque(['b', 'c', 'd', 'e', 'a'])
 4 deque(['a', 'b', 'c', 'd', 'e'])
-
 ```
-
-```
-
-
-
 
 下面例子实现一个跑马灯效果：
-
-
-
-
-```
-`import sys
+``` python
+import sys
 import time
 from collections import deque
 
@@ -350,49 +158,9 @@ while True:
 
 ```
 
-```
-
-
-
-
-注意：
-
-
-
-
-
-
-
-  * CR+LF (`\r\n
-```
-);
-
-
-  * LF (`\n
-```
-);
-
-
-  * CR (`\r
-```
-).
-
-
-
-
-
 # 三.Counter
-
-
-
-
-
 实现计数功能
-
-
-
-
-```
+``` python
 `>>> c = Counter('abcdeabcdabcaba')  # count elements from a string
 
 >>> c.most_common(3)                # 出现最多的三个元素
@@ -440,83 +208,18 @@ in the counter until the entry is deleted or the counter is cleared:
 >>> c['b'] -= 2                     # reduce the count of 'b' by two
 >>> c.most_common()                 # 'b' is still in, but its count is zero
 [('a', 3), ('c', 1), ('b', 0)]
-
 ```
-
-```
-
-
-
 
 # 四.OrderedDict
-
-
-
-
-
 OrderedDict相对于dict来说也就是有序字典。用法与dict类似，它有如下常用方法：
-
-
-
-
-
-
-
-  * `clear
+* clear
+``` python
+od.clear() -> None.  Remove all items from od
 ```
-:od.clear() -> None.  Remove all items from od
-
-
-  * `keys
-```
-: 同dict
-
-
-  * `values
-```
-: 同dict
-
-
-  * `items
-```
-: 同dict
-
-
-  * `iterkeys
-```
-: 返回一个keys迭代器
-
-
-  * `itervalues
-```
-:返回一个values迭代器
-
-
-  * `iteritems
-```
-: 返回一个(key, value)键值对迭代器
-
-
-  * `pop
-```
-:od.pop(k[,d]) -> v, 删除指定键和返回对应的值。如果无则触发KeyError异常
-
-
-  * `setdefault
-```
-:od.setdefault(k[,d]) -> od.get(k,d), also set od[k]=d if k not in od
-
-
-
-
 
 如下例子：
-
-
-
-
-```
-`from collections import OrderedDict
+``` python
+from collections import OrderedDict
 
 items = (
     ('A', 1),
@@ -548,26 +251,12 @@ C 3
 
 ```
 
-```
-
-
-
-
 # 五.defaultdict
-
-
-
-
-
 Python原生的数据结构dict的时候，如果用 `d[key]
-```
  这样的方式访问， 当指定的key不存在时，是会抛出KeyError异常的。如果使用defaultdict，只要你传入一个默认的工厂方法，那么请求一个不存在的key时， 便会调用这个工厂方法使用其结果来作为这个key的默认值。
 
-
-
-
-```
-`members = [
+``` python
+members = [
     # Age, name
     ['male', 'John'],
     ['male', 'Jack'],
@@ -586,31 +275,13 @@ print result                        # defaultdict(<type 'list'>, {'male': ['John
 
 ```
 
-```
-
-
-
-
 **defaultdict(list)的用法和dict.setdefault(key, [])比较类似**，上述代码使用setdefault实现如下：
 
-
-
-
-```
-`result = {}
+``` python
+result = {}
 for sex, name in members:
     result.setdefault(sex, []).append(name)
 
 print result
 
 ```
-
-```
-
-
-
-
-大部分内容看源码就弄明白了，同时也参考了[不可不知的Python模块: collections](http://www.zlovezl.cn/articles/collections-in-python/)
-
-
-

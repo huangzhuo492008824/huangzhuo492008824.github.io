@@ -1,13 +1,6 @@
 ---
-author: huangzhuo
-comments: true
 date: 2016-06-20 04:02:00+00:00
-excerpt: Django添加富文本编辑器DjangoUeditor, DjangoUeditor模块是在Django应用中集成百度Ueditor HTML编辑器,Django是Python世界最有影响力的web框架。
-  Ueditor HTML编辑器是百度开源的在线HTML编辑器,功能非常强大，像表格可以直接拖动调整单元格大小等。
-layout: post
-slug: django%e6%b7%bb%e5%8a%a0%e5%af%8c%e6%96%87%e6%9c%ac%e7%bc%96%e8%be%91%e5%99%a8djangoueditor
 title: Django添加富文本编辑器DjangoUeditor
-wordpress_id: 89
 categories:
 - 技术
 tags:
@@ -38,7 +31,6 @@ INSTALLED_APPS = (
 )
 ```
 
-
 b. urls.py中配置ueditor的路由：
 
 ```
@@ -48,7 +40,7 @@ url(r'^ueditor/', include('DjangoUeditor.urls')),
 
 c. models.py中添加ueditor字段：
 
-```
+``` python
 from DjangoUeditor.models import UEditorWidget
 class News(BaseModel):         
     title = models.CharField(verbose_name=u"新闻标题", max_length=127)
@@ -59,7 +51,7 @@ class News(BaseModel):
 
 d. 在admin.py中添加ueditor
 
-```
+``` python
 # -*- encoding: utf-8 -*-
 from django.contrib import admin
 from django import forms
@@ -95,7 +87,6 @@ class NewsAdmin(admin.ModelAdmin):
     _get_content.allow_tags = True
 
 admin.site.register(News, NewsAdmin)
-
 ```
 
 e. 参数说明：

@@ -13,12 +13,9 @@ tags:
 - django
 - python
 ---
- 
 
-requests库来模拟请求
-
-```
-
+* requests库来模拟请求
+``` python
 #test header
 headers = { "Accept":"text/html,application/xhtml+xml,application/xml;",
             "Accept-Encoding":"gzip",
@@ -33,10 +30,9 @@ print r.text
 
 ```
 
-request请求头信息的键会加上HTTP_转换成大写存到request.META中
+* request请求头信息的键会加上HTTP_转换成大写存到request.META中
 
-```
-
+``` python
 def test(request):
     if request.method == 'GET':
         # header = request.get('header', None)
@@ -55,11 +51,9 @@ def test(request):
 
 ```
 
-
 django官网的解释：
 
-```
-
+``` shell
 HttpRequest.META
 A standard Python dictionary containing all available HTTP headers. Available headers depend on the client and server, but here are some examples:
 
