@@ -35,7 +35,7 @@ favicon:
   #ms_browserconfig: /images/browserconfig.xml
 
 # Set default keywords (Use a comma to separate)
-keywords: "python, 后端"
+# keywords: "git,linux,python,django,flask,openstack,requests_html,uwsgi,selenium,gunicorn,爬虫"
 
 # Set rss to false to disable feed link.
 # Leave rss as empty to use site's feed link.
@@ -54,13 +54,13 @@ footer:
   copyright:
   # -------------------------------------------------------------
   # Hexo link (Powered by Hexo).
-  powered: true
+  powered: false
 
   theme:
     # Theme & scheme info link (Theme - NexT.scheme).
-    enable: true
+    enable: false
     # Version info of NexT after scheme info (vX.X.X).
-    version: true
+    version: false
   # -------------------------------------------------------------
   # Any custom text can be defined here.
   #custom_text: Hosted by <a target="_blank" href="https://pages.github.com">GitHub Pages</a>
@@ -128,10 +128,10 @@ scheme: Gemini
 # Value before `||` delimeter is the target permalink.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, globe icon will be loaded.
 social:
-  GitHub: https://github.com/huangzhuo492008824 || github
+  # GitHub: https://github.com/huangzhuo492008824 || github
   E-Mail: mailto:huangzhuo492008824@gmail.com || envelope
-  Weibo: https://weibo.com/kevinhuangpro
-  ZhiHu: https://www.zhihu.com/people/kevinhuangpro
+  # Weibo: https://weibo.com/kevinhuangpro
+  # ZhiHu: https://www.zhihu.com/people/kevinhuangpro
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
@@ -154,6 +154,7 @@ links_layout: block
 links:
   求索: http://www.xiemx.com/
   Sdandroid: http://www.sdandroid.com/
+  全栈实验室: http://www.inlab.me/
 
 # Sidebar Avatar
 # in theme directory(source/images): /images/avatar.gif
@@ -225,7 +226,7 @@ excerpt_description: true
 # Please use <!-- more --> in the post to control excerpt accurately.
 auto_excerpt:
   enable: true
-  length: 150
+  length: 800
 
 # Post meta display settings
 post_meta:
@@ -267,7 +268,7 @@ post_copyright:
 # ---------------------------------------------------------------
 
 # Reduce padding / margin indents on devices with narrow width.
-mobile_layout_economy: false
+mobile_layout_economy: true
 
 # Android Chrome header panel color ($black-deep).
 android_chrome_color: "#222"
@@ -361,7 +362,7 @@ han: false
 #swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 4964074496f64a25a39f8b205270162e
 
 # Duoshuo ShortName
 #duoshuo_shortname:
@@ -403,7 +404,7 @@ valine:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-livere_uid: MTAyMC8zODMwMC8xNDgyOA==
+# livere_uid: MTAyMC8zODMwMC8xNDgyOA==
 
 # Gitment
 # Introduction: https://imsun.net/posts/gitment-introduction/
@@ -426,7 +427,7 @@ gitment:
 # Available value:
 #    button | slide
 # Warning: Baidu Share does not support https.
-#baidushare:
+baidushare: false
 ##  type: button
 
 # Share
@@ -473,7 +474,8 @@ needmoreshare2:
 #google_site_verification:
 
 # Google Analytics
-google_analytics: 'UA-78356082-2'
+# google_analytics: 'UA-78356082-2'
+google_analytics: ''
 
 
 # Bing Webmaster tools verification setting

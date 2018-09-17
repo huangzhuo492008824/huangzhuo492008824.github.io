@@ -1,0 +1,147 @@
+---
+date: 2018-09-2 18:19:00+00:00
+categories: django
+title: django oauth2认证模块django-oauth-toolkit
+tags: [python, django, oauth2, django-oauth-toolkit]
+---
+### oauth2
+OAuth 2.0是行业标准的授权协议。 OAuth 2.0取代了2006年创建的原始OAuth协议所做的工作.OAuth 2.0专注于客户端开发人员的简单性，同时为Web应用程序，桌面应用程序，移动电话和客厅设备提供特定的授权流程。该规范及其扩展正在IETF OAuth工作组内开发。
+* oauth2授权类型有：
+- Authorization Code
+- Implicit
+- Password
+- Client Credentials
+### django-oauth-toolkit
+1. 安装：
+``` shell
+pip install django-oauth-toolkit
+```
+2. 配置：
+- Add oauth2_provider to your INSTALLED_APPS
+``` python
+INSTALLED_APPS = (
+    ...
+    'oauth2_provider',
+)
+```
+- add oauth2 urls to your urls.py
+``` python
+urlpatterns = [
+    ...
+    url(r'^o/', include('oauth2_provider.urls', namespace='oauth2_provider')),
+]
+```
+
+- Sync your database
+``` shell
+$ python manage.py migrate oauth2_provider
+```
+
+- other params config 
+in settings.py
+``` python
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+    },
+
+    'CLIENT_ID_GENERATOR_CLASS': 'oauth2_provider.generators.ClientIdGenerator',
+    'AUTHORIZATION_CODE_EXPIRE_SECONDS': 120, # grant code过期时间
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 60, # 访问token过期时间
+}
+OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL = 'oauth2_provider.MAccessToken' # 重载access_token model
+```
+in new models.py
+``` python
+from oauth2_provider.models import AbstractAccessToken
+from common.db.cache_service import set_token
+
+
+class MAccessToken(AbstractAccessToken):
+    def save(self, *args, **kwargs):
+        super(MAccessToken, self).save(*args, **kwargs)
+        # 下面可以自定义一些其他的定制化操作
+        self.user.profile.gmt_expires = self.expires # 
+        self.user.profile.save()
+        set_token(self.token, self.user)
+
+    class Meta(AbstractAccessToken.Meta):
+        db_table = 'oauth2_provider_accesstoken' # 保持与原token model同名
+        app_label = 'oauth2_provider'  # 指定app名称，貌似不能指定其他的，
+        swappable = "OAUTH2_PROVIDER_ACCESS_TOKEN_MODEL"
+```
+* 还需要自定义一个/accounts/login/ 的url，访问/o/authorize/检测到未登陆状态，会跳转到/accounts/login/路径，提示登录
+- add /accounts/login/ url
+in urls.py
+``` python
+from .views import Authenticate2View
+
+
+urlpatterns = [
+    url(r'^login/$', Authenticate2View.as_view(), name="login"),
+]
+```
+in views.py
+``` python
+import urllib
+from django.views.generic import TemplateView
+from django.http import HttpResponseRedirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from oauth2_provider.oauth2_backends import OAuthLibCore
+from urlparse import parse_qs
+
+
+class Authenticate2View(TemplateView, LoginRequiredMixin):
+    template_name = "oauth/login.html"
+    def get(self, request):
+        context = {'info': 'login'}
+        return self.render_to_response(context)
+    def post(self, request):
+        """
+        用户授权给APP登陆
+        """
+        # 验证post过来的用户名密码
+        ...
+        user = authenticate(username=username, password=password)
+        log.info('before user:')
+        if user and user.is_active:
+            redirect_to = urllib.unquote(context.get("next", "/"))
+            next_data = parse_qs(redirect_to)
+            payload = {
+                    'redirect_uri': next_data.get('redirect_uri', ['/'])[0],
+                    'client_id': next_data.get('client_id', [None])[0],
+                    'state': next_data.get('state', [''])[0],
+                    'response_type': next_data.get('response_type', ['code'])[0],
+                }
+            scopes = [u'read', u'write']
+            setattr(request, 'user', user)
+            uri, headers, body, status = OAuthLibCore().create_authorization_response(request, allow=True, scopes=scopes, credentials=payload)
+            return HttpResponseRedirect(uri)
+        context['error'] = True
+        context['error_msg'] = '无效的用户名或密码'
+        return self.render_to_response(context)
+```
+* 举个腻子：
+``` python
+oauth_url = 'http://localhost:8000/accounts/login/?next=/o/authorize/%3Fresponse_type%3Dcode%26client_id%3D4QM7Jeom33SwvXX2Tn4F74JgHIugXZjrliR1AlSe%26redirect_uri%3Dhttps%3A//www.baidu.com/'
+# 首先：get oauth_url ;
+# 然后：post oauth_url 返回code码 ;
+# 然后：用下面参数post to /o/token  ;
+o_token_post = {
+    'grant_type': 'authorization_code',
+    'client_id': '4QM7Jeom33SwvXX2Tn4F74JgHIugXZjrliR1AlSe',
+    'code': 'AU95GBaLoN4PgFKyBKQ9nk2dcUnzbu',
+    'redirect_uri': 'https://www.baidu.com/',
+}
+# 返回access_token和refresh_token ;
+# 刷新token：post to /o/token ;
+refresh_token_post = {
+    'grant_type': 'refresh_token',
+    'client_id': '4QM7Jeom33SwvXX2Tn4F74JgHIugXZjrliR1AlSe',
+    'refresh_token': 'YtyBvQJKFXVCmdqciMZ9KVu9psosUb',
+    'redirect_uri': 'https://www.baidu.com/',
+}
+```
+
+* 上面的client_id等信息来自于在django—admin登录以后创建的applications，发现一个问题貌似application只能通过django-admin来创建，自己直接用接口调用/o/applications/register/总是报403的错误，如果你有不通过django-admin来创建application的方法请告诉我，目前我的解决办法是直接通过数据库来创建，感觉有点蠢，桑心！
