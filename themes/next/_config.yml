@@ -27,10 +27,10 @@ override: false
 # For example, you put your favicons into `hexo-site/source/images` directory.
 # Then need to rename & redefine they on any other names, otherwise icons from Next will rewrite your custom icons in Hexo.
 favicon:
-  small: /images/favicon-16x16-next.png
-  medium: /images/favicon-32x32-next.png
+  small: /images/favicon.ico
+  medium: /images/favicon.ico
   apple_touch_icon: /images/apple-touch-icon-next.png
-  safari_pinned_tab: /images/logo.svg
+  safari_pinned_tab: /images/favicon.ico
   #android_manifest: /images/manifest.json
   #ms_browserconfig: /images/browserconfig.xml
 
@@ -98,6 +98,8 @@ menu:
   categories: /categories/ || certificate
   archives: /archives/ || archive
   books: /books/ || book
+  linux: /cmd/ || linux
+  pythonic: /pythonic/ || magic
   sitemap: /sitemap.xml || sitemap
   rss: /atom.xml || feed
   commonweal: /404/ || heartbeat
@@ -152,6 +154,11 @@ links_title: 友情链接
 links_layout: block
 #links_layout: inline
 links:
+  董伟明: http://www.dongwm.com/
+  FOOFISH: https://foofish.net
+  酷壳: https://coolshell.cn/
+  知道创宇: http://blog.knownsec.com/
+  阮一峰: http://www.ruanyifeng.com/blog/
   求索: http://www.xiemx.com/
   Sdandroid: http://www.sdandroid.com/
   全栈实验室: http://www.inlab.me/
