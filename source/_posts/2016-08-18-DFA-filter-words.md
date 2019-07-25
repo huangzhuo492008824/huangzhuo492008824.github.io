@@ -23,64 +23,73 @@ tags:
 python代码实现：
 
 ``` python
-class Node(object):
-    def __init__(self):
-        self.children = None
+# -*- coding:utf-8 -*-
+import time
+import copy
+FILENAME = 'dict.txt'
 
-# The encode of word is UTF-8
-def add_word(root,word):
-    node = root
-    for i in range(len(word)):
-        if node.children == None:
-            node.children = {}
-            node.children[word[i]] = Node()
+class DFA(object):
+    def __init__(self, filename):
+        """
+        初始化装载敏感词
+        """
+        self.data = {}
+        with open(filename, 'r') as fp:
+            lines = fp.readlines()
+            for line in lines:
+                l_d = line.strip().split()[-1]
+                t = self.data
+                for w in l_d:
+                    if not t.get(w):
+                        # print(self.data)
+                        t[w] = {'is_end': False}
+                        # print(self.data)
+                    t = t[w]
+                # print(t)
+                t['is_end'] = True
 
-        elif word[i] not in node.children:
-            node.children[word[i]] = Node()
-
-        node = node.children[word[i]]
-
-def init(path):
-    root = Node()
-    fp = open(path,'r')
-    for line in fp:
-        line = line[0:-1]
-        # print len(line)
-        # print line
-        # print type(line)
-        add_word(root,line)
-    fp.close()
-    return root
-
-# The encode of word is UTF-8
-# The encode of message is UTF-8
-def is_contain(message, root):
-    for i in range(len(message)):
-        p = root
-        j = i
-        while (j<len(message) and p.children!=None and message[j] in p.children):
-            p = p.children[message[j]]
-            j = j + 1
-
-        if p.children==None:
-            #print '---word---',message[i:j]
+    def has_sensitive(self, word):
+        """是否包含某个敏感词"""
+        t = self.data
+        for w in word:
+            if t.get(w):
+                t = t[w]
+            else:
+                return False
+        if t['is_end']:
             return True
+        return False
 
-    return False
+    def sensitive_replace(self, words):
+        """句子中敏感词替换"""
+        new_words = copy.deepcopy(words)
+        for s in range(len(words)):
+            t = self.data
+            for e in range(s, len(words)-1):
+                # print(s, e, words[e], t.get(words[e]))
+                if t.get(words[e]):
+                    t = t[words[e]]
+                else:
+                    break
+            if t.get('is_end'):
+                word = new_words[s:e]
+                # print('enter is_end', word)
+                new_words = new_words.replace(word, len(word)*'*')
+        return new_words
 
-def dfa():
-    print '----------------dfa-----------'
-    root = init(FILENAME)
+message = '四处乱咬乱吠，办理证件吓得家中11岁的女儿躲在屋里不敢出来，直到辖区派出所民警赶到后，才将孩子从屋中救出。最后在征得主人同意后，民警和村民合力将这只发疯的狗打死'
 
-    message = '四处乱咬乱吠，吓得家中11岁的女儿躲在屋里不敢出来，直到辖区派出所民警赶到后，才将孩子从屋中救出。最后在征得主人同意后，民警和村民合力将这只发疯的狗打死'
-    #message = '不顾'
-    print '***message***',len(message)
-    start_time = time.time()
-    for i in range(10000):
-        res = is_contain(message,root)
-        #print res
-    end_time = time.time()
-    print (end_time - start_time)
+dfa = DFA(FILENAME)
+print(dfa.has_sensitive('办理证件'))
+print(dfa.sensitive_replace(message))
+
+start_time = time.time()
+for i in range(10000):
+    s = i % len(message)
+    res = dfa.sensitive_replace(message[s:])
+    print(res)
+end_time = time.time()
+print(end_time - start_time)
 
 ```
 

@@ -16,4 +16,6 @@ rm -rf public/2016*
 rm -rf public/2017*
 rm -rf public/2018*
 
+chmod -R 755 public/*
+
 scp -r public/* root@47.94.13.169:/home/workplace/myhuangzhuo/
