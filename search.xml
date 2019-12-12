@@ -1742,8 +1742,8 @@ MaxRequestsPerChild 1000
       </categories>
       <tags>
         <tag>linux</tag>
-        <tag>ghost</tag>
         <tag>ubuntu</tag>
+        <tag>ghost</tag>
         <tag>镜像</tag>
       </tags>
   </entry>
