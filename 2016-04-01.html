@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="开源了, 开源了喜大普奔.欢迎围观试用: CODE 再来一遍 CODE想直接看效果的可以看 这里 或者拉到最下面.可能很多人有点诧异, CODE不是已经开源了么? 是的, 2014年2月14日CODE的早期版本就开源到了github. 但是后来由于很多原因没有在做下去,今天, 它真的开源了.让我坚持下来的也是我想给外界看到豆瓣工程师文化的结晶, 这是一种情怀, 今天我想说说我和CODE的故事 CO">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CODE开源了">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-04-01.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="开源了, 开源了喜大普奔.欢迎围观试用: CODE 再来一遍 CODE想直接看效果的可以看 这里 或者拉到最下面.可能很多人有点诧异, CODE不是已经开源了么? 是的, 2014年2月14日CODE的早期版本就开源到了github. 但是后来由于很多原因没有在做下去,今天, 它真的开源了.让我坚持下来的也是我想给外界看到豆瓣工程师文化的结晶, 这是一种情怀, 今天我想说说我和CODE的故事 CO">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11614180/3037e46a-9c75-11e5-85a2-431d91409cf3.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595743/f5c16d72-9aeb-11e5-9996-8b2067077f2e.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595742/f5c0dfd8-9aeb-11e5-967f-8888ee323021.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595745/f5c618cc-9aeb-11e5-90b9-24a7a443a568.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595741/f5c0a50e-9aeb-11e5-8074-b146794bc1a7.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595744/f5c554d2-9aeb-11e5-8c1a-599d73a9410a.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606858/2abcf166-9b6b-11e5-9aa0-347a83c03ae6.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606857/2abb3eb6-9b6b-11e5-83ee-c4ed8c39158b.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606859/2acc4e40-9b6b-11e5-9986-0f19a7249a12.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606860/2ace49b6-9b6b-11e5-88a5-191b69aa485c.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606861/2ad1e94a-9b6b-11e5-8b63-9ec3d6e5ad31.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606862/2ad8394e-9b6b-11e5-8d1c-50f2c3a94b10.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595747/f60fe7d6-9aeb-11e5-85ab-429e3ce8aa06.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595748/f6136848-9aeb-11e5-8867-17ece42606dd.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595833/69005bd6-9aec-11e5-8c61-d31198b5ba4b.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595834/6907afda-9aec-11e5-9a6f-5f8c1ccd618a.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595892/cb007622-9aec-11e5-9fe6-95080ad41ea8.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595962/2e9ec8e6-9aed-11e5-975a-ec93ce44c700.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595993/6d118348-9aed-11e5-85aa-2b1020424d91.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606888/d4d4bf02-9b6c-11e5-9e70-c577e0ea2b69.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595995/6f60d4a0-9aed-11e5-90e3-02106c1c35f3.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11595998/72398816-9aed-11e5-857f-a84cc94334f1.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606887/d4d32d54-9b6c-11e5-872a-393de0192bc7.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/11606879/4dac006c-9b6c-11e5-82b6-e3431034234b.png">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.318Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CODE开源了">
+<meta name="twitter:description" content="开源了, 开源了喜大普奔.欢迎围观试用: CODE 再来一遍 CODE想直接看效果的可以看 这里 或者拉到最下面.可能很多人有点诧异, CODE不是已经开源了么? 是的, 2014年2月14日CODE的早期版本就开源到了github. 但是后来由于很多原因没有在做下去,今天, 它真的开源了.让我坚持下来的也是我想给外界看到豆瓣工程师文化的结晶, 这是一种情怀, 今天我想说说我和CODE的故事 CO">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/841395/11614180/3037e46a-9c75-11e5-85a2-431d91409cf3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-04-01.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>CODE开源了 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-01.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">CODE开源了</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-01T18:30:58+08:00">
+                2016-04-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-01.html" class="leancloud_visitors" data-flag-title="CODE开源了">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="开源了-开源了"><a href="#开源了-开源了" class="headerlink" title="开源了, 开源了"></a>开源了, 开源了</h3><p>喜大普奔.<br><img src="https://cloud.githubusercontent.com/assets/841395/11614180/3037e46a-9c75-11e5-85a2-431d91409cf3.png" alt><br>欢迎围观试用: <a href="https://github.com/douban/code" target="_blank" rel="noopener">CODE</a></p>
+<h1 id="再来一遍-CODE"><a href="#再来一遍-CODE" class="headerlink" title="再来一遍 CODE"></a>再来一遍 <a href="https://github.com/douban/code" target="_blank" rel="noopener">CODE</a></h1><p>想直接看效果的可以看 <a href="https://github.com/douban/code/pull/68" target="_blank" rel="noopener">这里</a> 或者拉到最下面.<br>可能很多人有点诧异, CODE不是已经开源了么? 是的, 2014年2月14日CODE的早期版本就开源到了github. 但是后来由于很多原因没有在做下去,<br>今天, 它真的开源了.<br>让我坚持下来的也是我想给外界看到豆瓣工程师文化的结晶, 这是一种情怀, 今天我想说说我和CODE的故事</p>
+<h3 id="CODE的意义"><a href="#CODE的意义" class="headerlink" title="CODE的意义"></a>CODE的意义</h3><p>CODE为什么开源: 希望更多的人可以使用 CODE，希望更多的人可以一起开发 CODE。 - Code Team<br>市面上有gitlab, 有github企业版. 我们折腾一个这样的东西有什么意义呢? 以下是我的看法.</p>
+<ol>
+<li>CODE是一款豆瓣工程师自发组织, 基于我们自己的需要做出来的. 它是互联网公司程序员的需要而产生的, CODE也曾经给github的同仁们演示, 获得了很高的赞誉.</li>
+<li>它并不是github的python克隆版, 但是有些地方却是和github殊途同归.</li>
+<li>当产品发展到一定地步, 对这个版本控制工具会有更多的定制化需求, 这个时候会需要二次开发. 假如你是个ruby开发很多的公司, 用gitlab也不算个问题. 但是假如大家用非ruby的语言为主, 那么就很痛苦.<br>ruby虽然在配置管理, web开发上面有一席之位, 但是没有python这么普遍. 同事们的参与局限性就多了很多.</li>
+<li>假如你所在公司是python系, 或者爱好python系的, 那么CODE真的是一个很不错的选择. 它是永远免费的, 它是由国内python最大应用公司的工程师们开发, 质量有保证. 看代码的过程中也能学习到一些python的技巧,<br>豆瓣的玩法, 了解豆瓣的开发流程.</li>
+<li>我一直觉得轮子是需要造的, 这个过程你能有造轮子的乐趣, 能力得到更多的提高, 而一直在用其他人的东西那么永远只会停留在这个程度上.</li>
+<li>用CODE, 看CODE代码的时候, 仿佛可以看到那帮有情怀, 有工程师文化的同学们在讨论需求, code review… 我一直认为这种关系和友谊才是最好的团队具有的<h3 id="情怀"><a href="#情怀" class="headerlink" title="情怀"></a>情怀</h3>好吧, 啥是情怀呢?<blockquote>
+<p>情怀就是以心灵的满足而不是功利的得失作为自己的行为标准的一种品质。<br>一件没什么用的事，还是要去做，也许只因为我喜欢，也许只因为它看起来很美 –<br>知乎<a href="http://www.zhihu.com/people/song-lao-mo" target="_blank" rel="noopener">@宋老末</a><br>「我坚信程序员都是有情怀的. 」<br>从<a href="https://github.com/douban/code/issues/65#issuecomment-126901877" target="_blank" rel="noopener">我决定继续这件事</a>,<br>到现在已经4个月有余. 这个过程里面经历蛮多, 比如我经历着从技术转型做管理, 部门问题多多, 人员也在我强力介入下也流动蛮大的 -。-;<br>我也要花很大的精力陪女儿; 我一直也在不断的给自己充电, 我现在也要开始写书了… 做了TL, 唯一的感觉就是时间不够用, 我是个蛮有洁癖的人,<br>以前做普通工程师的时候按期完成我职责范围内的就好了, 现在责任大了, 看着产品线的sentry里那么多的报错,<br>看着Trello里面堆积那么多的card还没有机会做… 尤其在我使用一种新的管理风格有关, 让我倍敢压力, 非常辛苦.<br>要不是xTao不断催促, 可能还要拖期.<br>是什么支撑我的情怀?<br>除了眼前的苟且，还有诗和远方 - 知乎<a href="http://www.zhihu.com/people/dai-xiao-xi-70" target="_blank" rel="noopener">@戴晓溪</a></p>
+</blockquote>
+<h3 id="我和CODE"><a href="#我和CODE" class="headerlink" title="我和CODE"></a>我和CODE</h3>告诉你们个小秘密, 我来豆瓣其实也是和CODE有很大的关系的… 在这里感谢@xTao和邢老师.<br>这一切是为什么捏?<br>话说那是13年下半年, 我的前公司从svn转到了gitlab. 我们在内部搭建了一个gitlab服务器. 各个产品线的代码都开始往上面迁移,<br>我不得不说它是市面上非常好的开源选择. 但是过了一段时间我就发现了问题:<br>我是python系的, 我有时候对它是不满意的, 有想法二次开发的.<br>这里我提一点, 很多人都说: “哎呀不要局限于编程语言, 不要去争论xx是宇宙第一语言”. 我的观点是, 只有0.1%的天才+4.9%的有天赋,<br>能力很强的人是可以这么说的. 剩下的95%都是在给自己学的不好找个理由和慰藉罢了.<br>想要走在金字塔尖就需要有执念, 否则只能沦落到打打嘴炮的地步.<br>我曾经尝试一边翻着《Ruby元编程》一边去读gitlab的源码, 想尝试定制它. 努力了差不多一个月放弃了. 原因无二,<br>这种临时报佛脚去玩转一个大公司北京, 多位大牛参与的开源项目的必然结果.<br>很痛苦, 但是内心又多有不甘, 于是决定做一个大事: 用python造个gitlab的轮子:</li>
+<li>样式扒gitlab</li>
+<li>根据gitlab的路由方式添加url</li>
+<li>使用pygit2作为git后端<br>做起来才知道, 这是一个非常浩大的工程, 对于我当时的技术能力来说是个非常大的挑战. 我汲取前后端知识就基本直接用在这个项目上了.<br>有一天, 我产生了放弃的念头.<br>之前我对豆瓣也没有什么特别的感觉. 直到这天我看到<a href="http://v.youku.com/v_show/id_XNTYwMzc0NjY0.html" target="_blank" rel="noopener">清风在 C2D2<br>的分享</a><br><a href="http://segmentfault.com/a/1190000000410324" target="_blank" rel="noopener">http://segmentfault.com/a/1190000000410324</a><br><a href="http://www.infoq.com/cn/articles/douban-code-2years" target="_blank" rel="noopener">http://www.infoq.com/cn/articles/douban-code-2years</a><br><a href="http://www.infoq.com/cn/presentations/tools-love-knot-of-engineer-culture" target="_blank" rel="noopener">http://www.infoq.com/cn/presentations/tools-love-knot-of-engineer-culture</a><br>在遥远的豆瓣, 有这样一帮人和我有同样的想法. 我称他们为geek. 这是我向往的地方呀. 于是, 我决定去豆瓣<br>CODE开源不久, 我就到了豆瓣.<br>非常遗憾, 我进来的时候, CODE的核心开发大多离开了豆瓣. 我没有机会和他们一起做CODE. CODE功能也接近稳定,<br>心情蛮失落的我只是修了几十个bug. 加一些功能, 比如:</li>
+<li>鼠标放在团队上也会hover一个team的card</li>
+<li>telchar - 类似quora的qlint</li>
+<li>鼠标放在emoji会悬浮图片的放大版本</li>
+<li>项目的guidelines<br>等等.<br>我本想拿下CODE全部的徽章, 但是给我颁徽章的人们却不在了.<h3 id="CODE的未来"><a href="#CODE的未来" class="headerlink" title="CODE的未来"></a>CODE的未来</h3>我会保证CODE会一直做下去. 但是单个人的能力精力有限, 我欢迎更多的公司都来用CODE,<br>帮助它变得更好. 也欢迎更多的同学参与进来.<br>未来CODE会做以下几件事情(不断补充中)</li>
+<li>完善CODE的功能 - 现在放出来, 跑起来了. 但是预计还会有很多坑</li>
+<li>增加初始化脚本, 填充数据</li>
+<li>修复travis-ci</li>
+<li>国际化 - 现在code里面有很多中文, 需要英文能力很高的同学一起来做</li>
+<li>重构 - 有很多功能都是需要重构甚至重写的</li>
+<li>其他方面的尝试<h3 id="截图时间"><a href="#截图时间" class="headerlink" title="截图时间"></a>截图时间</h3><img src="https://cloud.githubusercontent.com/assets/841395/11595743/f5c16d72-9aeb-11e5-9996-8b2067077f2e.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595742/f5c0dfd8-9aeb-11e5-967f-8888ee323021.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595745/f5c618cc-9aeb-11e5-90b9-24a7a443a568.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595741/f5c0a50e-9aeb-11e5-8074-b146794bc1a7.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595744/f5c554d2-9aeb-11e5-8c1a-599d73a9410a.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606858/2abcf166-9b6b-11e5-9aa0-347a83c03ae6.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606857/2abb3eb6-9b6b-11e5-83ee-c4ed8c39158b.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606859/2acc4e40-9b6b-11e5-9986-0f19a7249a12.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606860/2ace49b6-9b6b-11e5-88a5-191b69aa485c.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606861/2ad1e94a-9b6b-11e5-8b63-9ec3d6e5ad31.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606862/2ad8394e-9b6b-11e5-8d1c-50f2c3a94b10.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595747/f60fe7d6-9aeb-11e5-85ab-429e3ce8aa06.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595748/f6136848-9aeb-11e5-8867-17ece42606dd.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595833/69005bd6-9aec-11e5-8c61-d31198b5ba4b.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595834/6907afda-9aec-11e5-9a6f-5f8c1ccd618a.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595892/cb007622-9aec-11e5-9fe6-95080ad41ea8.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595962/2e9ec8e6-9aed-11e5-975a-ec93ce44c700.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595993/6d118348-9aed-11e5-85aa-2b1020424d91.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606888/d4d4bf02-9b6c-11e5-9e70-c577e0ea2b69.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595995/6f60d4a0-9aed-11e5-90e3-02106c1c35f3.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11595998/72398816-9aed-11e5-857f-a84cc94334f1.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606887/d4d32d54-9b6c-11e5-872a-393de0192bc7.png" alt><br><img src="https://cloud.githubusercontent.com/assets/841395/11606879/4dac006c-9b6c-11e5-82b6-e3431034234b.png" alt></li>
+</ol>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-31.html" rel="next" title="封装pymongo自动关闭连接">
+                <i class="fa fa-chevron-left"></i> 封装pymongo自动关闭连接
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-04-02.html" rel="prev" title="IPython3时代到来">
+                IPython3时代到来 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#开源了-开源了"><span class="nav-number">1.</span> <span class="nav-text">开源了, 开源了</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#再来一遍-CODE"><span class="nav-number"></span> <span class="nav-text">再来一遍 CODE</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CODE的意义"><span class="nav-number">1.</span> <span class="nav-text">CODE的意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#情怀"><span class="nav-number">2.</span> <span class="nav-text">情怀</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#我和CODE"><span class="nav-number">3.</span> <span class="nav-text">我和CODE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CODE的未来"><span class="nav-number">4.</span> <span class="nav-text">CODE的未来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#截图时间"><span class="nav-number">5.</span> <span class="nav-text">截图时间</span></a></li></ol></li></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="晒一下知乎Live团队送的新年礼物：感谢。所以我将送上一系列知乎Live主题的文章在我的知乎Live里面，我留下了调查问卷，其中一项是可以反馈自己感兴趣的Python相关技术。意料之内，最受大家欢迎的就是爬虫。所以最近开始写了一些和爬虫有关的内容。不过虽然现在还是1月，但是我发誓这是本年最后一次写爬虫文章了（要写吐了）。 模型设计做知乎Live的全文搜索，首先要抓取到全部Live信息。我尝试了下，">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎Live全文搜索之模型设计和爬虫实现">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-04-19.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="晒一下知乎Live团队送的新年礼物：感谢。所以我将送上一系列知乎Live主题的文章在我的知乎Live里面，我留下了调查问卷，其中一项是可以反馈自己感兴趣的Python相关技术。意料之内，最受大家欢迎的就是爬虫。所以最近开始写了一些和爬虫有关的内容。不过虽然现在还是1月，但是我发誓这是本年最后一次写爬虫文章了（要写吐了）。 模型设计做知乎Live的全文搜索，首先要抓取到全部Live信息。我尝试了下，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/22178811/1824affa-e07d-11e6-8a59-ea00313d5c2b.jpg">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.321Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎Live全文搜索之模型设计和爬虫实现">
+<meta name="twitter:description" content="晒一下知乎Live团队送的新年礼物：感谢。所以我将送上一系列知乎Live主题的文章在我的知乎Live里面，我留下了调查问卷，其中一项是可以反馈自己感兴趣的Python相关技术。意料之内，最受大家欢迎的就是爬虫。所以最近开始写了一些和爬虫有关的内容。不过虽然现在还是1月，但是我发誓这是本年最后一次写爬虫文章了（要写吐了）。 模型设计做知乎Live的全文搜索，首先要抓取到全部Live信息。我尝试了下，">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/841395/22178811/1824affa-e07d-11e6-8a59-ea00313d5c2b.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-04-19.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>知乎Live全文搜索之模型设计和爬虫实现 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-19.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎Live全文搜索之模型设计和爬虫实现</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-19T18:30:58+08:00">
+                2016-04-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-19.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之模型设计和爬虫实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>晒一下知乎Live团队送的新年礼物：<br><img src="https://cloud.githubusercontent.com/assets/841395/22178811/1824affa-e07d-11e6-8a59-ea00313d5c2b.jpg" alt><br>感谢。所以我将送上一系列知乎Live主题的文章<br>在我的<a href="https://www.zhihu.com/lives/789840559912009728" target="_blank" rel="noopener">知乎Live</a>里面，我留下了调查问卷，其中一项是可以反馈自己感兴趣的Python相关技术。意料之内，最受大家欢迎的就是爬虫。所以最近开始写了一些和爬虫有关的内容。不过虽然现在还是1月，但是我发誓这是本年最后一次写爬虫文章了（要写吐了）。</p>
+<h3 id="模型设计"><a href="#模型设计" class="headerlink" title="模型设计"></a>模型设计</h3><p>做知乎Live的全文搜索，首先要抓取到全部Live信息。我尝试了下，只要是登录状态就可以使用知乎提供的API获取。<br>接口分为2种：</p>
+<ol>
+<li><a href="https://api.zhihu.com/lives/ongoing?purchasable=0&limit=10&offset=10" target="_blank" rel="noopener">https://api.zhihu.com/lives/ongoing?purchasable=0&amp;limit=10&amp;offset=10</a> (未结束)</li>
+<li><a href="https://api.zhihu.com/lives/ended?purchasable=0&limit=10&offset=10" target="_blank" rel="noopener">https://api.zhihu.com/lives/ended?purchasable=0&amp;limit=10&amp;offset=10</a> (已结束)<br>每个Live包含非常多的字段，还包含了一些预留字段。我们简单分析下并实现对应的模型。<h4 id="主讲人模型"><a href="#主讲人模型" class="headerlink" title="主讲人模型"></a>主讲人模型</h4>主讲人字段如下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">speaker: &#123;  </span><br><span class="line">    member: &#123;  </span><br><span class="line">        name: <span class="string">"Flood Sung"</span>,  </span><br><span class="line">        url: <span class="string">"https://api.zhihu.com/people/23deec836a24f295500a6d740011359c"</span>,  </span><br><span class="line">        type: <span class="string">"people"</span>,  </span><br><span class="line">        user_type: <span class="string">"people"</span>,  </span><br><span class="line">        headline: <span class="string">"Deep Learning/Reinforcement Learning/Robotics/"</span>,  </span><br><span class="line">        avatar_url: <span class="string">"https://pic3.zhimg.com/73a71f47d66e280735a6c786131bdfe2_s.jpg"</span>,  </span><br><span class="line">        gender: <span class="number">1</span>,  </span><br><span class="line">        url_token: <span class="string">"flood-sung"</span>,  </span><br><span class="line">        id: <span class="string">"23deec836a24f295500a6d740011359c"</span>  </span><br><span class="line">    &#125;,  </span><br><span class="line">    bio: <span class="string">"Deep Learning/Reinforcement Learning/Robotics/"</span>,  </span><br><span class="line">    description: <span class="string">"我是 Flood Sung ..."</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>主讲人部分我单独存储，不直接放进elasticsearch的原因有2个：</p>
+<ol>
+<li>全文搜索和主讲人有关的字段只有主讲人的名字和描述，其他内容没有意义</li>
+<li>主讲人可能会有多个Live，重复存储浪费空间<br>所以我还是按着惯例，存在主流数据库中，由于目前Live总体才2k多，数据量太小，且更新机会不多（爬虫抓取是离线的）直接放进了SQLite就好了。<br>为了未来在数据量变大需要改变存储的数据库时可以灵活切换，我使用提供对象关系映射（ORM）的SQLAlchemy来写模型（models/speaker.py）：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sqlalchemy <span class="keyword">import</span> Column, String, Integer, create_engine, SmallInteger  </span><br><span class="line"><span class="keyword">from</span> sqlalchemy.orm <span class="keyword">import</span> sessionmaker  </span><br><span class="line"><span class="keyword">from</span> sqlalchemy.ext.declarative <span class="keyword">import</span> declarative_base  </span><br><span class="line">  </span><br><span class="line">DB_URI = <span class="string">'sqlite:///user.db'</span>  </span><br><span class="line">Base = declarative_base()  </span><br><span class="line">engine = create_engine(DB_URI)  </span><br><span class="line">Base.metadata.bind = engine  </span><br><span class="line">Session = sessionmaker(bind=engine)  </span><br><span class="line">session = Session()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span>  </span><br><span class="line">    __tablename__ = <span class="string">'live_user'</span>  </span><br><span class="line">  </span><br><span class="line">    id = Column(Integer, unique=<span class="literal">True</span>, primary_key=<span class="literal">True</span>, autoincrement=<span class="literal">True</span>)  </span><br><span class="line">    speaker_id = Column(String(<span class="number">40</span>), index=<span class="literal">True</span>, unique=<span class="literal">True</span>)  </span><br><span class="line">    name = Column(String(<span class="number">40</span>), index=<span class="literal">True</span>, nullable=<span class="literal">False</span>)  </span><br><span class="line">    gender = Column(SmallInteger, default=<span class="number">2</span>)  </span><br><span class="line">    headline = Column(String(<span class="number">200</span>))  </span><br><span class="line">    avatar_url = Column(String(<span class="number">100</span>), nullable=<span class="literal">False</span>)  </span><br><span class="line">    bio = Column(String(<span class="number">200</span>))  </span><br><span class="line">    description = Column(String())  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(cls, **kwargs)</span>:</span>  </span><br><span class="line">        speaker_id = kwargs.get(<span class="string">'speaker_id'</span>, <span class="literal">None</span>)  </span><br><span class="line">        <span class="keyword">if</span> id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            r = session.query(cls).filter_by(speaker_id=speaker_id).first()  </span><br><span class="line">            <span class="keyword">if</span> r:  </span><br><span class="line">                <span class="keyword">return</span> r  </span><br><span class="line">        <span class="keyword">try</span>:  </span><br><span class="line">            r = cls(**kwargs)  </span><br><span class="line">            session.add(r)  </span><br><span class="line">            session.commit()  </span><br><span class="line">        <span class="keyword">except</span>:  </span><br><span class="line">            session.rollback()  </span><br><span class="line">            <span class="keyword">raise</span>  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">return</span> r  </span><br><span class="line">  </span><br><span class="line">Base.metadata.create_all()</span><br></pre></td></tr></table></figure>
+
+
+<p>speaker_id就是上面API中的speaker[‘member’][‘id’]，但是由于它是一个字符串，和常见的主键使用整数不一样（虽然也可以），所以多加一个字段存储。另外额外的写了一个add方法，相当于创建之前通过speaker_id先检查下库中是否存在对应条目。</p>
+<h4 id="Live模型"><a href="#Live模型" class="headerlink" title="Live模型"></a>Live模型</h4><p>Live字段比较多，为了未来字段格式改变造成文本不可用，得列一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;  </span><br><span class="line">    <span class="string">"liked"</span>: false,  </span><br><span class="line">    <span class="string">"conv_id"</span>: <span class="string">"58747b778d6d81006c40cee7"</span>,  </span><br><span class="line">    <span class="string">"topics"</span>: [  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="string">"url"</span>: <span class="string">"https://api.zhihu.com/topics/20038840"</span>,  </span><br><span class="line">            <span class="string">"avatar_url"</span>: <span class="string">"https://pic3.zhimg.com/50/d9e63efc57a9f07378ae9d5416ecf85a_s.png"</span>,  </span><br><span class="line">            <span class="string">"type"</span>: <span class="string">"topic"</span>,  </span><br><span class="line">            <span class="string">"id"</span>: <span class="string">"20038840"</span>,  </span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"阿尔法围棋（AlphaGo）"</span>  </span><br><span class="line">        &#125;  </span><br><span class="line">    ],  </span><br><span class="line">    <span class="string">"seats"</span>: &#123;  </span><br><span class="line">        <span class="string">"taken"</span>: <span class="number">286</span>,  </span><br><span class="line">        <span class="string">"max"</span>: <span class="number">500</span>  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="string">"duration"</span>: <span class="number">5400</span>,  </span><br><span class="line">    <span class="string">"id"</span>: <span class="string">"802155571712253952"</span>,  </span><br><span class="line">    <span class="string">"subject"</span>: <span class="string">"从 AlphaGo 看人工智能前沿技术"</span>,  </span><br><span class="line">    <span class="string">"feedback_score"</span>: <span class="number">4.5</span>,  </span><br><span class="line">    <span class="string">"fee"</span>: &#123;  </span><br><span class="line">        <span class="string">"amount"</span>: <span class="number">1900</span>,  </span><br><span class="line">        <span class="string">"unit"</span>: <span class="string">"RMB"</span>  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="string">"purchasable"</span>: true,  </span><br><span class="line">    <span class="string">"has_feedback"</span>: false,  </span><br><span class="line">    <span class="string">"note"</span>: <span class="string">"版权声明：..."</span>,  </span><br><span class="line">    <span class="string">"source"</span>: <span class="string">"admin"</span>,  </span><br><span class="line">    <span class="string">"cospeakers"</span>: [ ],  </span><br><span class="line">    <span class="string">"speaker"</span>: &#123; &#125;,  </span><br><span class="line">    <span class="string">"income"</span>: null,  </span><br><span class="line">    <span class="string">"role"</span>: <span class="string">"visitor"</span>,  </span><br><span class="line">    <span class="string">"in_promotion"</span>: false,  </span><br><span class="line">    <span class="string">"badge"</span>: &#123;  </span><br><span class="line">        <span class="string">"avatar_url"</span>: <span class="string">"https://pic1.zhimg.com/8e3b9024d62aa293d8ba7235701a9a08_r.png"</span>,  </span><br><span class="line">        <span class="string">"id"</span>: <span class="number">0</span>,  </span><br><span class="line">        <span class="string">"name"</span>: <span class="string">"普通票"</span>  </span><br><span class="line">    &#125;,  </span><br><span class="line">    <span class="string">"status"</span>: <span class="string">"ended"</span>,  </span><br><span class="line">    <span class="string">"ends_in"</span>: <span class="number">0</span>,  </span><br><span class="line">    <span class="string">"description"</span>: <span class="string">"我是 Flood Sung ..."</span>,  </span><br><span class="line">    <span class="string">"speaker_message_count"</span>: <span class="number">127</span>,  </span><br><span class="line">    <span class="string">"tags"</span>: [  </span><br><span class="line">        &#123;  </span><br><span class="line">            <span class="string">"score"</span>: <span class="number">0</span>,  </span><br><span class="line">            <span class="string">"name"</span>: <span class="string">"互联网"</span>,  </span><br><span class="line">            <span class="string">"short_name"</span>: <span class="string">"互联网"</span>,  </span><br><span class="line">            <span class="string">"available_num"</span>: <span class="number">191</span>,  </span><br><span class="line">            <span class="string">"created_at"</span>: <span class="number">1469691129</span>,  </span><br><span class="line">            <span class="string">"id"</span>: <span class="number">105</span>,  </span><br><span class="line">            <span class="string">"live_num"</span>: <span class="number">195</span>  </span><br><span class="line">        &#125;  </span><br><span class="line">    ],  </span><br><span class="line">    <span class="string">"is_muted"</span>: false,  </span><br><span class="line">    <span class="string">"liked_num"</span>: <span class="number">547</span>,  </span><br><span class="line">    <span class="string">"alert"</span>: <span class="string">"从看到听..."</span>,  </span><br><span class="line">    <span class="string">"can_speak"</span>: false,  </span><br><span class="line">    <span class="string">"artwork"</span>: <span class="string">""</span>,  </span><br><span class="line">    <span class="string">"is_public"</span>: <span class="number">1</span>,  </span><br><span class="line">    <span class="string">"ends_at"</span>: <span class="number">1484920522</span>,  </span><br><span class="line">    <span class="string">"outline"</span>: <span class="string">"＊ AlphaGo 为什么能在围棋上取得如此重大的突破？..."</span>,  </span><br><span class="line">    <span class="string">"is_anonymous"</span>: false,  </span><br><span class="line">    <span class="string">"created_at"</span>: <span class="number">1484028791</span>,  </span><br><span class="line">    <span class="string">"related_members"</span>: [ ],  </span><br><span class="line">    <span class="string">"product_list"</span>: [ ],  </span><br><span class="line">    <span class="string">"starts_at"</span>: <span class="number">1484913600</span>,  </span><br><span class="line">    <span class="string">"is_admin"</span>: false  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这些字段通过名字能比较清晰的了解用途。接着我们考虑用什么elasticsearch的Python客户端。官方提供了<a href="https://github.com/elastic/elasticsearch-py" target="_blank" rel="noopener">elasticsearch-<br>py</a> 这个低级别客户端。<br>最开始我使用了elasticsearch-<br>py，所谓低级别，就是各种操作未做或者少做封装，比如搜索用到的参数就要手动拼成一个字典。相信如果你之前了解或者用过elasticsearch，就会知道它的搜索参数多的令人发指。如果业务需求比较简单，elasticsearch-<br>py还是可满足的。随着需求变多变复杂，你会发现拼这样一个多键值、多层嵌套字典的逻辑变得越来越不可维护，且写错了不容易发现，如果你对业务和elasticsearch不熟悉，非常容易掉坑儿。<br>那有没有什么更好写搜索和模型的方式嘛？<br>官方提供了基于elasticsearch-py的高级别客户端<a href="https://github.com/elastic/elasticsearch-dsl-py" target="_blank" rel="noopener">elasticsearch-dsl-<br>py</a>。DSL是领域专用语言（Domain<br>Specific Language）的简称，也就是专门针对某一特定问题的计算机语言，特点是「求专不求全」。elasticsearch-dsl-<br>py就是针对elasticsearch的特定语言。<br>它允许我们用一种非常可维护的方法来组织字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> elasticsearch_dsl.query <span class="keyword">import</span> Q  </span><br><span class="line">  </span><br><span class="line">In : Q(<span class="string">'multi_match'</span>, subject=<span class="string">'python'</span>).to_dict()  </span><br><span class="line">Out: &#123;<span class="string">'multi_match'</span>: &#123;<span class="string">'subject'</span>: <span class="string">'python'</span>&#125;&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>允许用一种函数式的方法来做查询：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch  </span><br><span class="line">In : <span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> Search, Q  </span><br><span class="line">  </span><br><span class="line">In : s = Search(using=client, index=<span class="string">'live'</span>)  </span><br><span class="line">In : s = s.query(<span class="string">'match'</span>, subject=<span class="string">'python'</span>).query(~Q(<span class="string">'match'</span>, description=<span class="string">'量化'</span>))  </span><br><span class="line">In : s.execute()  </span><br><span class="line">Out: &lt;Response: [&lt;Hit(live/live/<span class="number">789840559912009728</span>): &#123;<span class="string">'subject'</span>: <span class="string">'Python 工程师的入门和进阶'</span>, <span class="string">'feedback_score'</span>: <span class="number">4.5</span>, <span class="string">'stat...&#125;&gt;]&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<p>上述例子表示从live这个索引（类似数据库中的Database）中找到subject字典包含python，但是description字段不包含量化的Live。<br>当然这个DSL也支持用类代表一个doc_type（类似数据库中的Table），实现ORM的效果。我们就用它来写Live模型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> DocType, Date, Integer, Text, Float, Boolean  </span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections  </span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl.query <span class="keyword">import</span> SF, Q  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> SEARCH_FIELDS  </span><br><span class="line"><span class="keyword">from</span> .speaker <span class="keyword">import</span> User, session  </span><br><span class="line">  </span><br><span class="line">connections.create_connection(hosts=[<span class="string">'localhost'</span>])  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    id = Integer()  </span><br><span class="line">    speaker_id = Integer()  </span><br><span class="line">    feedback_score = Float() <span class="comment"># 评分  </span></span><br><span class="line">    topic_names = Text(analyzer=<span class="string">'ik_max_word'</span>)  <span class="comment"># 话题标签名字  </span></span><br><span class="line">    seats_taken = Integer()  <span class="comment"># 参与人数  </span></span><br><span class="line">    subject = Text(analyzer=<span class="string">'ik_max_word'</span>)  <span class="comment"># 标题  </span></span><br><span class="line">    amount = Float()  <span class="comment"># 价格(RMB)  </span></span><br><span class="line">    description = Text(analyzer=<span class="string">'ik_max_word'</span>)  </span><br><span class="line">    status = Boolean()  <span class="comment"># public(True)/ended(False)  </span></span><br><span class="line">    starts_at = Date()  </span><br><span class="line">    outline = Text(analyzer=<span class="string">'ik_max_word'</span>)  <span class="comment"># Live内容  </span></span><br><span class="line">    speaker_message_count = Integer()  </span><br><span class="line">    tag_names = Text(analyzer=<span class="string">'ik_max_word'</span>)  </span><br><span class="line">    liked_num = Integer()  </span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span>  </span><br><span class="line">        index = <span class="string">'live'</span>  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(cls, **kwargs)</span>:</span>  </span><br><span class="line">        id = kwargs.pop(<span class="string">'id'</span>, <span class="literal">None</span>)  </span><br><span class="line">        <span class="keyword">if</span> id <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span>  </span><br><span class="line">        live = cls(meta=&#123;<span class="string">'id'</span>: id&#125;, **kwargs)  </span><br><span class="line">        live.save()  </span><br><span class="line">        <span class="keyword">return</span> live</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h3><p>在之前我已经分享了一个功能比较齐备的<a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87-%E4%B8%89/" target="_blank" rel="noopener">基于aiphttp的爬虫实现</a>，还分享过如何<a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8API%E7%99%BB%E5%BD%95%E7%9F%A5%E4%B9%8E%E5%B9%B6%E8%8E%B7%E5%BE%97token/" target="_blank" rel="noopener">使用API登录知乎并获得token</a>。今天用之前的积累，实现这个爬虫。由于之前已经展示用完整代码，今天只介绍如何让它们「串」起来。<br>首先是初始化部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="keyword">from</span> models <span class="keyword">import</span> User, Live, session  </span><br><span class="line"><span class="keyword">from</span> client <span class="keyword">import</span> ZhihuClient  </span><br><span class="line"><span class="keyword">from</span> utils <span class="keyword">import</span> flatten_live_dict  </span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> SPEAKER_KEYS, LIVE_KEYS  </span><br><span class="line">  </span><br><span class="line">LIVE_API_URL = <span class="string">'https://api.zhihu.com/lives/&#123;type&#125;?purchasable=0&amp;limit=10&amp;offset=&#123;offset&#125;'</span>  <span class="comment"># noqa  </span></span><br><span class="line">LIVE_TYPE = frozenset([<span class="string">'ongoing'</span>, <span class="string">'ended'</span>])  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crawler</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, max_redirect=<span class="number">10</span>, max_tries=<span class="number">4</span>,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 max_tasks=<span class="number">10</span>, *, loop=None)</span>:</span>  </span><br><span class="line">        ...  </span><br><span class="line">        <span class="keyword">for</span> t <span class="keyword">in</span> LIVE_TYPE:  </span><br><span class="line">            <span class="keyword">for</span> offset <span class="keyword">in</span> range(self.max_tasks):  </span><br><span class="line">                self.add_url(LIVE_API_URL.format(type=t, offset=offset * <span class="number">10</span>))  </span><br><span class="line">  </span><br><span class="line">        client = ZhihuClient()  </span><br><span class="line">        self.headers = &#123;&#125;  </span><br><span class="line">        client.auth(self)</span><br></pre></td></tr></table></figure>
+
+
+<p>初始化的时候通过add_url添加2种API、共2倍max_tasks个url。由于aiohttp的auth参数不支持原来requests的ZhihuOAuth，所以添加一个值为空字典的self.headers方便生成包含知乎API请求需要的headers。<br>知乎API设计的不错，返回的结果中包含了上一页和下一页的地址和是否结束：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">paging: &#123;  </span><br><span class="line">    is_end: false,  </span><br><span class="line">    next: <span class="string">"https://api.zhihu.com/lives/ended?purchasable=0&amp;limit=10&amp;offset=20"</span>,  </span><br><span class="line">    previous: <span class="string">"https://api.zhihu.com/lives/ended?purchasable=0&amp;limit=10&amp;offset=0"</span>  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>所以parse_link的结果也就是只是一个url了。我把存储爬取下来的Live和主讲人信息的方法也放进了这个方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">parse_link</span><span class="params">(self, response)</span>:</span>  </span><br><span class="line">    rs = <span class="keyword">await</span> response.json()  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">if</span> response.status == <span class="number">200</span>:  </span><br><span class="line">        <span class="keyword">for</span> live <span class="keyword">in</span> rs[<span class="string">'data'</span>]:  </span><br><span class="line">            speaker = live.pop(<span class="string">'speaker'</span>)  </span><br><span class="line">            speaker_id = speaker[<span class="string">'member'</span>][<span class="string">'id'</span>]  </span><br><span class="line">            user = User.add(speaker_id=speaker_id,  </span><br><span class="line">                            **flatten_live_dict(speaker, SPEAKER_KEYS))  </span><br><span class="line">            live_dict = flatten_live_dict(live, LIVE_KEYS)  </span><br><span class="line">            <span class="keyword">if</span> live_dict[<span class="string">'id'</span>] == LAST_INSERT_ID:  </span><br><span class="line">                self._stopped = <span class="literal">True</span>  </span><br><span class="line">                <span class="keyword">return</span>  </span><br><span class="line">            live_dict[<span class="string">'speaker_id'</span>] = user.id  </span><br><span class="line">            live_dict[<span class="string">'topic_names'</span>] = <span class="string">' '</span>.join(  </span><br><span class="line">                [t[<span class="string">'name'</span>] <span class="keyword">for</span> t <span class="keyword">in</span> live_dict.pop(<span class="string">'topics'</span>)])  </span><br><span class="line">            live_dict[<span class="string">'seats_taken'</span>] = live_dict.pop(<span class="string">'seats'</span>)[<span class="string">'taken'</span>]  </span><br><span class="line">            live_dict[<span class="string">'amount'</span>] = live_dict.pop(<span class="string">'fee'</span>)[<span class="string">'amount'</span>] / <span class="number">100</span>  </span><br><span class="line">            live_dict[<span class="string">'status'</span>] = live_dict[<span class="string">'status'</span>] == <span class="string">'public'</span>  </span><br><span class="line">            live_dict[<span class="string">'tag_names'</span>] = <span class="string">' '</span>.join(  </span><br><span class="line">                set(sum([(t[<span class="string">'name'</span>], t[<span class="string">'short_name'</span>])  </span><br><span class="line">                     <span class="keyword">for</span> t <span class="keyword">in</span> live_dict.pop(<span class="string">'tags'</span>)], ())))  </span><br><span class="line">            live_dict[<span class="string">'starts_at'</span>] = datetime.fromtimestamp(  </span><br><span class="line">                live_dict[<span class="string">'starts_at'</span>])  </span><br><span class="line">            Live.add(**live_dict)  </span><br><span class="line">  </span><br><span class="line">        paging = rs[<span class="string">'paging'</span>]  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> paging[<span class="string">'is_end'</span>]:  </span><br><span class="line">            next_url = paging[<span class="string">'next'</span>]  </span><br><span class="line">            <span class="keyword">return</span> paging[<span class="string">'next'</span>]  </span><br><span class="line">    <span class="keyword">else</span>:  </span><br><span class="line">        print(<span class="string">'HTTP status_code is &#123;&#125;'</span>.format(response.status))</span><br></pre></td></tr></table></figure>
+
+
+<p>其中flatten_live_dict是从嵌套的字典里面把需要的键值抽出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flatten_live_dict</span><span class="params">(d, keys=[])</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">items</span><span class="params">()</span>:</span>  </span><br><span class="line">        <span class="keyword">for</span> key, value <span class="keyword">in</span> d.items():  </span><br><span class="line">            <span class="keyword">if</span> key <span class="keyword">in</span> keys:  </span><br><span class="line">                <span class="keyword">yield</span> key, value  </span><br><span class="line">            <span class="keyword">elif</span> isinstance(value, dict):  </span><br><span class="line">                <span class="keyword">for</span> subkey, subvalue <span class="keyword">in</span> flatten_live_dict(value, keys).items():  </span><br><span class="line">                    <span class="keyword">if</span> subkey != <span class="string">'id'</span> <span class="keyword">and</span> subkey <span class="keyword">in</span> keys:  </span><br><span class="line">                        <span class="keyword">yield</span> subkey, subvalue  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">return</span> dict(items())</span><br></pre></td></tr></table></figure>
+
+
+<p>这个函数对id做了特殊处理，是因为在flatten过程中，有多个id会被无情替换，所以额外处理了。<br>其中参数keys分2种：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">LIVE_KEYS = [<span class="string">'id'</span>, <span class="string">'feedback_score'</span>, <span class="string">'seats'</span>, <span class="string">'subject'</span>, <span class="string">'fee'</span>,  </span><br><span class="line">             <span class="string">'description'</span>, <span class="string">'status'</span>, <span class="string">'starts_at'</span>, <span class="string">'outline'</span>,  </span><br><span class="line">             <span class="string">'speaker_message_count'</span>, <span class="string">'liked_num'</span>, <span class="string">'tags'</span>, <span class="string">'topics'</span>]  </span><br><span class="line">SEARCH_FIELDS = [<span class="string">'subject'</span>, <span class="string">'description'</span>, <span class="string">'outline'</span>, <span class="string">'tag_names'</span>,  </span><br><span class="line">                 <span class="string">'topic_names'</span>]</span><br></pre></td></tr></table></figure>
+
+
+<p>这样就完成了一个爬虫。我没有添加爬虫的断点续爬（发现之前爬过停止抓取）功能。这是因为Live一般在结束后都还是可以有人参与，去评价。反正总量也就是一分钟抓取完而已。如果想要添加这种减少重复抓取的功能，最简单的方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">search = Live.search()  </span><br><span class="line"><span class="keyword">if</span> search.count():  </span><br><span class="line">    LAST_INSERT_ID = search.sort(<span class="string">'starts_at'</span>).execute()[<span class="number">0</span>]._id  </span><br><span class="line"><span class="keyword">else</span>:  </span><br><span class="line">    LAST_INSERT_ID = <span class="number">0</span>  </span><br><span class="line">      </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crawler</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, max_redirect=<span class="number">10</span>, max_tries=<span class="number">4</span>,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 max_tasks=<span class="number">10</span>, *, loop=None)</span>:</span>   </span><br><span class="line">        ...  </span><br><span class="line">        self._stopped = <span class="literal">False</span>  </span><br><span class="line">          </span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">parse_link</span><span class="params">(self, response)</span>:</span>  </span><br><span class="line">        rs = <span class="keyword">await</span> response.json()  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> response.status == <span class="number">200</span>:  </span><br><span class="line">            <span class="keyword">if</span> live_dict[<span class="string">'id'</span>] == LAST_INSERT_ID:  </span><br><span class="line">                self._stopped = <span class="literal">True</span>  </span><br><span class="line">                <span class="keyword">return</span>   </span><br><span class="line">            ...  </span><br><span class="line">     </span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">add_url</span><span class="params">(self, url, max_redirect=None)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> max_redirect <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            max_redirect = self.max_redirect  </span><br><span class="line">        <span class="keyword">if</span> url <span class="keyword">not</span> <span class="keyword">in</span> self.seen_urls <span class="keyword">and</span> <span class="keyword">not</span> self._stopped:  </span><br><span class="line">            self.seen_urls.add(url)  </span><br><span class="line">            self.q.put_nowait((url, max_redirect))</span><br></pre></td></tr></table></figure>
+
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-04-18.html" rel="next" title="使用Python进行并发编程-我为什么不喜欢Gevent">
+                <i class="fa fa-chevron-left"></i> 使用Python进行并发编程-我为什么不喜欢Gevent
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-04-20.html" rel="prev" title="豆瓣条目组招聘">
+                豆瓣条目组招聘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#模型设计"><span class="nav-number">1.</span> <span class="nav-text">模型设计</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#主讲人模型"><span class="nav-number">1.1.</span> <span class="nav-text">主讲人模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Live模型"><span class="nav-number">1.2.</span> <span class="nav-text">Live模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爬虫"><span class="nav-number">2.</span> <span class="nav-text">爬虫</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

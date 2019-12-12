@@ -1,0 +1,1484 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="今天进入正题，看看下面效果的小程序是怎么实现的：![](https://github.com/dongweiming/weapp-zhihulive/raw/master/screenshot/zhihulive.png)项目地址 https://github.com/dongweiming/weapp-zhihulivePS: 本文是假设你已经看过微信小程序的官方文档、demo甚至已经动手写过小">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎Live全文搜索之微信小程序实战(二)">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-02-04.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="今天进入正题，看看下面效果的小程序是怎么实现的：![](https://github.com/dongweiming/weapp-zhihulive/raw/master/screenshot/zhihulive.png)项目地址 https://github.com/dongweiming/weapp-zhihulivePS: 本文是假设你已经看过微信小程序的官方文档、demo甚至已经动手写过小">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/23269238/dcd5d5f6-fa2a-11e6-9065-cde6cef11dbe.png">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎Live全文搜索之微信小程序实战(二)">
+<meta name="twitter:description" content="今天进入正题，看看下面效果的小程序是怎么实现的：![](https://github.com/dongweiming/weapp-zhihulive/raw/master/screenshot/zhihulive.png)项目地址 https://github.com/dongweiming/weapp-zhihulivePS: 本文是假设你已经看过微信小程序的官方文档、demo甚至已经动手写过小">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/841395/23269238/dcd5d5f6-fa2a-11e6-9065-cde6cef11dbe.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-02-04.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>知乎Live全文搜索之微信小程序实战(二) | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-04.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎Live全文搜索之微信小程序实战(二)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-04T18:30:58+08:00">
+                2016-02-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-04.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之微信小程序实战(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天进入正题，看看下面效果的小程序是怎么实现的：<br>![](<a href="https://github.com/dongweiming/weapp-" target="_blank" rel="noopener">https://github.com/dongweiming/weapp-</a><br>zhihulive/raw/master/screenshot/zhihulive.png)<br>项目地址 <a href="https://github.com/dongweiming/weapp-zhihulive" target="_blank" rel="noopener">https://github.com/dongweiming/weapp-zhihulive</a><br>PS: 本文是假设你已经看过微信小程序的官方文档、demo甚至已经动手写过小程序，否则建议先去翻翻再来看。</p>
+<h3 id="设计目录结构"><a href="#设计目录结构" class="headerlink" title="设计目录结构"></a>设计目录结构</h3><p>我在上一节<a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%AE%9E%E6%88%98(%E4%B8%80" target="_blank" rel="noopener">知乎Live全文搜索之微信小程序实战（一）</a>/)介绍了组件化，今天就是要实施了。首先我们考虑一个只有index页面的小程序的目录结构是怎么样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">├── app.js  // 全局的脚本文件  </span><br><span class="line">├── app.json  // 全局的配置文件  </span><br><span class="line">├── app.wxss  // 全局的样式文件  </span><br><span class="line">├── pages  </span><br><span class="line">│   ├── index  </span><br><span class="line">│   │   ├── index.js // 脚本文件  </span><br><span class="line">│   │   ├── index.json // 组件的配置文件  </span><br><span class="line">│   │   ├── index.wxml  // 页面结构文件  </span><br><span class="line">│   │   ├── rating.png  // 还有其他的图片..  </span><br><span class="line">│   │   └── index.wxss  // 样式表文件</span><br></pre></td></tr></table></figure>
+
+
+<p>pages目录下有个index目录，存放了名字叫做index，后缀为js/json/wxml/wxss的四个文件。这样做的好处是：</p>
+<ol>
+<li>index目录下存放了页面组件所需要的各种资源， <strong>就近维护</strong> 。如果是React，还得通过使用各种loader，用import的方式来用，所以我喜欢小程序的处理方式。</li>
+<li>当某天不再需要index这个页面，或者要替换成其他的组件，直接把index目录删掉/替换就完事了。<br>接着我们基于Live搜索，思考下如果页面变的复杂，重要元素多的场景：</li>
+<li>需要Live、User、Topic三大元素。</li>
+<li>有些内容是可以重复被利用的，比如评分（就是大家熟悉的星星，5星满分，4.5星次之…）在Live详情页的效果比较大，而在搜索页由于区域小所以小了很多，但是本质上内容是一样的，只不过样式不同。</li>
+<li>有些内容在不同页面重复出现，比如Live，在topic详情页、用户详情页、发现页都有，而且一样。<br>那么：</li>
+<li>评分是一个独立的区域，可以视作一个组件。</li>
+<li>组件与组件之间应该可以 <strong>自由组合</strong> ，所以组件的粒度要细，细到一个组件就是做一件事。</li>
+<li>单个评分组件拿出来是无意义的，只有和Live信息汇合起来才是一个完整页面。<br>所以重新定义目录结构吧：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">App  </span><br><span class="line">├── components  </span><br><span class="line">│   ├── hot  </span><br><span class="line">│   ├── live  </span><br><span class="line">│   ├── user  </span><br><span class="line">│   └── widget  </span><br><span class="line">├── images  </span><br><span class="line">│   └── rating  </span><br><span class="line">├── pages  </span><br><span class="line">│   ├── explore  </span><br><span class="line">│   ├── hot  </span><br><span class="line">│   ├── live  </span><br><span class="line">│   ├── search  </span><br><span class="line">│   ├── topic  </span><br><span class="line">│   └── users  </span><br><span class="line">└── utils</span><br></pre></td></tr></table></figure>
+
+
+<p>现在pages的每个子目录下后缀为js的文件就是页面逻辑。比如pages/users/users.js存放了/users/users的页面逻辑。<br>我新增了3个目录：</p>
+<ol>
+<li>utils。存放一些用得到的功能性的函数，如和后端通信的api.js，一会我们详细再看。</li>
+<li>images。存放公共的静态图片资源。</li>
+<li>components。组件目录，我们把抽象的元素都放在这里，比如评分是一个组件。组件目录下有这些文件：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">components/  </span><br><span class="line">├── hot  </span><br><span class="line">│   ├── hot.wxml  </span><br><span class="line">│   └── hot.wxss  </span><br><span class="line">├── live  </span><br><span class="line">│   ├── live.wxml  </span><br><span class="line">│   ├── live.wxss  </span><br><span class="line">│   ├── live_middle.wxml  </span><br><span class="line">│   ├── live_middle.wxss  </span><br><span class="line">│   ├── live_small.wxml  </span><br><span class="line">│   └── live_small.wxss  </span><br><span class="line">├── user  </span><br><span class="line">│   ├── user.wxml  </span><br><span class="line">│   ├── user.wxss  </span><br><span class="line">│   ├── user_small.wxml  </span><br><span class="line">│   └── user_small.wxss  </span><br><span class="line">└── widget  </span><br><span class="line">    ├── rating.wxml  </span><br><span class="line">    └── rating.wxss</span><br></pre></td></tr></table></figure>
+
+
+<p>widget是更小层级的组件，也是本项目最小的组件单元了。它会被其他的如user/live/hot引用，而user/live/hot最后又会被pages下对应的模板引用。</p>
+<h3 id="捋一个组件化的例子"><a href="#捋一个组件化的例子" class="headerlink" title="捋一个组件化的例子"></a>捋一个组件化的例子</h3><p>首先感受一下发现页：<br><img src="https://cloud.githubusercontent.com/assets/841395/23269238/dcd5d5f6-fa2a-11e6-9065-cde6cef11dbe.png" alt><br>发现页是live的集合。每个live都是一个card，看上面的components目录，live有三种组件，发现页用的是user类型的。<br>pages/explore.wxml文件的内容是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;% raw %&#125;  </span><br><span class="line">&lt;<span class="keyword">import</span> src=<span class="string">"../../components/live/live.wxml"</span> /&gt;  </span><br><span class="line">&lt;scroll-view class="list" style="height: &#123;&#123; windowHeight &#125;&#125;px; width: &#123;&#123; windowWidth &#125;&#125;px;" scroll-y="true" bindscrolltolower="loadMore" lower-threshold="800"&gt;  </span><br><span class="line">  &lt;block wx:<span class="keyword">for</span>=<span class="string">"&#123;&#123; lives &#125;&#125;"</span> wx:<span class="keyword">for</span>-item=<span class="string">"live"</span> wx:key=<span class="string">"live.id"</span>&gt;  </span><br><span class="line">    &lt;template <span class="keyword">is</span>=<span class="string">"m-live"</span> data=<span class="string">"&#123;&#123;live: live&#125;&#125;"</span> /&gt;  </span><br><span class="line">  &lt;/block&gt;  </span><br><span class="line">  &lt;view class="loading"&gt;  </span><br><span class="line">    正在加载...  </span><br><span class="line">  &lt;/view&gt;  </span><br><span class="line">&lt;/scroll-view&gt;  </span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>我简单介绍下这段模板的含义：</p>
+<ol>
+<li>import语句对于写Python，尤其是会Mako的同学非常好理解，就是引入文件。</li>
+<li>scroll-view是「可滚动视图区域」容器，小程序自带的组件，我们可以上下滑动。</li>
+<li>bindscrolltolower=”loadMore” 绑定了一个滚动到底部/右边就会触发的事件，会执行loadMore函数，之后会讲到。</li>
+<li>`` 表示一个for循环的块。</li>
+<li>wx:for-item=”live” 表示循环的每个元素赋值为live。</li>
+<li>`` 表示找名字叫做m-live的模板渲染，传入的参数是live，值为上面循环for-item指定的那个变量‘live’。<br>上面用import通过一个相对路径引入了../../components/live/live.wxml这个模板文件，它里面就会有这个叫做m-<br>live的模板，我们看看它的内容：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;% raw %&#125;  </span><br><span class="line">&lt;<span class="keyword">import</span> src=<span class="string">"../../components/widget/rating.wxml"</span> /&gt;  </span><br><span class="line">&lt;template name=<span class="string">"m-live"</span>&gt;  </span><br><span class="line">  &lt;view class="m-live" bindtap="onViewTap" data-id="&#123;&#123; live.id &#125;&#125;" data-type="live"&gt;  </span><br><span class="line">    &lt;image class="cover" src="&#123;&#123; live.cover &#125;&#125;" mode="aspectFill"&gt;&lt;/image&gt;  </span><br><span class="line">    &lt;view class="info"&gt;  </span><br><span class="line">      &lt;text class="h2"&gt;&#123;&#123; live.subject &#125;&#125;&lt;/text&gt;  </span><br><span class="line">      &lt;view class="rating"&gt;  </span><br><span class="line">        &lt;template <span class="keyword">is</span>=<span class="string">"m-rating"</span> data=<span class="string">"&#123;&#123;count: live.feedback_score, size: 's'&#125;&#125;"</span> /&gt;  </span><br><span class="line">        &lt;view catchtap="onViewTap" data-id="&#123;&#123; live.speaker.id &#125;&#125;" data-type="user" class="user"&gt;  </span><br><span class="line">          &lt;image class="avatar" src="&#123;&#123; live.speaker.avatar_url &#125;&#125;"&gt;&lt;/image&gt;  </span><br><span class="line">          &lt;view class="name"&gt;by &#123;&#123; live.speaker.name &#125;&#125;&lt;/view&gt;  </span><br><span class="line">        &lt;/view&gt;  </span><br><span class="line">      &lt;/view&gt;  </span><br><span class="line">      &lt;view class="detail"&gt;  </span><br><span class="line">        &lt;view&gt;  </span><br><span class="line">          &lt;text&gt;开始时间&#123;&#123; live.starts_at &#125;&#125;&lt;/text&gt;  </span><br><span class="line">        &lt;/view&gt;  </span><br><span class="line">      &lt;/view&gt;  </span><br><span class="line">      &lt;view class="bottom"&gt;&#123;&#123; live.seats_taken &#125;&#125;参与 / &#123;&#123; live.liked_num &#125;&#125;喜欢 / &#123;&#123; live.speaker_message_count &#125;&#125;个回答  </span><br><span class="line">      &lt;/view&gt;  </span><br><span class="line">    &lt;/view&gt;  </span><br><span class="line">  &lt;/view&gt;  </span><br><span class="line">&lt;/template&gt;  </span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这个模板中还用到了import，引入了更小的组件单元rating.wxml，也用到了``这样的方式来调用rating.wxml中的名为m-<br>rating的模板。用这样的方式就实现了组件化，也保证了模板的整洁。<br>这个模板中还有个bindtap=”onViewTap”，相当于给这个div加了一个事件绑定，bindtap表示当用户点击该组件的时候会在该页面对应的Page中找到相应的事件处理函数onViewTap。<br>剩下的就是铺页面结构了，具体想展示什么数据，页面想设计成什么就铺成对应的view，有一点，标签你就当<br>理解好了。</p>
+<h3 id="数据绑定"><a href="#数据绑定" class="headerlink" title="数据绑定"></a>数据绑定</h3><p>现在大家对组件化的用法有了些了解，我们再看看视图和模板之间怎么做数据绑定的。<br>如果你熟悉jinja2或者Mustache，想必对于<code></code>的语法很亲切。对，相当于将变量包起来。<br>那么其中的windowWidth、lives、windowHeight这些是哪里来的呢？<br>答案是「WXML 中的动态数据均来自对应 Page 的 data」，在这里就是pages/explore.js里面：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;% raw %&#125;  </span><br><span class="line">const App = getApp(); // sdk提供的  </span><br><span class="line">const api = require(<span class="string">'../../utils/api.js'</span>);  // 用require语句加载模块，相对路径  </span><br><span class="line">const util = require(<span class="string">'../../utils/util.js'</span>);  </span><br><span class="line">  </span><br><span class="line">const formatTime = util.formatTime;  </span><br><span class="line">  </span><br><span class="line">Page(&#123;  // Page是sdk提供的  </span><br><span class="line">  data: &#123;  // 模板用到的数据都在data下  </span><br><span class="line">    lives: [],   </span><br><span class="line">    start: <span class="number">0</span>,  </span><br><span class="line">    limit: <span class="number">20</span>,  </span><br><span class="line">    loading: false,  </span><br><span class="line">    windowWidth: App.systemInfo.windowWidth,  </span><br><span class="line">    windowHeight: App.systemInfo.windowHeight,  </span><br><span class="line">  &#125;,  </span><br><span class="line">  onLoad() &#123;  // Page自带的生命周期函数，监听页面加载。其他的生命周期可以看官方文档啦  </span><br><span class="line">    this.loadMore(); // 加载页面就会通过loadMore加载数据  </span><br><span class="line">  &#125;,  </span><br><span class="line">  onPullDownRefresh() &#123; // 另外一个Page自带的生命周期函数，监听用户下拉动作  </span><br><span class="line">    this.loadMore(null, true);  </span><br><span class="line">  &#125;,  </span><br><span class="line">  loadMore(e, needRefresh) &#123;  </span><br><span class="line">     ...// 加载数据的逻辑，下面再聊  </span><br><span class="line">  &#125;,  </span><br><span class="line">  onViewTap(e) &#123; // 模板绑定的bindtap/catchtap事件就会执行这个函数  </span><br><span class="line">    const ds = e.currentTarget.dataset; // 查找模板对应div的数据集，也就是那些<span class="string">'data-'</span>开头的属性，比如上面的「data-id=<span class="string">"&#123;&#123; live.id &#125;&#125;"</span> data-type=<span class="string">"live"</span>」,这里会能找到ds.id和ds.type了  </span><br><span class="line">    const t = ds['type'] === 'live' ? 'live/live' : 'users/user' // ds.type 和 ds['type'] 一样的用  </span><br><span class="line">    wx.navigateTo(&#123; // 是sdk提供的一个界面API，表示在新窗口打开页面  </span><br><span class="line">      url: `../$&#123;t&#125;?id=$&#123;ds.id&#125;`,  </span><br><span class="line">    &#125;);  </span><br><span class="line">  &#125;,  </span><br><span class="line">&#125;);  </span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="loadMore"><a href="#loadMore" class="headerlink" title="loadMore"></a>loadMore</h3><p>实现一个简单的加载数据的逻辑，首先是在data下面初始化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Page(&#123;  </span><br><span class="line">  data: &#123;  </span><br><span class="line">    lives: [],  </span><br><span class="line">    start: <span class="number">0</span>,  </span><br><span class="line">    limit: <span class="number">20</span>,  </span><br><span class="line">    loading: false,  </span><br><span class="line">    ....</span><br></pre></td></tr></table></figure>
+
+
+<p>start/limit就是用来翻页的参数，后端拿到的结果合并到lives中，loading检查是不是已经请求过而减少后端压力：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">loadMore(e, needRefresh) &#123;  </span><br><span class="line">    const self = this;  </span><br><span class="line">    const loading = self.data.loading;  </span><br><span class="line">    const data = &#123;  </span><br><span class="line">      start: self.data.start,  </span><br><span class="line">    &#125;;  </span><br><span class="line">    <span class="keyword">if</span> (loading) &#123;  </span><br><span class="line">      <span class="keyword">return</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    self.setData(&#123;  </span><br><span class="line">      loading: true,  </span><br><span class="line">    &#125;);  </span><br><span class="line">    api.explore(&#123;  </span><br><span class="line">      data,  </span><br><span class="line">      success: (res) =&gt; &#123;  </span><br><span class="line">        let lives = res.data.rs;  </span><br><span class="line">        lives.map((live) =&gt; &#123;  </span><br><span class="line">          const item = live;  </span><br><span class="line">          item.starts_at = formatTime(new Date(item.starts_at * <span class="number">1000</span>), <span class="number">1</span>);  </span><br><span class="line">          <span class="keyword">return</span> item;  </span><br><span class="line">        &#125;);  </span><br><span class="line">        <span class="keyword">if</span> (needRefresh) &#123;  </span><br><span class="line">          wx.stopPullDownRefresh();  </span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">          lives = self.data.lives.concat(lives);  </span><br><span class="line">        &#125;  </span><br><span class="line">        self.setData(&#123;  </span><br><span class="line">          lives: lives,  </span><br><span class="line">          start: self.data.start + self.data.limit,  </span><br><span class="line">          loading: false,  </span><br><span class="line">        &#125;);  </span><br><span class="line">      &#125;,  </span><br><span class="line">    &#125;);  </span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+
+
+<p>有几点需要注意：</p>
+<ol>
+<li>说一下<code>const self = this;</code>这样的用法的原因：this是一个特殊的对象，这个this对象是在运行时基于执行环境绑定的，即在全局对象中，this指向的是window对象；在自定义函数中，this对象指向的是调用这个函数的对象。常用的做法是在函数内赋值给一个私有的self（叫that或者其他也没有关系），这样就能保证在外部调用的时候使用的是函数对象了。</li>
+<li>setData就类似于React的setState。</li>
+<li>api.explore是封装好的api方法，后面会提到实现的原理。<h3 id="小程序怎么和后端交互"><a href="#小程序怎么和后端交互" class="headerlink" title="小程序怎么和后端交互"></a>小程序怎么和后端交互</h3>我们后端提供JSON<br>API返回需要的数据，在小程序中如何来调用呢？小程序提供了wx.request这个方法来发起HTTP（S）请求。但是需要注意它不容许使用referer，所以图片不是直接从知乎获取，而是先下载到本地，再由本地来serve的。<br>我们基于wx.request封装一下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const apiURL = <span class="string">'http://localhost:8300/api/v1'</span>;  </span><br><span class="line">  </span><br><span class="line">const wxRequest = (params, url) =&gt; &#123;  </span><br><span class="line">  wx.request(&#123;  </span><br><span class="line">    url,  </span><br><span class="line">    method: params.method || <span class="string">'GET'</span>,  </span><br><span class="line">    data: params.data || &#123;&#125;,  </span><br><span class="line">    header: &#123;  </span><br><span class="line">      Accept: <span class="string">'application/json'</span>,  </span><br><span class="line">      <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span>,  </span><br><span class="line">    &#125;,  </span><br><span class="line">    success(res) &#123;  </span><br><span class="line">      <span class="keyword">if</span> (params.success) &#123;  </span><br><span class="line">        params.success(res);  </span><br><span class="line">      &#125;  </span><br><span class="line">    &#125;,  </span><br><span class="line">    fail(res) &#123;  </span><br><span class="line">      <span class="keyword">if</span> (params.fail) &#123;  </span><br><span class="line">        params.fail(res);  </span><br><span class="line">      &#125;  </span><br><span class="line">    &#125;,  </span><br><span class="line">    complete(res) &#123;  </span><br><span class="line">      <span class="keyword">if</span> (params.complete) &#123;  </span><br><span class="line">        params.complete(res);  </span><br><span class="line">      &#125;  </span><br><span class="line">    &#125;,  </span><br><span class="line">  &#125;);  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line">const explore = (params) =&gt; &#123;  </span><br><span class="line">  wxRequest(params, `$&#123;apiURL&#125;/explore`);  </span><br><span class="line">&#125;;  </span><br><span class="line">const getLiveInfoById = (params) =&gt; &#123;  </span><br><span class="line">  wxRequest(&#123; success: params.success &#125;, `$&#123;apiURL&#125;/live/$&#123;params.data.id&#125;`);  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line">module.exports = &#123;  </span><br><span class="line">  explore,  </span><br><span class="line">  getLiveInfoById,  </span><br><span class="line">  ...  </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>由于这个项目都是一些获取资源的需求，一律用的GET，实现的就比较简单了。使用这个模块里面的那些函数就可以实现请求后端对应接口了。</p>
+<h3 id="组合这些页面"><a href="#组合这些页面" class="headerlink" title="组合这些页面"></a>组合这些页面</h3><p>上面展示的是一个组件的实现。多个组件是路由的呢？在小程序中是靠全局配置文件app.json实现的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;  </span><br><span class="line">  <span class="string">"pages"</span>: [  </span><br><span class="line">    <span class="string">"pages/explore/explore"</span>,  </span><br><span class="line">    <span class="string">"pages/search/search"</span>,  </span><br><span class="line">    <span class="string">"pages/users/users"</span>,  </span><br><span class="line">    <span class="string">"pages/users/user"</span>,  </span><br><span class="line">    <span class="string">"pages/hot/weekly"</span>,  </span><br><span class="line">    <span class="string">"pages/topic/hot_topics"</span>,  </span><br><span class="line">    <span class="string">"pages/live/live"</span>,  </span><br><span class="line">    <span class="string">"pages/topic/topic"</span>,  </span><br><span class="line">    <span class="string">"pages/hot/monthly"</span>  </span><br><span class="line">  ],  </span><br><span class="line">  <span class="string">"window"</span>: &#123;  </span><br><span class="line">    <span class="string">"backgroundTextStyle"</span>: <span class="string">"dark"</span>,  </span><br><span class="line">    <span class="string">"navigationBarBackgroundColor"</span>: <span class="string">"#4abdcc"</span>,  </span><br><span class="line">    <span class="string">"navigationBarTitleText"</span>: <span class="string">"知乎Live"</span>,  </span><br><span class="line">    <span class="string">"navigationBarTextStyle"</span>: <span class="string">"white"</span>,  </span><br><span class="line">    <span class="string">"enablePullDownRefresh"</span>: true  </span><br><span class="line">  &#125;,  </span><br><span class="line">  <span class="string">"tabBar"</span>: &#123;  </span><br><span class="line">    <span class="string">"color"</span>: <span class="string">"#b0b0b0"</span>,  </span><br><span class="line">    <span class="string">"selectedColor"</span>: <span class="string">"#4abdcc"</span>,  </span><br><span class="line">    <span class="string">"borderStyle"</span>: <span class="string">"white"</span>,  </span><br><span class="line">    <span class="string">"backgroundColor"</span>: <span class="string">"#fff"</span>,  </span><br><span class="line">    <span class="string">"list"</span>: [  </span><br><span class="line">      &#123;  </span><br><span class="line">        <span class="string">"pagePath"</span>: <span class="string">"pages/explore/explore"</span>,  </span><br><span class="line">        <span class="string">"iconPath"</span>: <span class="string">"images/explore_normal.png"</span>,  </span><br><span class="line">        <span class="string">"selectedIconPath"</span>: <span class="string">"images/explore_pressed.png"</span>,  </span><br><span class="line">        <span class="string">"text"</span>: <span class="string">"发现"</span>  </span><br><span class="line">      &#125;,  </span><br><span class="line">      &#123;  </span><br><span class="line">        <span class="string">"pagePath"</span>: <span class="string">"pages/hot/weekly"</span>,  </span><br><span class="line">        <span class="string">"iconPath"</span>: <span class="string">"images/hot_normal.png"</span>,  </span><br><span class="line">        <span class="string">"selectedIconPath"</span>: <span class="string">"images/hot_pressed.png"</span>,  </span><br><span class="line">        <span class="string">"text"</span>: <span class="string">"热门"</span>  </span><br><span class="line">      &#125;,  </span><br><span class="line">      &#123;  </span><br><span class="line">        <span class="string">"pagePath"</span>: <span class="string">"pages/search/search"</span>,  </span><br><span class="line">        <span class="string">"iconPath"</span>: <span class="string">"images/search-off.png"</span>,  </span><br><span class="line">        <span class="string">"selectedIconPath"</span>: <span class="string">"images/search-on.png"</span>,  </span><br><span class="line">        <span class="string">"text"</span>: <span class="string">"搜索"</span>  </span><br><span class="line">      &#125;  </span><br><span class="line">    ]  </span><br><span class="line">  &#125;,  </span><br><span class="line">  <span class="string">"debug"</span>: true  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>其中：</p>
+<ul>
+<li>pages。设置页面路径，指定小程序由哪些页面组成。每一项代表对应页面的【路径+文件名】信息，数组的第一项代表小程序的初始页面。</li>
+<li>tabBar。设置底部tab的表现。</li>
+<li>window。设置页面路径。如状态栏、导航条、标题、窗口背景色等。<h3 id="小程序的一些经验"><a href="#小程序的一些经验" class="headerlink" title="小程序的一些经验"></a>小程序的一些经验</h3>上面就是我对小程序的玩法的理解了。说几个我开发中遇到的坑儿吧：<h4 id="事件冒泡"><a href="#事件冒泡" class="headerlink" title="事件冒泡"></a>事件冒泡</h4>发现页的Live上有2种事件：点击头像会去用户详情页，其他位置会去Live详情页。事件绑定在组件上，触发事件就会执行逻辑层中对应的事件处理函数。想象一下，如果点击用户头像会发生什么：</li>
+</ul>
+<ol>
+<li>进入用户详情页</li>
+<li>然后再进入Live详情页<br>由于小程序的事件封装，我们不能使用e.stopPropagation()这样的方式阻止事件冒泡，所以在用户这个view上不能绑定bindtap，而是要用catchtap。在前面展示live.wxml的时候，你可以没注意到这点，我简化下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;% raw %&#125;  </span><br><span class="line">&lt;view class="m-live" bindtap="onViewTap" data-id="&#123;&#123; live.id &#125;&#125;" data-type="live"&gt;  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">&lt;view class="info"&gt;  </span><br><span class="line">  ..  </span><br><span class="line">  &lt;view class="rating"&gt;  </span><br><span class="line">    ..  </span><br><span class="line">    &lt;view catchtap="onViewTap" data-id="&#123;&#123; live.speaker.id &#125;&#125;" data-type="user" class="user"&gt;  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">&#123;% endraw %&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>绑定到同一个事件函数上：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">onViewTap(e) &#123;  </span><br><span class="line">  const ds = e.currentTarget.dataset;  </span><br><span class="line">  const t = ds['type'] === 'live' ? 'live/live' : 'users/user'  </span><br><span class="line">  wx.navigateTo(&#123;  </span><br><span class="line">    url: `../$&#123;t&#125;?id=$&#123;ds.id&#125;`,  </span><br><span class="line">  &#125;);  </span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="抽象Page"><a href="#抽象Page" class="headerlink" title="抽象Page"></a>抽象Page</h4><p>我没有使用额外的辅助工具开发，不能使用继承的方式用Page：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">export default class Index extends Page &#123;  </span><br><span class="line">  </span><br><span class="line">  data = &#123;  </span><br><span class="line">    userInfo: &#123;&#125;  </span><br><span class="line">  &#125;;  </span><br><span class="line">  bindViewTap () &#123;  </span><br><span class="line">    console.log(<span class="string">'Button Clicked'</span>);  </span><br><span class="line">  &#125;;  </span><br><span class="line">  onLoad() &#123;  </span><br><span class="line">    console.log(<span class="string">'OnLoad'</span>);  </span><br><span class="line">  &#125;;  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这很不爽。你想啊，一些页面的LoadMore、Onload其实差不多。尤其是7天热门和30天热门这2个页面，不一样的只是调用了api.getHotByWeekly和api.getHotByMonthly，重复代码是不是有点不能忍？仔细看一下Page其实是接受了一个字典，每个其中的data和其他生命周期函数以及自定义方法都是键值对的方式传进去。那么这有点简单了，我写个函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">export function gen_page(type) &#123;  </span><br><span class="line">  <span class="keyword">return</span> &#123;  </span><br><span class="line">    data: &#123;  </span><br><span class="line">      lives: [],  </span><br><span class="line">      ...  </span><br><span class="line">    &#125;,  </span><br><span class="line">    onLoad() &#123;  </span><br><span class="line">      ...  </span><br><span class="line">      api[`getHotBy$&#123;type&#125;ly`](&#123;  </span><br><span class="line">        success: (res) =&gt; &#123;  </span><br><span class="line">        ...  </span><br><span class="line">        &#125;  </span><br><span class="line">      &#125;);  </span><br><span class="line">    &#125;,  </span><br><span class="line">    onChangeTab(e) &#123;  </span><br><span class="line">      const ds = e.currentTarget.dataset;  </span><br><span class="line">      <span class="keyword">if</span> (type == <span class="string">'Month'</span> &amp;&amp; ds.type == <span class="string">'Week'</span>) &#123;  </span><br><span class="line">        wx.navigateBack(<span class="string">'../hot/weekly'</span>);  </span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        wx.navigateTo(&#123;  </span><br><span class="line">          url: `../hot/$&#123;ds.type.toLowerCase()&#125;ly`,  </span><br><span class="line">        &#125;);  </span><br><span class="line">      &#125;  </span><br><span class="line">    &#125;,  </span><br><span class="line">  &#125;,  </span><br><span class="line">  ...  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>需要注意一点，onChangeTab中对于Tab切换的时间的处理用到wx.navigateBack，我觉得这也是小程序实现的一个不好的地方，我需要特殊处理「这种打开了页面A（navigateTo），然后打开页面B（navigateTo），再用navigateTo就不能回到A了」的问题，得用navigateBack。<br>这样，调用的时候就简单了，比如7天的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">const lib = require(<span class="string">'./lib.js'</span>);  </span><br><span class="line">  </span><br><span class="line">Page(lib.gen_page(<span class="string">'Week'</span>));</span><br></pre></td></tr></table></figure>
+
+
+<p>这是「知乎Live全文搜索的小程序」专题的最后一篇啦，感谢大家坚持阅读..</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-03.html" rel="next" title="sed-and-awk">
+                <i class="fa fa-chevron-left"></i> sed-and-awk
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-05.html" rel="prev" title="wechat-admin:Celery使用篇">
+                wechat-admin:Celery使用篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#设计目录结构"><span class="nav-number">1.</span> <span class="nav-text">设计目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#捋一个组件化的例子"><span class="nav-number">2.</span> <span class="nav-text">捋一个组件化的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据绑定"><span class="nav-number">3.</span> <span class="nav-text">数据绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#loadMore"><span class="nav-number">4.</span> <span class="nav-text">loadMore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序怎么和后端交互"><span class="nav-number">5.</span> <span class="nav-text">小程序怎么和后端交互</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组合这些页面"><span class="nav-number">6.</span> <span class="nav-text">组合这些页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小程序的一些经验"><span class="nav-number">7.</span> <span class="nav-text">小程序的一些经验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#事件冒泡"><span class="nav-number">7.1.</span> <span class="nav-text">事件冒泡</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#抽象Page"><span class="nav-number">7.2.</span> <span class="nav-text">抽象Page</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

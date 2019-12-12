@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="我曾经在一些公众场合说过心中的优秀Python开发者。Flask和Requests的作者就不说了，21世纪最缺的就是idea，他们不仅有而且还都用非常优美的方式做出来了。另外我还提到了Celery作者AskSolem，并不是因为Celery很有名它的主要作者就优秀了，我对ask的欣赏，完全是看Celery及其相关依赖的源代码的时候产生的。有多年后台开发的工程师想必清楚，Celery本身涉及到的技术">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="优秀开源项目kombu源码分析之registry和entrypoint">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-02-24.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="我曾经在一些公众场合说过心中的优秀Python开发者。Flask和Requests的作者就不说了，21世纪最缺的就是idea，他们不仅有而且还都用非常优美的方式做出来了。另外我还提到了Celery作者AskSolem，并不是因为Celery很有名它的主要作者就优秀了，我对ask的欣赏，完全是看Celery及其相关依赖的源代码的时候产生的。有多年后台开发的工程师想必清楚，Celery本身涉及到的技术">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.313Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="优秀开源项目kombu源码分析之registry和entrypoint">
+<meta name="twitter:description" content="我曾经在一些公众场合说过心中的优秀Python开发者。Flask和Requests的作者就不说了，21世纪最缺的就是idea，他们不仅有而且还都用非常优美的方式做出来了。另外我还提到了Celery作者AskSolem，并不是因为Celery很有名它的主要作者就优秀了，我对ask的欣赏，完全是看Celery及其相关依赖的源代码的时候产生的。有多年后台开发的工程师想必清楚，Celery本身涉及到的技术">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-02-24.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>优秀开源项目kombu源码分析之registry和entrypoint | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-24.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">优秀开源项目kombu源码分析之registry和entrypoint</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-24T18:30:58+08:00">
+                2016-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-24.html" class="leancloud_visitors" data-flag-title="优秀开源项目kombu源码分析之registry和entrypoint">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>我曾经在一些公众场合说过心中的优秀Python开发者。Flask和Requests的作者就不说了，21世纪最缺的就是idea，他们不仅有而且还都用非常优美的方式做出来了。另外我还提到了Celery作者Ask<br>Solem，并不是因为Celery很有名它的主要作者就优秀了，我对ask的欣赏，完全是看Celery及其相关依赖的源代码的时候产生的。<br>有多年后台开发的工程师想必清楚，Celery本身涉及到的技术点其实在业界应用是很广泛的。Celery能这么流行，我们先排除没有进行技术深入下的盲从，和它诞生的非常早以外，我认为这和项目的内部设计的非常好也是有关的。<br>接下来的几篇文章我将分析Celery使用的Kombu库中的一些设计实现让大家对这个优秀项目更了解，并从中学习可扩展开发的实践。</p>
+<h3 id="Kombu是什么？"><a href="#Kombu是什么？" class="headerlink" title="Kombu是什么？"></a>Kombu是什么？</h3><p>当一个项目变得越来越复杂，就要考虑只保留核心，并把其他部分分拆到不同的项目中以便减少未来的维护和开发的成本。Flask、IPython都是这样做的。<br>Kombu是一个把消息传递封装成统一接口的库。<br>Celery一开始先支持的RabbitMQ，也就是使用AMQ协议。由于要支持越来越多的消息代理，但是这些消息代理是不支持AMQ协议的，需要一个东西把所有的消息代理的处理方式统一起来，甚至可以理解为把它们「伪装成支持AMQ协议」。Kombu的最初的实现叫做carrot,<br>后来经过重构才成了Kombu。</p>
+<h3 id="registry"><a href="#registry" class="headerlink" title="registry"></a>registry</h3><p>registry也就是「注册」，有按需加入的意思，在Python标准库和一些优秀开源项目中都有应用。我们先看个django的<a href="https://github.com/django/django/blob/cecc079168e8669138728d31611ff3a1e7eb3a9f/django/core/checks/registry.py#L21" target="_blank" rel="noopener">场景</a>，为了减少篇幅我没有列出CheckRegistry类中其他方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">### source code start  </span></span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CheckRegistry</span>:</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self.registered_checks = []  </span><br><span class="line">        self.deployment_checks = []  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, check=None, *tags, **kwargs)</span>:</span>  </span><br><span class="line">        kwargs.setdefault(<span class="string">'deploy'</span>, <span class="literal">False</span>)  </span><br><span class="line">  </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(check)</span>:</span>  </span><br><span class="line">            check.tags = tags  </span><br><span class="line">            <span class="keyword">if</span> kwargs[<span class="string">'deploy'</span>]:  </span><br><span class="line">                <span class="keyword">if</span> check <span class="keyword">not</span> <span class="keyword">in</span> self.deployment_checks:  </span><br><span class="line">                    self.deployment_checks.append(check)  </span><br><span class="line">            <span class="keyword">elif</span> check <span class="keyword">not</span> <span class="keyword">in</span> self.registered_checks:  </span><br><span class="line">                self.registered_checks.append(check)  </span><br><span class="line">            <span class="keyword">return</span> check  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> callable(check):  </span><br><span class="line">            <span class="keyword">return</span> inner(check)  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">if</span> check:  </span><br><span class="line">                tags += (check, )  </span><br><span class="line">            <span class="keyword">return</span> inner  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tag_exists</span><span class="params">(self, tag, include_deployment_checks=False)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> tag <span class="keyword">in</span> self.tags_available(include_deployment_checks)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tags_available</span><span class="params">(self, deployment_checks=False)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> set(chain(*[check.tags <span class="keyword">for</span> check <span class="keyword">in</span> self.get_checks(deployment_checks) <span class="keyword">if</span> hasattr(check, <span class="string">'tags'</span>)]))  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_checks</span><span class="params">(self, include_deployment_checks=False)</span>:</span>  </span><br><span class="line">        checks = list(self.registered_checks)  </span><br><span class="line">        <span class="keyword">if</span> include_deployment_checks:  </span><br><span class="line">            checks.extend(self.deployment_checks)  </span><br><span class="line">        <span class="keyword">return</span> checks  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">registry = CheckRegistry()  </span><br><span class="line">register = registry.register  </span><br><span class="line">tag_exists = registry.tag_exists  </span><br><span class="line">  </span><br><span class="line"><span class="comment">### source code end  </span></span><br><span class="line"><span class="meta">@register('mytag', 'another_tag')  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">my_check</span><span class="params">(apps, **kwargs)</span>:</span>  </span><br><span class="line">    <span class="keyword">pass</span>  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">print</span> tag_exists(<span class="string">'another_tag'</span>)  </span><br><span class="line"><span class="keyword">print</span> tag_exists(<span class="string">'not_exists_tag'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到每次用registry.register都能动态的添加新的tag，最后还用<code>register =
+registry.register</code>这样的方式列了个别名。执行结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python django_example.py  </span><br><span class="line"><span class="literal">True</span>  </span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+
+<p>kombu库包含对消息的序列化和反序列化工作的实现，可以同时支持多种序列化方案，如pickle、json、yaml和msgpack。假如你从前没有写过这样可扩展的项目，可能想的是每种的方案的loads和dumps都封装一遍，然后用一个大的if/elif/else来控制最后的序列化如何执行。<br>那么在kombu里面是怎么用的呢？我简化下它的<a href="https://github.com/celery/kombu/blob/master/kombu/serialization.py" target="_blank" rel="noopener">实现</a>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> codecs  </span><br><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> namedtuple  </span><br><span class="line">  </span><br><span class="line">codec = namedtuple(<span class="string">'codec'</span>, (<span class="string">'content_type'</span>, <span class="string">'content_encoding'</span>, <span class="string">'encoder'</span>))  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SerializerNotInstalled</span><span class="params">(Exception)</span>:</span>  </span><br><span class="line">    <span class="keyword">pass</span>  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SerializerRegistry</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self._encoders = &#123;&#125;  </span><br><span class="line">        self._decoders = &#123;&#125;  </span><br><span class="line">        self._default_encode = <span class="literal">None</span>  </span><br><span class="line">        self._default_content_type = <span class="literal">None</span>  </span><br><span class="line">        self._default_content_encoding = <span class="literal">None</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self, name, encoder, decoder, content_type,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 content_encoding=<span class="string">'utf-8'</span>)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> encoder:  </span><br><span class="line">            self._encoders[name] = codec(  </span><br><span class="line">                content_type, content_encoding, encoder,  </span><br><span class="line">            )  </span><br><span class="line">        <span class="keyword">if</span> decoder:  </span><br><span class="line">            self._decoders[content_type] = decoder  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_set_default_serializer</span><span class="params">(self, name)</span>:</span>  </span><br><span class="line">        <span class="keyword">try</span>:  </span><br><span class="line">            (self._default_content_type, self._default_content_encoding,  </span><br><span class="line">             self._default_encode) = self._encoders[name]  </span><br><span class="line">        <span class="keyword">except</span> KeyError:  </span><br><span class="line">            <span class="keyword">raise</span> SerializerNotInstalled(  </span><br><span class="line">                <span class="string">'No encoder installed for &#123;0&#125;'</span>.format(name))  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">dumps</span><span class="params">(self, data, serializer=None)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> serializer <span class="keyword">and</span> <span class="keyword">not</span> self._encoders.get(serializer):  </span><br><span class="line">            <span class="keyword">raise</span> SerializerNotInstalled(  </span><br><span class="line">                <span class="string">'No encoder installed for &#123;0&#125;'</span>.format(serializer))  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> serializer <span class="keyword">and</span> isinstance(data, unicode):  </span><br><span class="line">            payload = data.encode(<span class="string">'utf-8'</span>)  </span><br><span class="line">            <span class="keyword">return</span> <span class="string">'text/plain'</span>, <span class="string">'utf-8'</span>, payload  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> serializer:  </span><br><span class="line">            content_type, content_encoding, encoder = \  </span><br><span class="line">                self._encoders[serializer]  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            encoder = self._default_encode  </span><br><span class="line">            content_type = self._default_content_type  </span><br><span class="line">            content_encoding = self._default_content_encoding  </span><br><span class="line">  </span><br><span class="line">        payload = encoder(data)  </span><br><span class="line">        <span class="keyword">return</span> content_type, content_encoding, payload  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">loads</span><span class="params">(self, data, content_type, content_encoding)</span>:</span>  </span><br><span class="line">        content_type = (content_type <span class="keyword">if</span> content_type  </span><br><span class="line">                        <span class="keyword">else</span> <span class="string">'application/data'</span>)  </span><br><span class="line">        content_encoding = (content_encoding <span class="keyword">or</span> <span class="string">'utf-8'</span>).lower()  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> data:  </span><br><span class="line">            decode = self._decoders.get(content_type)  </span><br><span class="line">            <span class="keyword">if</span> decode:  </span><br><span class="line">                <span class="keyword">return</span> decode(data)  </span><br><span class="line">        <span class="keyword">return</span> data  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">registry = SerializerRegistry()  </span><br><span class="line">dumps = registry.dumps  </span><br><span class="line">loads = registry.loads  </span><br><span class="line">register = registry.register</span><br></pre></td></tr></table></figure>
+
+
+<p>其实kombu还实现了unregister限于篇幅我就不展开了。现在我们想添加yaml的支持，只需要加这样一个函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">register_yaml</span><span class="params">()</span>:</span>  </span><br><span class="line">    <span class="keyword">try</span>:  </span><br><span class="line">        <span class="keyword">import</span> yaml  </span><br><span class="line">        registry.register(<span class="string">'yaml'</span>, yaml.safe_dump, yaml.safe_load,  </span><br><span class="line">                          content_type=<span class="string">'application/x-yaml'</span>,  </span><br><span class="line">                          content_encoding=<span class="string">'utf-8'</span>)  </span><br><span class="line">    <span class="keyword">except</span> ImportError:  </span><br><span class="line">  </span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">not_available</span><span class="params">(*args, **kwargs)</span>:</span>  </span><br><span class="line">            <span class="string">"""Raise SerializerNotInstalled.  </span></span><br><span class="line"><span class="string">            Used in case a client receives a yaml message, but yaml  </span></span><br><span class="line"><span class="string">            isn't installed.  </span></span><br><span class="line"><span class="string">            """</span>  </span><br><span class="line">            <span class="keyword">raise</span> SerializerNotInstalled(  </span><br><span class="line">                <span class="string">'No decoder installed for YAML. Install the PyYAML library'</span>)  </span><br><span class="line">        registry.register(<span class="string">'yaml'</span>, <span class="literal">None</span>, not_available, <span class="string">'application/x-yaml'</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">register_yaml()</span><br></pre></td></tr></table></figure>
+
+
+<p>这样就支持yaml了。如果希望默认使用yaml来序列化，可以执行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">registry._set_default_serializer(<span class="string">'yaml'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>是不是非常好扩展，如果哪天我希望去掉对pickle(安全问题)，就可以直接注释对应的函数就好了。写个小例子试验下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">yaml_data = <span class="string">"""\  </span></span><br><span class="line"><span class="string">float: 3.1415926500000002  </span></span><br><span class="line"><span class="string">int: 10  </span></span><br><span class="line"><span class="string">list: [george, jerry, elaine, cosmo]  </span></span><br><span class="line"><span class="string">string: The quick brown fox jumps over the lazy dog  </span></span><br><span class="line"><span class="string">unicode: "Th\\xE9 quick brown fox jumps over th\\xE9 lazy dog"  </span></span><br><span class="line"><span class="string">"""</span>  </span><br><span class="line">  </span><br><span class="line">content_type, content_encoding, payload = dumps(yaml_data, serializer=<span class="string">'yaml'</span>)  </span><br><span class="line"><span class="keyword">print</span> content_type, content_encoding  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">assert</span> loads(payload, content_type=content_type, content_encoding=content_encoding) == yaml_data</span><br></pre></td></tr></table></figure>
+
+
+<p>运行的结果就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python kombu_example.py  </span><br><span class="line">application/x-yaml utf<span class="number">-8</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="entrypoint"><a href="#entrypoint" class="headerlink" title="entrypoint"></a>entrypoint</h3><p>在我的书里面介绍过如果使用标准库自带的pkg_resources.iter_entry_points实现一个简单的插件系统。这在kombu上面也有应用，在序列化实现模块的最后加了这么几句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> pkg_resources <span class="keyword">import</span> iter_entry_points  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">for</span> ep <span class="keyword">in</span> iter_entry_points(<span class="string">'kombu.serializers'</span>):  </span><br><span class="line">    args = ep.load()  </span><br><span class="line">    register(ep.name, *args)</span><br></pre></td></tr></table></figure>
+
+
+<p>这是什么东西呢？pkg_resources是一个用于包发现和资源访问的模块，我们可以实现不同的kombu扩展，如果在这个扩展项目的setup.py里面设置对应的entry_points，在安装之后，运行上述代码的时候就会自动找到这些扩展，并注册进来。这就是一个扩展系统。Flake8就是最好的这个扩展玩法的范例。<br>kombu的扩展不多，我选择[kombu-fernet-serializers](<a href="https://github.com/heroku/kombu-" target="_blank" rel="noopener">https://github.com/heroku/kombu-</a><br>fernet-serializers)来进行介绍。首先看一下它的setup.py文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">... </span> </span><br><span class="line">    entry_points=&#123;  </span><br><span class="line">        <span class="string">'kombu.serializers'</span>: [  </span><br><span class="line">            <span class="string">'fernet_json = kombu_fernet.serializers.json:register_args'</span>,  </span><br><span class="line">            <span class="string">'fernet_yaml = kombu_fernet.serializers.yaml:register_args'</span>,  </span><br><span class="line">            <span class="string">'fernet_pickle = kombu_fernet.serializers.pickle:register_args'</span>,  </span><br><span class="line">            <span class="string">'fernet_msgpack = kombu_fernet.serializers.msgpack:register_args'</span>,  </span><br><span class="line">        ]  </span><br><span class="line">    &#125;  </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+<p>注意到了吧，这个entry点就是kombu.serializers，安装之后就多了4个序列化方案，我们看一下fernet_json的实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> anyjson <span class="keyword">as</span> _json  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> fernet_encode, fernet_decode  </span><br><span class="line">  </span><br><span class="line">MIMETYPE = <span class="string">'application/x-fernet-json'</span>  </span><br><span class="line">  </span><br><span class="line">register_args = (  </span><br><span class="line">    fernet_encode(_json.dumps),  </span><br><span class="line">    fernet_decode(_json.loads),  </span><br><span class="line">    MIMETYPE,  </span><br><span class="line">    <span class="string">'utf-8'</span>,  </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+<p>而fernet_yaml也被放进了模块的方式，其实和在函数内殊途同归：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> kombu.exceptions <span class="keyword">import</span> SerializerNotInstalled  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> fernet_encode, fernet_decode  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">try</span>:  </span><br><span class="line">    <span class="keyword">import</span> yaml  </span><br><span class="line"><span class="keyword">except</span> ImportError:  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">not_available</span><span class="params">(*args, **kwargs)</span>:</span>  </span><br><span class="line">        <span class="string">"""In case a client receives a yaml message, but yaml  </span></span><br><span class="line"><span class="string">        isn't installed."""</span>  </span><br><span class="line">        <span class="keyword">raise</span> SerializerNotInstalled(  </span><br><span class="line">            <span class="string">'No decoder installed for YAML. Install the PyYAML library'</span>)  </span><br><span class="line">  </span><br><span class="line">    yaml_encoder = not_available  </span><br><span class="line">    yaml_decoder = <span class="literal">None</span>  </span><br><span class="line"><span class="keyword">else</span>:  </span><br><span class="line">    yaml_encoder = yaml.safe_dump  </span><br><span class="line">    yaml_decoder = yaml.safe_load  </span><br><span class="line">  </span><br><span class="line">MIMETYPE = <span class="string">'application/x-fernet-yaml'</span>  </span><br><span class="line">  </span><br><span class="line">register_args = (  </span><br><span class="line">    fernet_encode(yaml_encoder),  </span><br><span class="line">    fernet_decode(yaml_decoder) <span class="keyword">if</span> yaml_decoder <span class="keyword">else</span> <span class="literal">None</span>,  </span><br><span class="line">    MIMETYPE,  </span><br><span class="line">    <span class="string">'utf-8'</span>,  </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+<p>事实上，我们并不需要了解fernet_encode和fernet_decode是如何对消息做对称加密的，只是感受下这样添加扩展的方式是不是很优雅呢？</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-23.html" rel="next" title="推荐wtfPython:一组有趣的、微妙的、复杂的Python代码片段">
+                <i class="fa fa-chevron-left"></i> 推荐wtfPython:一组有趣的、微妙的、复杂的Python代码片段
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-25.html" rel="prev" title="多master/develop分支使用gitflow">
+                多master/develop分支使用gitflow <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Kombu是什么？"><span class="nav-number">1.</span> <span class="nav-text">Kombu是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#registry"><span class="nav-number">2.</span> <span class="nav-text">registry</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#entrypoint"><span class="nav-number">3.</span> <span class="nav-text">entrypoint</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,%prun, %logstart..想查看全部的magic可以使用ismagic, 列出可用的全部magics 12%lsmagic   magic分为2类:  line magic: 一些功能命令 cell magic: 主要是渲染ipython notebo">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ipython的一些高级用法(二)">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-03-23.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,%prun, %logstart..想查看全部的magic可以使用ismagic, 列出可用的全部magics 12%lsmagic   magic分为2类:  line magic: 一些功能命令 cell magic: 主要是渲染ipython notebo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.317Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ipython的一些高级用法(二)">
+<meta name="twitter:description" content="今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,%prun, %logstart..想查看全部的magic可以使用ismagic, 列出可用的全部magics 12%lsmagic   magic分为2类:  line magic: 一些功能命令 cell magic: 主要是渲染ipython notebo">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-03-23.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>ipython的一些高级用法(二) | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-23.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">ipython的一些高级用法(二)</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-23T18:30:58+08:00">
+                2016-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-23.html" class="leancloud_visitors" data-flag-title="ipython的一些高级用法(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="今天我们学习下写ipython的magic命令-好-magic是什么-它是ipython自带的一些扩展命令-类似-history"><a href="#今天我们学习下写ipython的magic命令-好-magic是什么-它是ipython自带的一些扩展命令-类似-history" class="headerlink" title="今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,"></a>今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,</h4><p>%prun, %logstart..<br>想查看全部的magic可以使用ismagic, 列出可用的全部magics</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">%lsmagic</span><br></pre></td></tr></table></figure>
+
+
+<p>magic分为2类:</p>
+<ul>
+<li>line magic: 一些功能命令</li>
+<li>cell magic: 主要是渲染ipython notebook页面效果以及执行某语言的代码<h5 id="idb-python-db-py-shell"><a href="#idb-python-db-py-shell" class="headerlink" title="idb - python db.py shell"></a><a href="https://github.com/dongweiming/idb" target="_blank" rel="noopener">idb</a> - python db.py shell</h5>extension<br>idb是我最近写的一个magic.<br>主要是给ipython提供<a href="https://github.com/yhat/db.py" target="_blank" rel="noopener">db.py</a>的接口,我们直接分析代码(我只截取有代表性的一段):</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> os.path  </span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> wraps  </span><br><span class="line"><span class="keyword">from</span> operator <span class="keyword">import</span> attrgetter  </span><br><span class="line"><span class="keyword">from</span> urlparse <span class="keyword">import</span> urlparse  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> db <span class="keyword">import</span> DB <span class="comment"># db.py提供的接口  </span></span><br><span class="line"><span class="keyword">from</span> IPython.core.magic <span class="keyword">import</span> Magics, magics_class, line_magic <span class="comment"># 这三个就是我们需要做magic插件的组件  </span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_or_none</span><span class="params">(attr)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> attr <span class="keyword">if</span> attr <span class="keyword">else</span> <span class="literal">None</span>  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_db</span><span class="params">(func)</span>:</span>  </span><br><span class="line"><span class="meta">    @wraps(func)  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deco</span><span class="params">(*args)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> args[<span class="number">0</span>]._db <span class="keyword">is</span> <span class="literal">None</span>: <span class="comment"># 每个magic都需要首页实例化过db，so 直接加装饰器来判断  </span></span><br><span class="line">            <span class="keyword">print</span> <span class="string">'[ERROR]Please make connection: `con = %db_connect xx` or `%use_credentials xx` first!'</span>  <span class="comment"># noqa  </span></span><br><span class="line">            <span class="keyword">return</span>  </span><br><span class="line">        <span class="keyword">return</span> func(*args)  </span><br><span class="line">    <span class="keyword">return</span> deco  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@magics_class  # 每个magic都需要加这个magics_class装饰器  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SQLDB</span><span class="params">(Magics)</span>:</span> <span class="comment"># 要继承至Magics  </span></span><br><span class="line">    _db = <span class="literal">None</span> <span class="comment"># 每次打开ipython都是一次实例化  </span></span><br><span class="line">  </span><br><span class="line"><span class="meta">    @line_magic('db_connect') # 这里用了line_magic 表示它是一个line magic.(其他2种一会再说) magic的名字是db_connect. 注意 函数名不重要  </span></span><br><span class="line">                              <span class="comment"># 最后我们用 %db_connect而不是%conn  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">conn</span><span class="params">(self, parameter_s)</span>:</span> <span class="comment"># 每个这样的方法都接收一个参数 就是你在ipython里输入的内容  </span></span><br><span class="line">        <span class="string">"""Conenct to database in ipython shell.  </span></span><br><span class="line"><span class="string">        Examples::  </span></span><br><span class="line"><span class="string">            %db_connect  </span></span><br><span class="line"><span class="string">            %db_connect postgresql://user:pass@localhost:port/database  </span></span><br><span class="line"><span class="string">        """</span>  </span><br><span class="line">        uri = urlparse(parameter_s) <span class="comment"># 剩下的都是解析parameter_s的逻辑  </span></span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> uri.scheme:  </span><br><span class="line">            params = &#123;  </span><br><span class="line">                <span class="string">'dbtype'</span>: <span class="string">'sqlite'</span>,  </span><br><span class="line">                <span class="string">'filename'</span>: os.path.join(os.path.expanduser(<span class="string">'~'</span>), <span class="string">'db.sqlite'</span>)  </span><br><span class="line">            &#125;  </span><br><span class="line">        <span class="keyword">elif</span> uri.scheme == <span class="string">'sqlite'</span>:  </span><br><span class="line">            params = &#123;  </span><br><span class="line">                <span class="string">'dbtype'</span>: <span class="string">'sqlite'</span>,  </span><br><span class="line">                <span class="string">'filename'</span>: uri.path  </span><br><span class="line">            &#125;  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            params = &#123;  </span><br><span class="line">                <span class="string">'username'</span>: get_or_none(uri.username),  </span><br><span class="line">                <span class="string">'password'</span>: get_or_none(uri.password),  </span><br><span class="line">                <span class="string">'hostname'</span>: get_or_none(uri.hostname),  </span><br><span class="line">                <span class="string">'port'</span>: get_or_none(uri.port),  </span><br><span class="line">                <span class="string">'dbname'</span>: get_or_none(uri.path[<span class="number">1</span>:])  </span><br><span class="line">            &#125;  </span><br><span class="line">  </span><br><span class="line">        self._db = DB(**params) <span class="comment"># 这里给_db赋值  </span></span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> self._db <span class="comment"># return的结果就会被ipython接收,显示出来  </span></span><br><span class="line">  </span><br><span class="line"><span class="meta">    @line_magic('db') # 一个新的magic 叫做%db -- 谨防取名冲突  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">db</span><span class="params">(self, parameter_s)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> self._db  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @line_magic('table')  </span></span><br><span class="line"><span class="meta">    @check_db  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">table</span><span class="params">(self, parameter_s)</span>:</span>  </span><br><span class="line">        p = parameter_s.split() <span class="comment"># 可能传进来的是多个参数,但是对ipython来说,传进来的就是一堆字符串，所以需要按空格分隔下  </span></span><br><span class="line">        l = len(p)  </span><br><span class="line">        <span class="keyword">if</span> l == <span class="number">1</span>:  </span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> p[<span class="number">0</span>]:  </span><br><span class="line">                <span class="keyword">return</span> self._db.tables  </span><br><span class="line">            <span class="keyword">else</span>:  </span><br><span class="line">                <span class="keyword">return</span> attrgetter(p[<span class="number">0</span>])(self._db.tables)  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            data = self._db.tables  </span><br><span class="line">            <span class="keyword">for</span> c <span class="keyword">in</span> p:  </span><br><span class="line">                <span class="keyword">if</span> c <span class="keyword">in</span> [<span class="string">'head'</span>, <span class="string">'sample'</span>, <span class="string">'unique'</span>, <span class="string">'count'</span>, <span class="string">'all'</span>, <span class="string">'query'</span>]:  </span><br><span class="line">                    data = attrgetter(c)(data)()  </span><br><span class="line">                <span class="keyword">else</span>:  </span><br><span class="line">                    data = attrgetter(c)(data)  </span><br><span class="line">            <span class="keyword">return</span> data  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">load_ipython_extension</span><span class="params">(ipython)</span>:</span> <span class="comment"># 注册一下. 假如你直接去ipython里面加 就不需要这个了  </span></span><br><span class="line">    ipython.register_magics(SQLDB)</span><br></pre></td></tr></table></figure>
+
+
+<p>PS:</p>
+<ol>
+<li>调试中可以使用%reloa_ext idb 的方式重启magic</li>
+<li>%install_ext 之后默认放在你的ipython自定义目录/extensions里. 我这里是~/.ipython/extensions<br>好了,大家是不是觉得ipython的magic也不是很难嘛<h5 id="来了解ipython都提供了什么"><a href="#来了解ipython都提供了什么" class="headerlink" title="来了解ipython都提供了什么?"></a>来了解ipython都提供了什么?</h5></li>
+<li>magic装饰器的类型:</li>
+</ol>
+<ul>
+<li>line_magic # 刚才我们见识了, 就是%xx, xx就是magic的名字</li>
+<li>cell_magic # 就是%%xx</li>
+<li>line_cell_magic # 可以是%xx, 也可以是%%xx<br>先说cell_magic 来个例子，假如我想执行个ruby,本来应该是:</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In [<span class="number">1</span>]: !ruby -e <span class="string">'p "hello"'</span>  </span><br><span class="line"><span class="string">"hello"</span>  </span><br><span class="line">  </span><br><span class="line">In [<span class="number">2</span>]: %%ruby <span class="comment"># 也可以这样  </span></span><br><span class="line">   ...: p <span class="string">"hello"</span>  </span><br><span class="line">      ...:  </span><br><span class="line">      <span class="string">"hello"</span>  </span><br><span class="line">  </span><br><span class="line">再说个notebook的:  </span><br><span class="line">  </span><br><span class="line">In [<span class="number">3</span>]: %%javascript  </span><br><span class="line">   ...: require.config(&#123;  </span><br><span class="line">   ...:     paths: &#123;  </span><br><span class="line">   ...:         chartjs: <span class="string">'//code.highcharts.com/highcharts'</span>  </span><br><span class="line">   ...:     &#125;  </span><br><span class="line">   ...: &#125;);  </span><br><span class="line">   ...:  </span><br><span class="line">   &lt;IPython.core.display.Javascript object&gt;  </span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+
+<p>然后再说line_cell_magic:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In [<span class="number">4</span>]: %time <span class="number">2</span>**<span class="number">128</span>  </span><br><span class="line">CPU times: user <span class="number">2</span> µs, sys: <span class="number">1</span> µs, total: <span class="number">3</span> µs  </span><br><span class="line">Wall time: <span class="number">5.01</span> µs  </span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">340282366920938463463374607431768211456L</span>  </span><br><span class="line">  </span><br><span class="line">In [<span class="number">5</span>]: %%time  </span><br><span class="line">   ...: <span class="number">2</span>**<span class="number">128</span>  </span><br><span class="line">   ...:  </span><br><span class="line">   CPU times: user <span class="number">4</span> µs, sys: <span class="number">0</span> ns, total: <span class="number">4</span> µs  </span><br><span class="line">   Wall time: <span class="number">9.06</span> µs  </span><br><span class="line">   Out[<span class="number">5</span>]: <span class="number">340282366920938463463374607431768211456L</span></span><br></pre></td></tr></table></figure>
+
+
+<p>Ps: line_cell_magic方法的参数是2个:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@line_cell_magic  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xx</span><span class="params">(self, line=<span class="string">''</span>, cell=None)</span>:</span></span><br></pre></td></tr></table></figure>
+
+
+<h5 id="带参数的magic（我直接拿ipython源码提供的magic来说明"><a href="#带参数的magic（我直接拿ipython源码提供的magic来说明" class="headerlink" title="带参数的magic（我直接拿ipython源码提供的magic来说明):"></a>带参数的magic（我直接拿ipython源码提供的magic来说明):</h5><p>一共2种风格:</p>
+<ul>
+<li>使用getopt: self.parse_options</li>
+<li>使用argparse: magic_arguments<h6 id="self-parse-options"><a href="#self-parse-options" class="headerlink" title="self.parse_options"></a>self.parse_options</h6></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@line_cell_magic  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">prun</span><span class="params">(self, parameter_s=<span class="string">''</span>, cell=None)</span>:</span>  </span><br><span class="line">    opts, arg_str = self.parse_options(parameter_s, <span class="string">'D:l:rs:T:q'</span>,  </span><br><span class="line">                                       list_all=<span class="literal">True</span>, posix=<span class="literal">False</span>)  </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>getopt用法可以看这里 <a href="http://pymotw.com/2/getopt/index.html#module-getopt" target="_blank" rel="noopener">http://pymotw.com/2/getopt/index.html#module-getopt</a><br>我简单介绍下’D:l:rs:T:q’就是可以使用 -D, -l, -r, -s, -T, -q这些选项. <code>:</code>号是告诉你是否需要参数,split下就是:<br>D:,l:,r,s:,T:,q 也就是-r和-q不需要参数其他的都是参数 类似 %prun -D</p>
+<h6 id="magic-arguments"><a href="#magic-arguments" class="headerlink" title="magic_arguments"></a>magic_arguments</h6><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@magic_arguments.magic_arguments() # 最上面  </span></span><br><span class="line"><span class="meta">@magic_arguments.argument('--breakpoint', '-b', metavar='FILE:LINE',  </span></span><br><span class="line">    help=<span class="string">"""  </span></span><br><span class="line"><span class="string">    Set break point at LINE in FILE.  </span></span><br><span class="line"><span class="string">    """</span>  </span><br><span class="line">) <span class="comment"># 这种argument可以有多个  </span></span><br><span class="line"><span class="meta">@magic_arguments.argument('statement', nargs='*',  </span></span><br><span class="line">    help=<span class="string">"""  </span></span><br><span class="line"><span class="string">    Code to run in debugger.  </span></span><br><span class="line"><span class="string">    You can omit this in cell magic mode.  </span></span><br><span class="line"><span class="string">    """</span>  </span><br><span class="line">)  </span><br><span class="line"><span class="meta">@line_cell_magic  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">debug</span><span class="params">(self, line=<span class="string">''</span>, cell=None)</span>:</span>  </span><br><span class="line">    args = magic_arguments.parse_argstring(self.debug, line) <span class="comment"># 要保持第一个参数等于这个方法名字,这里就是self.debug  </span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>还有个magic方法集: 用于并行计算的magics:<br><a href="https://github.com/ipython/ipython/blob/master/IPython/parallel/client/magics.py" target="_blank" rel="noopener">IPython/parallel/client/magics.py</a></p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-22.html" rel="next" title="不可错过的Python技术博客（网站）">
+                <i class="fa fa-chevron-left"></i> 不可错过的Python技术博客（网站）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-03-24.html" rel="prev" title="使用API登录知乎并获得token">
+                使用API登录知乎并获得token <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#今天我们学习下写ipython的magic命令-好-magic是什么-它是ipython自带的一些扩展命令-类似-history"><span class="nav-number">1.</span> <span class="nav-text">今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#idb-python-db-py-shell"><span class="nav-number">1.1.</span> <span class="nav-text">idb - python db.py shell</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#来了解ipython都提供了什么"><span class="nav-number">1.2.</span> <span class="nav-text">来了解ipython都提供了什么?</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#带参数的magic（我直接拿ipython源码提供的magic来说明"><span class="nav-number">1.3.</span> <span class="nav-text">带参数的magic（我直接拿ipython源码提供的magic来说明):</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#self-parse-options"><span class="nav-number">1.3.1.</span> <span class="nav-text">self.parse_options</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#magic-arguments"><span class="nav-number">1.3.2.</span> <span class="nav-text">magic_arguments</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

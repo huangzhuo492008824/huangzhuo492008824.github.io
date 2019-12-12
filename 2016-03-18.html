@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="刚才看到Learn Python the HardWay第四版都开始使用Python3.6😝，。想起当时某些人还吐槽我的书竟然是使用Python 2的，好吧，我也来列一下Python3.6中非常值得一提的变化（最详细的当然还是看官方的What’sNew）。 Literal String Interpolation新增了格式化字符串变量语法，通过字符串的前缀f，实现类似于Scala/Swift等语">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python3.6全揭秘">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-03-18.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="刚才看到Learn Python the HardWay第四版都开始使用Python3.6😝，。想起当时某些人还吐槽我的书竟然是使用Python 2的，好吧，我也来列一下Python3.6中非常值得一提的变化（最详细的当然还是看官方的What’sNew）。 Literal String Interpolation新增了格式化字符串变量语法，通过字符串的前缀f，实现类似于Scala/Swift等语">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.316Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python3.6全揭秘">
+<meta name="twitter:description" content="刚才看到Learn Python the HardWay第四版都开始使用Python3.6😝，。想起当时某些人还吐槽我的书竟然是使用Python 2的，好吧，我也来列一下Python3.6中非常值得一提的变化（最详细的当然还是看官方的What’sNew）。 Literal String Interpolation新增了格式化字符串变量语法，通过字符串的前缀f，实现类似于Scala/Swift等语">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-03-18.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>Python3.6全揭秘 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-18.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Python3.6全揭秘</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-18T18:30:58+08:00">
+                2016-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-18.html" class="leancloud_visitors" data-flag-title="Python3.6全揭秘">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>刚才看到<a href="https://learnpythonthehardway.org/python3/" target="_blank" rel="noopener">Learn Python the Hard<br>Way</a>第四版都开始使用Python<br>3.6😝，。想起当时某些人还吐槽我的书竟然是使用Python 2的，好吧，我也来列一下Python<br>3.6中非常值得一提的变化（最详细的当然还是看官方的<a href="https://docs.python.org/3.6/whatsnew/3.6.html" target="_blank" rel="noopener">What’s<br>New</a>）。</p>
+<h3 id="Literal-String-Interpolation"><a href="#Literal-String-Interpolation" class="headerlink" title="Literal String Interpolation"></a>Literal String Interpolation</h3><p>新增了<a href="https://www.python.org/dev/peps/pep-0498/" target="_blank" rel="noopener">格式化字符串变量</a>语法，通过字符串的前缀f，实现类似于Scala/Swift等语言的字符串插值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'Fred'</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f'My name is <span class="subst">&#123;name&#125;</span>'</span>  </span><br><span class="line"><span class="string">'My name is Fred'</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>date = datetime.datetime.now().date()  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f'<span class="subst">&#123;date&#125;</span> was on a <span class="subst">&#123;date:%A&#125;</span>'</span>  </span><br><span class="line"><span class="string">'2017-02-25 was on a Saturday'</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f'<span class="subst">&#123;<span class="string">"quoted string"</span>&#125;</span>'</span>  </span><br><span class="line"><span class="string">'quoted string'</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    <span class="keyword">return</span> <span class="number">20</span>  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">f'result=<span class="subst">&#123;foo()&#125;</span>'</span>  </span><br><span class="line"><span class="string">'result=20'</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Asynchronous-Generators"><a href="#Asynchronous-Generators" class="headerlink" title="Asynchronous Generators"></a>Asynchronous Generators</h3><p>新增<a href="https://www.python.org/dev/peps/pep-0525/" target="_blank" rel="noopener">异步生成器</a>语法，可以直接在协程中用生成器：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">coro</span><span class="params">()</span>:</span>  </span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> range(<span class="number">10</span>):  </span><br><span class="line">        <span class="keyword">yield</span> item  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span>  </span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">for</span> item <span class="keyword">in</span> coro():  </span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Async-comprehensions"><a href="#Async-comprehensions" class="headerlink" title="Async comprehensions"></a>Async comprehensions</h3><p>新增<a href="https://www.python.org/dev/peps/pep-0530" target="_blank" rel="noopener">异步解析</a>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">result = [<span class="keyword">await</span> fun() <span class="keyword">for</span> fun <span class="keyword">in</span> funcs]  </span><br><span class="line">result = &#123;<span class="keyword">await</span> fun() <span class="keyword">for</span> fun <span class="keyword">in</span> funcs&#125;  </span><br><span class="line">result = &#123;fun: <span class="keyword">await</span> fun() <span class="keyword">for</span> fun <span class="keyword">in</span> funcs&#125;  </span><br><span class="line">result = [func <span class="keyword">async</span> <span class="keyword">for</span> fun <span class="keyword">in</span> funcs]  </span><br><span class="line">result = &#123;func <span class="keyword">async</span> <span class="keyword">for</span> fun <span class="keyword">in</span> funcs&#125;  </span><br><span class="line">result = &#123;func <span class="keyword">async</span> <span class="keyword">for</span> fun <span class="keyword">in</span> funcs&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Variable-annotations"><a href="#Variable-annotations" class="headerlink" title="Variable annotations"></a>Variable annotations</h3><p>在Python 3.5的时候已经添加了<a href="https://www.python.org/dev/peps/pep-0484/" target="_blank" rel="noopener">类型标注</a>语法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">primes = []  <span class="comment"># type: List[int]  </span></span><br><span class="line">primes = <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<p>不过得通过mypy做类型检查:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ mypy prime.py  </span><br><span class="line">prime.py:<span class="number">2</span>: error: Incompatible types <span class="keyword">in</span> assignment (expression has type <span class="string">"int"</span>, variable has type List[int])</span><br></pre></td></tr></table></figure>
+
+
+<p>现在又新增<a href="https://www.python.org/dev/peps/pep-0526/" target="_blank" rel="noopener">给变量添加注释</a>语法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> typing <span class="keyword">import</span> List  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>primes: List[int] = []  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>__annotations__  </span><br><span class="line">&#123;<span class="string">'primes'</span>: typing.List[int]&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Underscores-in-Numeric-Literals"><a href="#Underscores-in-Numeric-Literals" class="headerlink" title="Underscores in Numeric Literals"></a>Underscores in Numeric Literals</h3><p>新增<a href="https://www.python.org/dev/peps/pep-0515/" target="_blank" rel="noopener">数字变量使用下划线</a>语法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'&#123;:_&#125;'</span>.format(<span class="number">1000000</span>)  </span><br><span class="line"><span class="string">'1_000_000'</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">10</span>_000_000<span class="number">.0</span>  </span><br><span class="line"><span class="number">10000000.0</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="新模块secrets"><a href="#新模块secrets" class="headerlink" title="新模块secrets"></a>新模块secrets</h3><p>用来以简化使用于管理密码，比如账号认证，令牌等的密码的随机数的生成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> secrets  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="string">'https://mydomain.com/reset='</span> + secrets.token_urlsafe()  </span><br><span class="line"><span class="string">'https://mydomain.com/reset=3-dr2ZQLSDO1lOOgEG4Pd518iwNS-FuNNTptzYdI7VA'</span></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="重新实现了dict。"><a href="#重新实现了dict。" class="headerlink" title="重新实现了dict。"></a>重新实现了dict。</h3><p>之前的大量实验证实，Python 3一直比较慢，这也是我一直观望的原因。目前看，Python<br>2.7还是最快的Python解释器。官方一直致力于速度的提升，所以 Python 3.4 &lt; Python 3.5 &lt; Python 3.6。<br>所以，3.6中参考PyPy重新实现了字典dict，使其更加紧凑。此次重新实现的dict比Python3.5中的字典内存使用减少了20%-25%。<br>PS: 看目前正在开发的3.7, 也会有一些显著的改善。</p>
+<h3 id="定制类的创建使用新协议进行了简化"><a href="#定制类的创建使用新协议进行了简化" class="headerlink" title="定制类的创建使用新协议进行了简化"></a>定制类的创建使用新协议进行了简化</h3><p><a href="https://www.python.org/dev/peps/pep-0487/" target="_blank" rel="noopener">Simpler customisation of class<br>creation</a>提供了一种可以在不使用元类的情况下自定义子类的方法。每当创建一个新的子类时，新的<strong>init_subclass</strong>类方法会被调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">PluginBase</span>:</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   subclasses = []  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   <span class="function"><span class="keyword">def</span> <span class="title">__init_subclass__</span><span class="params">(cls, **kwargs)</span>:</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>       super().__init_subclass__(**kwargs)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>       cls.subclasses.append(cls)  </span><br><span class="line">  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Plugin1</span><span class="params">(PluginBase)</span>:</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   <span class="keyword">pass</span>  </span><br><span class="line">      </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Plugin2</span><span class="params">(PluginBase)</span>:</span>  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>   <span class="keyword">pass</span>  </span><br><span class="line">      </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>PluginBase.subclasses  </span><br><span class="line">[__main__.Plugin1, __main__.Plugin2]</span><br></pre></td></tr></table></figure>
+
+
+<p>这样让自定义类的变得更简单了。</p>
+<h3 id="描述符协议增强"><a href="#描述符协议增强" class="headerlink" title="描述符协议增强"></a>描述符协议增强</h3><p>描述符是一个具有绑定行为的对象属性，由于它的优先级高会改变一个属性的基本的获取、设置和删除方式，我们先看一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Integer</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span>  </span><br><span class="line">        self.name = name  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span>  </span><br><span class="line">       <span class="keyword">return</span> instance.__dict__[self.name]  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> value &lt; <span class="number">0</span>:  </span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Negative value not allowed'</span>)  </span><br><span class="line">        instance.__dict__[self.name] = value  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    score = Integer(<span class="string">'score'</span>)  </span><br><span class="line">    amount = Integer(<span class="string">'amount'</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">movie = Movie()  </span><br><span class="line">movie.score = <span class="number">9</span>  </span><br><span class="line">print(movie.score)</span><br></pre></td></tr></table></figure>
+
+
+<p>相当于把score和amount这个2个属性都绑定上Integer的对象上了，结果会是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python3 movie.py</span><br></pre></td></tr></table></figure>
+
+
+<p>上面的用法有个问题，就是初始化的时候都明确让属性的值绑定在Integer上的name属性上，而无法获知所有者类的属性名。使用在<a href="https://www.python.org/dev/peps/pep-0487/" target="_blank" rel="noopener">PEP487</a>上提供的可选的<strong>set_name</strong>()可以获得这个属性名字，并且可以自定义这部分内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Integer</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__get__</span><span class="params">(self, instance, owner)</span>:</span>  </span><br><span class="line">       <span class="keyword">return</span> instance.__dict__[self.name]  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set__</span><span class="params">(self, instance, value)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> value &lt; <span class="number">0</span>:  </span><br><span class="line">            <span class="keyword">raise</span> ValueError(<span class="string">'Negative value not allowed'</span>)  </span><br><span class="line">        instance.__dict__[self.name] = value  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__set_name__</span><span class="params">(self, owner, name)</span>:</span>  </span><br><span class="line">        self.name = name  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Movie</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    score = Integer()  </span><br><span class="line">    amount = Integer()  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">movie = Movie()  </span><br><span class="line">movie.score = <span class="number">9</span>  </span><br><span class="line">print(movie.score)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Preserving-Class-Attribute-Definition-Order"><a href="#Preserving-Class-Attribute-Definition-Order" class="headerlink" title="Preserving Class Attribute Definition Order"></a>Preserving Class Attribute Definition Order</h3><p>我们知道Python 2中dict是不能保存键值顺序的:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python2  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'c'</span>: <span class="number">3</span>&#125;  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d  </span><br><span class="line">&#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'c'</span>: <span class="number">3</span>, <span class="string">'b'</span>: <span class="number">2</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>现在则会<a href="https://www.python.org/dev/peps/pep-0520" target="_blank" rel="noopener">保存类属性定义顺序</a>。也就是按照源码中属性名出现的顺序存储在<strong>\dict</strong><br>的属性中。<br>而且我发现dict的实现也保留了顺序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python3  </span><br><span class="line">Python <span class="number">3.6</span><span class="number">.0</span> (default, Dec <span class="number">24</span> <span class="number">2016</span>, <span class="number">00</span>:<span class="number">01</span>:<span class="number">50</span>)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'c'</span>: <span class="number">3</span>&#125;  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d  </span><br><span class="line">&#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'c'</span>: <span class="number">3</span>&#125;  </span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>看来OrderdDict要失业了~</p>
+<h3 id="Preserving-Keyword-Argument-Order"><a href="#Preserving-Keyword-Argument-Order" class="headerlink" title="Preserving Keyword Argument Order"></a>Preserving Keyword Argument Order</h3><p>现在也会<a href="https://www.python.org/dev/peps/pep-0468" target="_blank" rel="noopener">保存关键字参数顺序</a>了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(**kw)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    print(kw)  </span><br><span class="line"><span class="meta">... </span> </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>test(a=<span class="number">1</span>, b=<span class="number">2</span>, c=<span class="number">3</span>)  </span><br><span class="line">&#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'c'</span>: <span class="number">3</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="asyncio可用于生产环境"><a href="#asyncio可用于生产环境" class="headerlink" title="asyncio可用于生产环境"></a>asyncio可用于生产环境</h3><p>asyncio模板添加了很多新的功能、重要的可用性、性能改进以及大量的bug，现在asyncio模块的API已经很稳定，可用于生产环境了。其中：</p>
+<ol>
+<li>有了一个更快的asyncio.Future的C的实现。</li>
+<li>有了一个更快的asyncio.Task的C的实现。<br>使用这2个实现可以让效率提高15%左右。而使用第三方的uvloop还能让速度提升5%-10%。<h3 id="re模块"><a href="#re模块" class="headerlink" title="re模块"></a>re模块</h3></li>
+<li>在正则表达式中，增加对spans修饰符的支持。示例: ‘(?i:p)ython’ 匹配 ‘python’ 和 ‘Python’, 但不匹配 ‘PYTHON’； ‘(?i)g(?-i:v)r’ 匹配 ‘GvR’ 和 ‘gvr’, 但不匹配 ‘GVR’。</li>
+<li>匹配对象组可通过<strong>getitem</strong>访问, 它就等价于 group()。因此， 现在mo[‘name’] 就等价于 mo.group(‘name’)。</li>
+<li>Match对象支持index-like对象一样的组索引。<h3 id="glob优化"><a href="#glob优化" class="headerlink" title="glob优化"></a>glob优化</h3>通过os.scandir对glob模块中的glob()及iglob()进行优化，使得它们现在大概快了3-6倍。😔<br>唉，我当时咋没想到呢。有兴趣的可以看<a href="https://bugs.python.org/issue25596" target="_blank" rel="noopener">Issue<br>25596</a>。如果你正常也有这种目录扫描的需求，请参看实现。<h3 id="pickle优化"><a href="#pickle优化" class="headerlink" title="pickle优化"></a>pickle优化</h3>当对大量小对象进行反序列化时，pickle.load()和pickle.loads()的速度可提高10%。</li>
+</ol>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-17.html" rel="next" title="知乎Live全文搜索之使用Elasticsearch做聚合分析">
+                <i class="fa fa-chevron-left"></i> 知乎Live全文搜索之使用Elasticsearch做聚合分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-03-19.html" rel="prev" title="gevent-twisted-多线程谁更快?">
+                gevent-twisted-多线程谁更快? <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Literal-String-Interpolation"><span class="nav-number">1.</span> <span class="nav-text">Literal String Interpolation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Asynchronous-Generators"><span class="nav-number">2.</span> <span class="nav-text">Asynchronous Generators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Async-comprehensions"><span class="nav-number">3.</span> <span class="nav-text">Async comprehensions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Variable-annotations"><span class="nav-number">4.</span> <span class="nav-text">Variable annotations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Underscores-in-Numeric-Literals"><span class="nav-number">5.</span> <span class="nav-text">Underscores in Numeric Literals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新模块secrets"><span class="nav-number">6.</span> <span class="nav-text">新模块secrets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重新实现了dict。"><span class="nav-number">7.</span> <span class="nav-text">重新实现了dict。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定制类的创建使用新协议进行了简化"><span class="nav-number">8.</span> <span class="nav-text">定制类的创建使用新协议进行了简化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#描述符协议增强"><span class="nav-number">9.</span> <span class="nav-text">描述符协议增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Preserving-Class-Attribute-Definition-Order"><span class="nav-number">10.</span> <span class="nav-text">Preserving Class Attribute Definition Order</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Preserving-Keyword-Argument-Order"><span class="nav-number">11.</span> <span class="nav-text">Preserving Keyword Argument Order</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#asyncio可用于生产环境"><span class="nav-number">12.</span> <span class="nav-text">asyncio可用于生产环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#re模块"><span class="nav-number">13.</span> <span class="nav-text">re模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#glob优化"><span class="nav-number">14.</span> <span class="nav-text">glob优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pickle优化"><span class="nav-number">15.</span> <span class="nav-text">pickle优化</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

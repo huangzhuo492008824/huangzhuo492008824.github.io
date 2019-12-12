@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="一直想写一篇介绍 attrs的文章，但是最近几个月忙于做爱湃森课程实在抽不出空来做，最近感觉找到节奏了，还是稳步向前走了，这个周末就硬挤了一下午写写，要不感觉对不起订阅专栏的同学们。在国内我没见过有同学说这2个东西，它们是什么，又有什么关联呢？别着急，先铺垫一下他俩出现的背景。 痛点写多了Python，尤其是开发和微信的项目比较大的时候，你可能和我一样感觉写Python的类很累。怎么累呢？举个例子">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="attrs和Python3.7的dataclasses">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-05-09.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="一直想写一篇介绍 attrs的文章，但是最近几个月忙于做爱湃森课程实在抽不出空来做，最近感觉找到节奏了，还是稳步向前走了，这个周末就硬挤了一下午写写，要不感觉对不起订阅专栏的同学们。在国内我没见过有同学说这2个东西，它们是什么，又有什么关联呢？别着急，先铺垫一下他俩出现的背景。 痛点写多了Python，尤其是开发和微信的项目比较大的时候，你可能和我一样感觉写Python的类很累。怎么累呢？举个例子">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="attrs和Python3.7的dataclasses">
+<meta name="twitter:description" content="一直想写一篇介绍 attrs的文章，但是最近几个月忙于做爱湃森课程实在抽不出空来做，最近感觉找到节奏了，还是稳步向前走了，这个周末就硬挤了一下午写写，要不感觉对不起订阅专栏的同学们。在国内我没见过有同学说这2个东西，它们是什么，又有什么关联呢？别着急，先铺垫一下他俩出现的背景。 痛点写多了Python，尤其是开发和微信的项目比较大的时候，你可能和我一样感觉写Python的类很累。怎么累呢？举个例子">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-05-09.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>attrs和Python3.7的dataclasses | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-09.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">attrs和Python3.7的dataclasses</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-09T18:30:58+08:00">
+                2016-05-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-05-09.html" class="leancloud_visitors" data-flag-title="attrs和Python3.7的dataclasses">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>一直想写一篇介绍 <a href="http://www.attrs.org" target="_blank" rel="noopener">attrs</a><br>的文章，但是最近几个月忙于做<a href="https://zhuanlan.zhihu.com/p/33611869" target="_blank" rel="noopener">爱湃森课程</a>实在抽不出空来做，最近感觉找到节奏了，还是稳步向前走了，这个周末就硬挤了一下午写写，要不感觉对不起订阅专栏的同学们。<br>在国内我没见过有同学说这2个东西，它们是什么，又有什么关联呢？别着急，先铺垫一下他俩出现的背景。</p>
+<h3 id="痛点"><a href="#痛点" class="headerlink" title="痛点"></a>痛点</h3><p>写多了Python，尤其是开发和微信的项目比较大的时候，你可能和我一样感觉写Python的类很累。怎么累呢？举个例子，现在有个商品类，<strong>init</strong>是这么写的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, id, author_id, category_id, brand_id, spu_id,   </span></span></span><br><span class="line"><span class="function"><span class="params">                 title, item_id, n_comments, creation_time, update_time,   </span></span></span><br><span class="line"><span class="function"><span class="params">                 source=<span class="string">''</span>, parent_id=<span class="number">0</span>, ancestor_id=<span class="number">0</span>)</span>:</span>   </span><br><span class="line">        self.id = id  </span><br><span class="line">        self.author_id = author_id  </span><br><span class="line">        self.category_id = category_id  </span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+
+<p>问题1：特点是初始化参数很多，每一个都需要self.xx = xx 这样往实例上赋值。我印象见过一个类有30多个参数，这个 <strong>init</strong><br>方法下光是赋值就占了一屏多…<br>再说问题2，如果不定义<strong>repr</strong>方法，打印类对象的方式很不友好，大概是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : p  </span><br><span class="line">Out: &lt;test.Product at <span class="number">0x10ba6a320</span>&gt;</span><br></pre></td></tr></table></figure>
+
+
+<p>定义时参数太多，一般按需要挑几个露出来:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> <span class="string">'&#123;&#125;(id=&#123;&#125;, author_id=&#123;&#125;, category_id=&#123;&#125;, brand_id=&#123;&#125;)'</span>.format(  </span><br><span class="line">        self.__class__.__name__, self.id, self.author_id, self.category_id,   </span><br><span class="line">        self.brand_id)</span><br></pre></td></tr></table></figure>
+
+
+<p>这样再看类对象就友好了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : p  </span><br><span class="line">Out: Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, category_id=<span class="number">2003</span>, brand_id=<span class="number">20</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p><strong>但是每个类都需要手动的去写<strong>repr</strong>！</strong><br>接着说问题3，对象比较，有时候需要判断2个对象是否相等甚至大小（例如用于展示顺序）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__eq__</span><span class="params">(self, other)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(other, self.__class__):  </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span>  </span><br><span class="line">    <span class="keyword">return</span> (self.id, self.author_id, self.category_id, self.brand_id) == (  </span><br><span class="line">        other.id, other.author_id, other.category_id, other.brand_id)  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__lt__</span><span class="params">(self, other)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> isinstance(other, self.__class__):  </span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">NotImplemented</span>  </span><br><span class="line">    <span class="keyword">return</span> (self.id, self.author_id, self.category_id, self.brand_id) &lt; (  </span><br><span class="line">        other.id, other.author_id, other.category_id, other.brand_id)</span><br></pre></td></tr></table></figure>
+
+
+<p>如果对比的更全面不用所有gt、gte、lte都写出来，用functools.total_ordering这样就够了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> total_ordering  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@total_ordering  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span><span class="params">(object)</span>:</span>  </span><br><span class="line">   ...</span><br></pre></td></tr></table></figure>
+
+
+<p>然后是问题4。有些场景下希望对对象去重，可以添加<strong>hash</strong>:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">__hash__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> hash((self.id, self.author_id, self.category_id, self.brand_id))</span><br></pre></td></tr></table></figure>
+
+
+<p>这样就不需要对一大堆的对象挨个比较去重了，直接用集合就可以了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : p1 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品1'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">1</span>)  </span><br><span class="line">  </span><br><span class="line">In : p2 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品2'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">2</span>)  </span><br><span class="line">  </span><br><span class="line">In : &#123;p1, p2&#125;  </span><br><span class="line">Out: &#123;Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, category_id=<span class="number">2003</span>, brand_id=<span class="number">20</span>)&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到集合只返回了一个对象，另外一个被去掉了。<br>最后是问题5。我很喜欢给类写一个to_dict、to_json或者as_dict这样的方法，把类里面的属性打包成一个字典返回。基本都是每个类都要写一遍它：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_dict</span><span class="params">(self)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> &#123;  </span><br><span class="line">        <span class="string">'id'</span>: self.id,  </span><br><span class="line">        <span class="string">'author_id'</span>: self.author_id,  </span><br><span class="line">        <span class="string">'category_id'</span>: self.category_id,  </span><br><span class="line">        ...  </span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>当然没有特殊的理由，可以直接使用vars(self)获得， 上面这种键值对指定的方式会更精准，只导出想导出的部分，举个特殊的理由吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">to_dict</span><span class="params">(self)</span>:</span>  </span><br><span class="line">    self._a = <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">return</span> vars(self)</span><br></pre></td></tr></table></figure>
+
+
+<p>会把_a也包含在返回的结果中，然而它并不应该被导出，所以不适合vars函数。<br>到这里，我们停下来想想，self.id、self.author_id、self.category_id 这些分别写了几次？<br>那有没有一种方法，可以在创建类的时候自动给类加上这些东西，把开发者解脱出来呢？这就是我们今天介绍的attrs和Python<br>3.7标准库里面将要加的dataclasses模块做的事情，而且它们能做的会更多。</p>
+<h3 id="attrs"><a href="#attrs" class="headerlink" title="attrs"></a>attrs</h3><p><a href="https://github.com/python-attrs/attrs" target="_blank" rel="noopener">attrs</a>是Python核心开发Hynek<br>Schlawack设计并实现的一个项目，它就是解决上述痛点而生的，上述类，使用attrs这样写:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> attr  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@attr.s(hash=True)  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    id = attr.ib()  </span><br><span class="line">    author_id = attr.ib()  </span><br><span class="line">    brand_id = attr.ib()  </span><br><span class="line">    spu_id = attr.ib()  </span><br><span class="line">    title = attr.ib(repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    item_id = attr.ib(repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    n_comments = attr.ib(repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    creation_time = attr.ib(repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    update_time = attr.ib(repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    source = attr.ib(default=<span class="string">''</span>, repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    parent_id = attr.ib(default=<span class="number">0</span>, repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    ancestor_id = attr.ib(default=<span class="number">0</span>, repr=<span class="literal">False</span>, cmp=<span class="literal">False</span>, hash=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>这就可以了，上面说的那些dunder方法(双下划线开头和结尾的方法)都不用写了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : p1 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品1'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">1</span>)  </span><br><span class="line">  </span><br><span class="line">In : p2 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品2'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">2</span>)  </span><br><span class="line">  </span><br><span class="line">In : p3 = Product(<span class="number">3</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品3'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">3</span>)  </span><br><span class="line">  </span><br><span class="line">In : p1  </span><br><span class="line">Out: Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>)  </span><br><span class="line">  </span><br><span class="line">In : p1 == p2  </span><br><span class="line">Out: <span class="literal">True</span>  </span><br><span class="line">  </span><br><span class="line">In : p1 &gt; p3  </span><br><span class="line">Out: <span class="literal">False</span>  </span><br><span class="line">  </span><br><span class="line">In : &#123;p1, p2, p3&#125;  </span><br><span class="line">Out:  </span><br><span class="line">&#123;Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>),  </span><br><span class="line"> Product(id=<span class="number">3</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>)&#125;  </span><br><span class="line">  </span><br><span class="line">In : attr.asdict(p1)  </span><br><span class="line">Out:  </span><br><span class="line">&#123;<span class="string">'ancestor_id'</span>: <span class="number">0</span>,  </span><br><span class="line"> <span class="string">'author_id'</span>: <span class="number">100001</span>,  </span><br><span class="line"> <span class="string">'brand_id'</span>: <span class="number">2003</span>,  </span><br><span class="line"> <span class="string">'creation_time'</span>: <span class="number">100</span>,  </span><br><span class="line"> <span class="string">'id'</span>: <span class="number">1</span>,  </span><br><span class="line"> <span class="string">'item_id'</span>: <span class="string">'这是一个测试商品1'</span>,  </span><br><span class="line"> <span class="string">'n_comments'</span>: <span class="number">2000001</span>,  </span><br><span class="line"> <span class="string">'parent_id'</span>: <span class="number">0</span>,  </span><br><span class="line"> <span class="string">'source'</span>: <span class="number">1</span>,  </span><br><span class="line"> <span class="string">'spu_id'</span>: <span class="number">20</span>,  </span><br><span class="line"> <span class="string">'title'</span>: <span class="number">1002393002</span>,  </span><br><span class="line"> <span class="string">'update_time'</span>: <span class="literal">None</span>&#125;  </span><br><span class="line">   </span><br><span class="line">In : attr.asdict(p1, filter=<span class="keyword">lambda</span> a, v: a.name <span class="keyword">in</span> (<span class="string">'id'</span>, <span class="string">'title'</span>, <span class="string">'author_id'</span>))  </span><br><span class="line">Out: &#123;<span class="string">'author_id'</span>: <span class="number">100001</span>, <span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'title'</span>: <span class="number">1002393002</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>是不是清爽直观？<br>当然， 我这个例子中对属性的要求比较多，所以不同属性的参数比较长。看这个类的定义的方式是不是有点像ORM？对象和属性的关系直观，不参与类中代码逻辑。<br>有兴趣的可以看[Kenneth Reitz、Łukasz Langa、Glyph Lefkowitz等人对项目的评价]<br>(<a href="http://www.attrs.org/en/stable/index.html#testimonials)。" target="_blank" rel="noopener">http://www.attrs.org/en/stable/index.html#testimonials)。</a><br>除此之外，attrs 还支持多种高级用法，如字段类型验证、自动类型转化、属性值不可变（Immutability）、类型注解等等 ，我列3个我觉得非常有用的吧</p>
+<h4 id="字段类型验证"><a href="#字段类型验证" class="headerlink" title="字段类型验证"></a>字段类型验证</h4><p>业务代码中经验会对对象属性的类型和内容验证，attrs也提供了验证支持。验证有2种方案：</p>
+<ol>
+<li>装饰器</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>@attr.s  </span><br><span class="line"><span class="meta">... </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    x = attr.ib()  </span><br><span class="line"><span class="meta">... </span>    @x.validator  </span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">check</span><span class="params">(self, attribute, value)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>        <span class="keyword">if</span> value &gt; <span class="number">42</span>:  </span><br><span class="line"><span class="meta">... </span>            <span class="keyword">raise</span> ValueError(<span class="string">"x must be smaller or equal to 42"</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C(<span class="number">42</span>)  </span><br><span class="line">C(x=<span class="number">42</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C(<span class="number">43</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">   ...  </span><br><span class="line">ValueError: x must be smaller <span class="keyword">or</span> equal to <span class="number">42</span></span><br></pre></td></tr></table></figure>
+
+
+<ol start="2">
+<li>属性参数：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="function"><span class="keyword">def</span> <span class="title">x_smaller_than_y</span><span class="params">(instance, attribute, value)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    <span class="keyword">if</span> value &gt;= instance.y:  </span><br><span class="line"><span class="meta">... </span>        <span class="keyword">raise</span> ValueError(<span class="string">"'x' has to be smaller than 'y'!"</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>@attr.s  </span><br><span class="line"><span class="meta">... </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    x = attr.ib(validator=[attr.validators.instance_of(int),  </span><br><span class="line"><span class="meta">... </span>                           x_smaller_than_y])  </span><br><span class="line"><span class="meta">... </span>    y = attr.ib()  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C(x=<span class="number">3</span>, y=<span class="number">4</span>)  </span><br><span class="line">C(x=<span class="number">3</span>, y=<span class="number">4</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>C(x=<span class="number">4</span>, y=<span class="number">3</span>)  </span><br><span class="line">Traceback (most recent call last):  </span><br><span class="line">   ...  </span><br><span class="line">ValueError: <span class="string">'x'</span> has to be smaller than <span class="string">'y'</span>!</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="属性类型转化"><a href="#属性类型转化" class="headerlink" title="属性类型转化"></a>属性类型转化</h4><p>Python不会检查传入的值的类型，类型错误很容易发生，attrs支持自动的类型转化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>@attr.s  </span><br><span class="line"><span class="meta">... </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>    x = attr.ib(converter=int)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>o = C(<span class="string">"1"</span>)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>o.x</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="包含元数据"><a href="#包含元数据" class="headerlink" title="包含元数据"></a>包含元数据</h4><p>属性还可以包含元数据！这个真的非常有用，这个属性的值就不仅仅是一个值了，带上元数据的值非常灵活也更有意义，这样就不需要额外的把属性需要的元数据独立存储起来了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>@attr.s  </span><br><span class="line"><span class="meta">... </span><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(object)</span>:</span>  </span><br><span class="line"><span class="meta">... </span>   x = attr.ib(metadata=&#123;<span class="string">'my_metadata'</span>: <span class="number">1</span>&#125;)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>attr.fields(C).x.metadata  </span><br><span class="line">mappingproxy(&#123;<span class="string">'my_metadata'</span>: <span class="number">1</span>&#125;)  </span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>attr.fields(C).x.metadata[<span class="string">'my_metadata'</span>]</span><br></pre></td></tr></table></figure>
+
+
+<p>通过上面支持的几个功能可以看出作者做项目就是基于实际工作痛点出发的。</p>
+<h3 id="dataclasses模块"><a href="#dataclasses模块" class="headerlink" title="dataclasses模块"></a>dataclasses模块</h3><p>在Python 3.7里面会添加一个新的模块<br><a href="https://github.com/python/cpython/blob/3.7/Lib/dataclasses.py" target="_blank" rel="noopener">dataclasses</a><br>，它基于<a href="https://www.python.org/dev/peps/pep-0557/" target="_blank" rel="noopener">PEP 557</a>，Python<br>3.6可以通过pip下载安装使用:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">pip install dataclasses</span><br></pre></td></tr></table></figure>
+
+
+<p>解决如上痛点，把Product类改成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime  </span><br><span class="line"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass, field  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@dataclass(hash=True, order=True)  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Product</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    id: int  </span><br><span class="line">    author_id: int  </span><br><span class="line">    brand_id: int  </span><br><span class="line">    spu_id: int  </span><br><span class="line">    title: str = field(hash=<span class="literal">False</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>)  </span><br><span class="line">    item_id = int = field(hash=<span class="literal">False</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>)  </span><br><span class="line">    n_comments = int = field(hash=<span class="literal">False</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>)  </span><br><span class="line">    creation_time: datetime = field(default=<span class="literal">None</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>,hash=<span class="literal">False</span>)  </span><br><span class="line">    update_time: datetime = field(default=<span class="literal">None</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    source: str = field(default=<span class="string">''</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    parent_id: int = field(default=<span class="number">0</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>, hash=<span class="literal">False</span>)  </span><br><span class="line">    ancestor_id: int = field(default=<span class="number">0</span>, repr=<span class="literal">False</span>, compare=<span class="literal">False</span>, hash=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>先验证一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : p1 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品1'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">1</span>)  </span><br><span class="line">  </span><br><span class="line">In : p2 = Product(<span class="number">1</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品2'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">2</span>)  </span><br><span class="line">  </span><br><span class="line">In : p3 = Product(<span class="number">3</span>, <span class="number">100001</span>, <span class="number">2003</span>, <span class="number">20</span>, <span class="number">1002393002</span>, <span class="string">'这是一个测试商品3'</span>, <span class="number">2000001</span>, <span class="number">100</span>, <span class="literal">None</span>, <span class="number">3</span>)  </span><br><span class="line">  </span><br><span class="line">In : p1  </span><br><span class="line">Out: Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>)  </span><br><span class="line">  </span><br><span class="line">In : p1 == p2  </span><br><span class="line">Out: <span class="literal">True</span>  </span><br><span class="line">  </span><br><span class="line">In : p1 &gt; p3  </span><br><span class="line">Out: <span class="literal">False</span>  </span><br><span class="line">  </span><br><span class="line">In : &#123;p1, p2, p3&#125;  </span><br><span class="line">Out:  </span><br><span class="line">&#123;Product(id=<span class="number">1</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>),  </span><br><span class="line"> Product(id=<span class="number">3</span>, author_id=<span class="number">100001</span>, brand_id=<span class="number">2003</span>, spu_id=<span class="number">20</span>)&#125;  </span><br><span class="line">  </span><br><span class="line">In : <span class="keyword">from</span> dataclasses <span class="keyword">import</span> asdict  </span><br><span class="line">  </span><br><span class="line">In : asdict(p1)  </span><br><span class="line">Out:  </span><br><span class="line">&#123;<span class="string">'ancestor_id'</span>: <span class="number">1</span>,  </span><br><span class="line"> <span class="string">'author_id'</span>: <span class="number">100001</span>,  </span><br><span class="line"> <span class="string">'brand_id'</span>: <span class="number">2003</span>,  </span><br><span class="line"> <span class="string">'creation_time'</span>: <span class="string">'这是一个测试商品1'</span>,  </span><br><span class="line"> <span class="string">'id'</span>: <span class="number">1</span>,  </span><br><span class="line"> <span class="string">'parent_id'</span>: <span class="literal">None</span>,  </span><br><span class="line"> <span class="string">'source'</span>: <span class="number">100</span>,  </span><br><span class="line"> <span class="string">'spu_id'</span>: <span class="number">20</span>,  </span><br><span class="line"> <span class="string">'title'</span>: <span class="number">1002393002</span>,  </span><br><span class="line"> <span class="string">'update_time'</span>: <span class="number">2000001</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>dataclasses.asdict不能过滤返回属性。但是总体满足需求。但是，你有没有发现什么不对？</p>
+<h3 id="attrs-和-dataclasses"><a href="#attrs-和-dataclasses" class="headerlink" title="attrs 和 dataclasses"></a>attrs 和 dataclasses</h3><p>虽然2种方案写的代码确实有些差别，但有木有觉得它俩很像？其实attrs 的诞生远早于 dataclasses，<br>dataclasses更像是在借鉴。dataclasses可以看做是一个 <strong>强制类型注解，功能是attrs的子集</strong> 。那么为什么不把 attrs<br>放入标准库，而是Python 3.7加入一个阉割版的 attrs 呢？<br>Glyph Lefkowitz犀利的写了标题为<a href="https://github.com/ericvsmith/dataclasses/issues/19" target="_blank" rel="noopener">why not just<br>attrs?</a>的issue，我打开这个issue没往下看的时候，猜测是「由于attrs兼容Python3.6，包含Python2.7的版本，进入标准库必然是一次卸掉包袱的重构，attrs作者不同意往这个方向发展？」，翻了下讨论发现不是这样的。<br>这个issue很有意思，多个Python开发都参与进来了，最后Gvanrossum结束了讨论，明确表达不同意 attrs 进入标准库，Donald<br>Stufft也直接问了为啥？Gvanrossum虽然解释了下，但是我还是觉得这算是「仁慈的独裁者」中的「独裁」部分的体现吧，Python社区的态度一直是不太开放。包含在<br><a href="https://www.python.org/dev/peps/pep-0557/" target="_blank" rel="noopener">PEP 557</a> 下[解释为什么不用<br>attrs](<a href="https://www.python.org/dev/peps/pep-0557/#why-not-just-use-" target="_blank" rel="noopener">https://www.python.org/dev/peps/pep-0557/#why-not-just-use-</a><br>attrs)，也完全说服不了我。<br>我站 attrs，向大家推荐！ 不仅是由于attrs兼容之前的Python版本，而是attrs是真的站在开发者的角度上添加功能支持，最后相信 attrs<br>会走的更远。</p>
+<h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ol>
+<li><a href="http://www.attrs.org/en/stable/index.html" target="_blank" rel="noopener">http://www.attrs.org/en/stable/index.html</a></li>
+<li><a href="https://glyph.twistedmatrix.com/2016/08/attrs.html" target="_blank" rel="noopener">https://glyph.twistedmatrix.com/2016/08/attrs.html</a></li>
+<li><a href="https://www.python.org/dev/peps/pep-0557/" target="_blank" rel="noopener">https://www.python.org/dev/peps/pep-0557/</a></li>
+</ol>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-05-08.html" rel="next" title="django和flask分页">
+                <i class="fa fa-chevron-left"></i> django和flask分页
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-05-10.html" rel="prev" title="ipython的一些高级用法(一)">
+                ipython的一些高级用法(一) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#痛点"><span class="nav-number">1.</span> <span class="nav-text">痛点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attrs"><span class="nav-number">2.</span> <span class="nav-text">attrs</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#字段类型验证"><span class="nav-number">2.1.</span> <span class="nav-text">字段类型验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#属性类型转化"><span class="nav-number">2.2.</span> <span class="nav-text">属性类型转化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#包含元数据"><span class="nav-number">2.3.</span> <span class="nav-text">包含元数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dataclasses模块"><span class="nav-number">3.</span> <span class="nav-text">dataclasses模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#attrs-和-dataclasses"><span class="nav-number">4.</span> <span class="nav-text">attrs 和 dataclasses</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">5.</span> <span class="nav-text">参考文章</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

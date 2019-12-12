@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](https://github.com/dongweiming/weapp-zhihulive/blob/master/screenshot/zhihulive.gif) 。在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-03-30.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](https://github.com/dongweiming/weapp-zhihulive/blob/master/screenshot/zhihulive.gif) 。在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.318Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务">
+<meta name="twitter:description" content="今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](https://github.com/dongweiming/weapp-zhihulive/blob/master/screenshot/zhihulive.gif) 。在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-03-30.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-30.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-30T18:30:58+08:00">
+                2016-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-30.html" class="leancloud_visitors" data-flag-title="知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](<a href="https://github.com/dongweiming/weapp-" target="_blank" rel="noopener">https://github.com/dongweiming/weapp-</a><br>zhihulive/blob/master/screenshot/zhihulive.gif) 。<br>在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战」。我显然承认，也很苦闷<br>，今天顺便来吐个槽。我刚工作的时候特别愿意混各种技术会议和活动。经常有一些专家在上面讲：我们自己实现了一个XXX，它有如下多的特性，现在支持了多少个产品线的多少个应用，每天的数据量YY<br>PB，流量ZZ…<br>通篇在讲架构，摆几张高大上的图，甚至能说几个大家不了解的新的玩法都很少，还不断的问坐在下面的领导或者法务：额，这个我能说嘛；那个我能分享么？最最重要的是，他们讲的这些东西大多不是开源的….<br>也基本没有一个可以拿得出手的论文，甚至说白了，如果你正好专注这一部分，会发现它也是根据了FLAG公司的论文在造轮子罢了，说不定造的还不如你。<br>听过之后，也没有收获，都是「别人家」的，甚至有种炫耀的感觉而已，至于有什么苦可能只有他们自己知道吧。我就越来越不愿意参加这种会议了。<br>写书或者博客也是这样。一切东西脱离了公司能提供的基础设施和环境都是空谈，但是这些铺垫说起来就太大了，先不讨论公司有没有授权你在外面说，就是没开源这点就不好弄。说的人都是在虚化的讲一大坨的东西，最多来几个截图之类的（应该还打了马赛克）。等这一大坨东西说的让大家明白了，一本书的厚度肯定不够。但是这些内容呢，只是你为了写书的某一(几)章做铺垫而已，有些内容太专太偏，读者大部分场景下是用不到的，好吧，又得骂娘说你这本书不实用…<br>今天我将基于我过往的实践，以及最近学习asyncio和ES知识完成一个小程序的API服务。看这篇文章前推荐阅读相关的如下文章：</p>
+<ol>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%92%8C%E7%88%AC%E8%99%AB%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">知乎Live全文搜索之模型设计和爬虫实现</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E6%A8%A1%E5%9E%8B%E6%8E%A5%E5%8F%A3/" target="_blank" rel="noopener">知乎Live全文搜索之模型接口</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-%E6%88%91%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%96%9C%E6%AC%A2Gevent/" target="_blank" rel="noopener">使用Python进行并发编程-我为什么不喜欢Gevent</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(一)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87-%E4%BA%8C/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(二)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87-%E4%B8%89/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(三)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E8%AE%A9elasticsearch_dsl%E6%94%AF%E6%8C%81asyncio/" target="_blank" rel="noopener">知乎Live全文搜索之让elasticsearch_dsl支持asyncio</a><h3 id="技术选型"><a href="#技术选型" class="headerlink" title="技术选型"></a>技术选型</h3></li>
+<li><a href="https://github.com/channelcat/sanic" target="_blank" rel="noopener">Sanic</a>，基于Python 3.5+的异步web服务器，和Flask一样使用装饰器作为路由，支持Blueprint。效果确实非常快。</li>
+<li><a href="https://github.com/MagicStack/uvloop" target="_blank" rel="noopener">uvloop</a>，Sanic默认使用uvloop，这个实现基于libuv，比asyncio默认的loop的块很多。</li>
+<li><a href="https://github.com/marshmallow-code/marshmallow" target="_blank" rel="noopener">marshmallow</a>，一个轻量级的转化复杂对象成为Python自带数据类型的库，为什么用它未来会详细介绍。<h3 id="使用Schema"><a href="#使用Schema" class="headerlink" title="使用Schema"></a>使用Schema</h3>了解过关系型数据库如MySQL的同学会比较熟悉Schema这个词，它是对数据库的结构描述。Schema定义了表与表和表与字段之间的关系。在使用关系型数据库之前第一件事要先定Schema，创建表(库)再去操作。<br>为什么我们在实现RESTful API的时候要考虑使用Schema呢？</li>
+<li>首先API服务是给外部用的，比如移动端(安卓、IOS等)，前端(用AJAX)等。那么大家一开始就要协商好那些字段，以及字段的类型。因为你不关系，他们都是关心的，如果设计有问题会由于没有正确处理而造成移动端闪退等严重问题。</li>
+<li>你需要对API返回的数据进行良好的管理和验证。<br>marshmallow把一组数据映射成一个类：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> marshmallow <span class="keyword">import</span> Schema, fields  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    id = fields.Integer()  </span><br><span class="line">    url = fields.Str()  </span><br><span class="line">    name = fields.Str()   </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>这样既让不同编程语言的开发者一目了然，也能检验你提供的数据是不是按照这个定好的结构返回的。</p>
+<h3 id="同一组数据可以定义多种Schema"><a href="#同一组数据可以定义多种Schema" class="headerlink" title="同一组数据可以定义多种Schema"></a>同一组数据可以定义多种Schema</h3><p>思考一下，在搜索页面，每一项提供的空间有限，你无法把Live的全部信息（比如「描述」这种很长的内容的字段）都展示出来，也就是就算都返回了，其实只用了一部分字段，这造成了更多的网络延时和带宽消耗。但是在Live详情页理论上就可以展示全部的字段的内容了。<br>再假设下，如果是返回一部分，还是返回全部字段在后端做，就是不同的方法返回时对to_dict方法对一对if/elif/else的处理，其实看起来很乱。我是这样用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    id = fields.Integer()  </span><br><span class="line">    url = fields.Str()  </span><br><span class="line">    name = fields.Str()  </span><br><span class="line">    ...  </span><br><span class="line">      </span><br><span class="line">      </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserFullSchema</span><span class="params">(UserSchema)</span>:</span>  </span><br><span class="line">    lives_url = fields.Str()  </span><br><span class="line">    speaker_id = fields.Str()   </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>也就是定义了多种User的schema，按需选择。但是后端统一使用to_dict方法返回全部数据，在视图渲染的时候进行筛选。这样需要用一种好的表达方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> views.utils <span class="keyword">import</span> marshal_with  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@bp.route('/search')  </span></span><br><span class="line"><span class="meta">@marshal_with([LiveSchema, UserSchema])  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(request)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@bp.route('/suggest')  </span></span><br><span class="line"><span class="meta">@marshal_with(LiveSchema)  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">suggest</span><span class="params">(request)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">      </span><br><span class="line">  </span><br><span class="line"><span class="meta">@bp.route('/user/&lt;user_id&gt;')  </span></span><br><span class="line"><span class="meta">@marshal_with([LiveFullSchema, UserFullSchema])  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">user</span><span class="params">(request, user_id)</span>:</span>  </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>我们先不考虑视图内的逻辑，简单的理解成他们是单个live的to_dict结果或者多个live的to_dict结果的列表<br>通过神奇的marshal_with装饰器传入你希望返回符合那种Schema的数据。<br>现在揭晓一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">marshal</span><span class="params">(data, fields)</span>:</span>  </span><br><span class="line">    schemas = [field() <span class="keyword">for</span> field <span class="keyword">in</span> fields]  </span><br><span class="line">    <span class="keyword">if</span> isinstance(data, (list, tuple)):  </span><br><span class="line">        <span class="keyword">return</span> [marshal(d, fields) <span class="keyword">for</span> d <span class="keyword">in</span> data]  </span><br><span class="line">  </span><br><span class="line">    type = data.get(<span class="string">'type'</span>)  </span><br><span class="line">    <span class="keyword">for</span> schema <span class="keyword">in</span> schemas:  </span><br><span class="line">        <span class="keyword">if</span> type <span class="keyword">in</span> schema.__class__.__name__.lower():  </span><br><span class="line">            result, errors = schema.dump(data)  </span><br><span class="line">            <span class="keyword">if</span> errors:  </span><br><span class="line">                <span class="keyword">for</span> item <span class="keyword">in</span> errors.items():  </span><br><span class="line">                    print(<span class="string">'&#123;&#125;: &#123;&#125;'</span>.format(*item))  </span><br><span class="line">            <span class="keyword">return</span> result  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">marshal_with</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, fields)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(fields, list):  </span><br><span class="line">            fields = [fields]  </span><br><span class="line">        self.fields = fields  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, f)</span>:</span>  </span><br><span class="line"><span class="meta">        @wraps(f)  </span></span><br><span class="line">        <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(*args, **kwargs)</span>:</span>  </span><br><span class="line">            resp = <span class="keyword">await</span> f(*args, **kwargs)  </span><br><span class="line">            <span class="keyword">return</span> marshal(resp, self.fields)  </span><br><span class="line">        <span class="keyword">return</span> wrapper</span><br></pre></td></tr></table></figure>
+
+
+<p>这个是async版本的，大家可以自己发散成Python 2的普通版。记得之前我们在model里面给每种数据的to_dict方法里面加了个<code>{&#39;type&#39;:
+&#39;live&#39;}</code>这种键值么，除了在小程序里面分辨数据的类型，在这里也是用来匹配那种schema的。举个例子，假如是一个user类型的数据。<br>在<code>@marshal_with([LiveFullSchema,
+UserFullSchema])</code>的装饰下，由于UserFullSchema类名包含了live所以符合了。这比较黑科技一点..</p>
+<h3 id="深入使用marshmallow"><a href="#深入使用marshmallow" class="headerlink" title="深入使用marshmallow"></a>深入使用marshmallow</h3><p>marshmallow除了生成一个可读性很好的类和验证该字段是不是类型符合以外，还支持序列化和反序列化的处理。有什么意义呢。假如如下的schema:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LiveSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    starts_at = fields.Date()</span><br></pre></td></tr></table></figure>
+
+
+<p>注意我们model存的starts_at是一个datetime类型的对象，无法被json序列化，所以返回之前应该先转化成字符串：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LiveSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    starts_at = fields.Method(<span class="string">'get_start_time'</span>)  </span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_start_time</span><span class="params">(self, obj)</span>:</span>  </span><br><span class="line">         <span class="keyword">return</span> int(obj[<span class="string">'starts_at'</span>].strftime(<span class="string">'%s'</span>))</span><br></pre></td></tr></table></figure>
+
+
+<p>再举个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    bio = fields.Str()  </span><br><span class="line">    headline = fields.Str()   </span><br><span class="line">    description = fields.Str()</span><br></pre></td></tr></table></figure>
+
+
+<p>bio/headline/description这三个字段内容都有可能比较长，需要做不同的截取：在详情页显示全部，在搜索页之前显示前2行..<br>我们需要一个truncate函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">WIDTH = <span class="number">45</span>  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">truncate_utf8</span><span class="params">(str, width=WIDTH)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> str[:width] + <span class="string">'...'</span> <span class="keyword">if</span> len(str) &gt; width <span class="keyword">else</span> str</span><br></pre></td></tr></table></figure>
+
+
+<p>假如使用fields.Method你就要写三方法，因为它指定的方法只有<code>self,
+obj</code>2个参数，而且Schema是不能继承的。这么办呢？有我的书中介绍的partialmethod可完美实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> partialmethod  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Item</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">truncate</span><span class="params">(self, attr, obj)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> attr <span class="keyword">not</span> <span class="keyword">in</span> obj:  </span><br><span class="line">            <span class="keyword">return</span> <span class="string">''</span>  </span><br><span class="line">        <span class="keyword">return</span> truncate_utf8(obj[attr], WIDTH)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserSchema</span><span class="params">(Schema)</span>:</span>  </span><br><span class="line">    bio = fields.Method(<span class="string">'truncate_bio'</span>)  </span><br><span class="line">    headline = fields.Method(<span class="string">'truncate_headline'</span>)  </span><br><span class="line">    description = fields.Method(<span class="string">'truncate_description'</span>)  </span><br><span class="line">    truncate_headline = partialmethod(Item.truncate, <span class="string">'headline'</span>)  </span><br><span class="line">    truncate_bio = partialmethod(Item.truncate, <span class="string">'bio'</span>)  </span><br><span class="line">    truncate_description = partialmethod(Item.truncate, <span class="string">'description'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>通过partialmethod + 非继承至Schema的类就可以实现继承和额外参数了。</p>
+<h3 id="对Sanic定制"><a href="#对Sanic定制" class="headerlink" title="对Sanic定制"></a>对Sanic定制</h3><p>我们都知道，当你有独特的需求而框架不满足的时候，就要对其进行二次开发或者封装。我一般倾向基于框架提供的灵活性去封装。由于在多个API上都有分页的需要，参数中会出现start/limit（当然你可以更喜欢其他的词汇）。如果不定制，那么在每个视图里面都要加一句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@bp.route('/search')  </span></span><br><span class="line"><span class="meta">@marshal_with([LiveSchema, UserSchema])  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(request)</span>:</span>   </span><br><span class="line">    start = request.args.get(<span class="string">'start'</span>, <span class="number">0</span>)  </span><br><span class="line">    limit = request.args.get(<span class="string">'limit'</span>, <span class="number">10</span>)   </span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+
+
+<p>这2句就是个累赘。怎么做呢？ 利用sanic提供的中间件就好了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@app.middleware('request')  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">halt_request</span><span class="params">(request)</span>:</span>  </span><br><span class="line">    request.start = request.args.get(<span class="string">'start'</span>, <span class="number">0</span>)  </span><br><span class="line">    request.limit = request.args.get(<span class="string">'limit'</span>, <span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>但是这还不够，因为sanic在创建Request的时候基于内存的考虑使用了<strong>slots</strong>，所以我们要重新写on_headers_complete方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sanic.server <span class="keyword">import</span> HttpProtocol, CIMultiDict  </span><br><span class="line"><span class="keyword">from</span> sanic.request <span class="keyword">import</span> Request <span class="keyword">as</span> _Request   </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Request</span><span class="params">(_Request)</span>:</span>  </span><br><span class="line">    __slots__ = (  </span><br><span class="line">        <span class="string">'url'</span>, <span class="string">'headers'</span>, <span class="string">'version'</span>, <span class="string">'method'</span>, <span class="string">'_cookies'</span>,  </span><br><span class="line">        <span class="string">'query_string'</span>, <span class="string">'body'</span>, <span class="string">'start'</span>, <span class="string">'limit'</span>,  </span><br><span class="line">        <span class="string">'parsed_json'</span>, <span class="string">'parsed_args'</span>, <span class="string">'parsed_form'</span>, <span class="string">'parsed_files'</span>,  </span><br><span class="line">    )  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JSONHttpProtocol</span><span class="params">(HttpProtocol)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_headers_complete</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        remote_addr = self.transport.get_extra_info(<span class="string">'peername'</span>)  </span><br><span class="line">        <span class="keyword">if</span> remote_addr:  </span><br><span class="line">            self.headers.append((<span class="string">'Remote-Addr'</span>, <span class="string">'%s:%s'</span> % remote_addr))  </span><br><span class="line">  </span><br><span class="line">        self.request = Request(  </span><br><span class="line">            url_bytes=self.url,  </span><br><span class="line">            headers=CIMultiDict(self.headers),  </span><br><span class="line">            version=self.parser.get_http_version(),  </span><br><span class="line">            method=self.parser.get_method().decode()  </span><br><span class="line">        )  </span><br><span class="line">          </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>, port=<span class="number">8300</span>, protocol=JSONHttpProtocol,  </span><br><span class="line">            workers=<span class="number">4</span>, debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>这样在视图中就可以直接使用request.start和request.limit了。<br>其次看官方用法，都是在视图中控制返回的内容的类型，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sanic.response <span class="keyword">import</span> json  </span><br><span class="line">  </span><br><span class="line"><span class="meta">@app.route('/')  </span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">test</span><span class="params">(request)</span>:</span>  </span><br><span class="line">    <span class="keyword">return</span> json(&#123;<span class="string">"hello"</span>: <span class="string">"world"</span>&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>我也希望封装全部的返回结果的格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&#123;<span class="string">'rs'</span>: data&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>PS: 当然生产环境中应该还有一个error字段甚至error_code字段标识如果出错的信息和类型等字段，我这里作为演示就保留了一个rs字段<br>这个data就是实际的视图返回的结果，但是在响应的时候已经封好了。可以继续重写write_response方法:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">JSONHttpProtocol</span><span class="params">(HttpProtocol)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">write_response</span><span class="params">(self, response)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> isinstance(response, str):  </span><br><span class="line">            response = text(response)  </span><br><span class="line">        <span class="keyword">elif</span> isinstance(response, (list, dict)):  </span><br><span class="line">            response = &#123;<span class="string">'rs'</span>: response&#125;  </span><br><span class="line">        <span class="keyword">if</span> isinstance(response, dict):  </span><br><span class="line">            response = json(response)  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">return</span> super().write_response(response)</span><br></pre></td></tr></table></figure>
+
+
+<p>这样返回的结果就很统一了。<br>至此，一个异步的、风格明确的、功能满足需要的API服务就完成了。<br>项目具体代码可见： <a href="https://github.com/dongweiming/weapp-zhihulive" target="_blank" rel="noopener">https://github.com/dongweiming/weapp-zhihulive</a></p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-29.html" rel="next" title="使用grafana和Diamond构建Graphite监控系统">
+                <i class="fa fa-chevron-left"></i> 使用grafana和Diamond构建Graphite监控系统
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-03-31.html" rel="prev" title="封装pymongo自动关闭连接">
+                封装pymongo自动关闭连接 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#技术选型"><span class="nav-number">1.</span> <span class="nav-text">技术选型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Schema"><span class="nav-number">2.</span> <span class="nav-text">使用Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同一组数据可以定义多种Schema"><span class="nav-number">3.</span> <span class="nav-text">同一组数据可以定义多种Schema</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深入使用marshmallow"><span class="nav-number">4.</span> <span class="nav-text">深入使用marshmallow</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对Sanic定制"><span class="nav-number">5.</span> <span class="nav-text">对Sanic定制</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

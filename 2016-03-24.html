@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言之前在公众号转载了一篇使用Python模拟登录知乎,使用了目前实现爬虫比较常用的Web登录方式。我以前写爬虫选择的方式是：  如果对方网站有开放平台，满足需求且比较容易获取API权限，优先使用API。 如果网页登录及验证非常容易，甚至都不用登录就可以获取爬取网页，也是可以的。但是Web抓取不是最优先的，因为Web页面结构会改变、登录验证方式也会不断更新，可以感受到层出不断的验证码方式，烦。We">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用API登录知乎并获得token">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-03-24.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="前言之前在公众号转载了一篇使用Python模拟登录知乎,使用了目前实现爬虫比较常用的Web登录方式。我以前写爬虫选择的方式是：  如果对方网站有开放平台，满足需求且比较容易获取API权限，优先使用API。 如果网页登录及验证非常容易，甚至都不用登录就可以获取爬取网页，也是可以的。但是Web抓取不是最优先的，因为Web页面结构会改变、登录验证方式也会不断更新，可以感受到层出不断的验证码方式，烦。We">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/21917685/941de8ba-d984-11e6-9f2d-64f540cc7dca.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/21921224/79c20966-d9a1-11e6-98e3-d6275960a9f4.jpg">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/841395/21921351/800c7a08-d9a2-11e6-914b-0006220a1541.jpg">
+<meta property="og:updated_time" content="2019-12-12T06:23:34.317Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用API登录知乎并获得token">
+<meta name="twitter:description" content="前言之前在公众号转载了一篇使用Python模拟登录知乎,使用了目前实现爬虫比较常用的Web登录方式。我以前写爬虫选择的方式是：  如果对方网站有开放平台，满足需求且比较容易获取API权限，优先使用API。 如果网页登录及验证非常容易，甚至都不用登录就可以获取爬取网页，也是可以的。但是Web抓取不是最优先的，因为Web页面结构会改变、登录验证方式也会不断更新，可以感受到层出不断的验证码方式，烦。We">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/841395/21917685/941de8ba-d984-11e6-9f2d-64f540cc7dca.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-03-24.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+
+
+  <title>使用API登录知乎并获得token | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-24.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">使用API登录知乎并获得token</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-24T18:30:58+08:00">
+                2016-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-24.html" class="leancloud_visitors" data-flag-title="使用API登录知乎并获得token">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>之前在公众号转载了一篇<a href="http://mp.weixin.qq.com/s?__biz=MzA3NDk1NjI0OQ==&mid=2247483910&idx=1&sn=62f5730c99dd7f9e40febb727b5960&chksm=9f76aeb0a80127a633a31024ba42c34872a8b13da151e5b0c7f15c1a338ead2d06eaedb1eea5#rd" target="_blank" rel="noopener">使用Python模拟登录知乎</a>,<br>使用了目前实现爬虫比较常用的Web登录方式。我以前写爬虫选择的方式是：</p>
+<ol>
+<li>如果对方网站有开放平台，满足需求且比较容易获取API权限，优先使用API。</li>
+<li>如果网页登录及验证非常容易，甚至都不用登录就可以获取爬取网页，也是可以的。但是Web抓取不是最优先的，因为Web页面结构会改变、登录验证方式也会不断更新，可以感受到层出不断的验证码方式，烦。Web抓取，如果对应的移动适配的页面满足我会优先考虑移动端抓取，限制要少一些。我在知乎回答「<a href="https://www.zhihu.com/question/38192299/answer/125408708" target="_blank" rel="noopener">你见过哪些令你瞠目结舌的爬虫技巧？</a>」最后提到过：「第二条： 不要只看 Web 网站, 还有移动版、 App 和 H5, 它们的反爬虫措施一般比较少, 所有社交网站爬虫, 优先选择爬移动版。 」，不过这条大家好像都是直接忽略的… 忧伤</li>
+<li>当前2种都不好使的时候，虽然没有公开的API，但是只要这个应用有移动版本，就好办….<br>昨天喜闻知乎获得了新一轮的融资，晚上赶紧研究了下通过抓包获取知乎API的方法，分享给大家。由于之前我写的爬虫被对方寄了律师函（像豆瓣、知乎这种胸襟的公司毕竟是少数），读者请不要分享到掘金等平台（知乎可以），小范围传播就好了，感谢！<br>昨晚灵机一动的原因是由于之前在写「<a href="http://www.dongwm.com/archives/%E6%88%91%E7%9A%84-2016-%E5%B9%B4/" target="_blank" rel="noopener">我的2016年</a>」的时候，fork了[zhihu-<br>oauth](<a href="https://github.com/7sDream/zhihu-" target="_blank" rel="noopener">https://github.com/7sDream/zhihu-</a><br>oauth)，添加了following接口，跑了个获取参与我的Live的人中有多少关注者的脚本。<br>其实本文并没有超出zhihu-oauth的技术实现。但是我并不想把我的修改提PR合并给上游，因为对一些代码和实现的理解有一些冲突。<br>但是能有本文还是非常感谢zhihu-oauth，它其实就是用知乎API实现的抓取，我本文的提到的技术和代码并没有超过它的范畴。但是还是有一些区别：</li>
+<li>代码量。zhihu-oauth是一个中型组织结构，目录模块分配合理，我这个是它的抓取核心的简化版本，代码量少了很多。「Python之禅」里面有一句「Simple is better than complex.」，我个人不喜欢看结构复杂，尤其有黑科技的项目。当然会这样一般有炫技、作者对写项目的理解、设计能力还是历史遗留等原因。我比较喜欢简单粗暴的展示核心，代码能力在我看来有一个方面是能把复杂的事情非常简单化的表达，以至于让初学Python不久的工程师看起来也会愉悦，我正在朝着这个方向努力。</li>
+<li>移动设备。zhihu-oauth使用的安卓，我这篇文章用到的是IOS，且是目前最新版。</li>
+<li>展开细节。zhihu-oauth是一个开箱即用的项目，你可以不必读源码甚至不会写爬虫即可。而我今天是给大家讲整个抓取过程都发生了什么，怎么完成抓取的。相信大家看完之后去抓其他应用的包也会容易很多。</li>
+<li>其他实现细节。比如zhihu-oauth使用了pickle来序列化token的结果，它是Python独有的，可读性和安全性都不好，我改用了json。<br>好吧，我们开始。<h3 id="IOS抓包"><a href="#IOS抓包" class="headerlink" title="IOS抓包"></a>IOS抓包</h3>安卓的权限控制比较松，能比较方便的抓包。但是IOS由于苹果的一些政策，只能迂回的获的，我使用了<a href="http://www.charlesproxy.com" target="_blank" rel="noopener">Charles</a>，Charles的安装设置就不说了，Google能找到一堆教程。开始抓包后，然后在IPhone上设置手动的HTTP代理。<br>接着就是退出知乎，重新登录。<br>可以看到下面Charles界面左侧会出现api.zhihu.com的一项，点开可以看到sign_in项，再点开。在右侧就会出现API的信息。但我们先看Contents里面的Headers部分：<br><img src="https://cloud.githubusercontent.com/assets/841395/21917685/941de8ba-d984-11e6-9f2d-64f540cc7dca.png" alt><br>这里面信息很多：</li>
+<li>登录API地址是：<a href="https://api.zhihu.com/sign_in" target="_blank" rel="noopener">https://api.zhihu.com/sign_in</a></li>
+<li>登录请求使用POST(废话)</li>
+<li>登录需要添加一大坨自定义头信息，还要包含身份认证<br>其中自定义的头信息可以设置成常量，放进config.py：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">API_VERSION = <span class="string">'3.0.42'</span>  </span><br><span class="line">APP_VERSION = <span class="string">'3.28.0'</span>  </span><br><span class="line">APP_BUILD = <span class="string">'release'</span>  </span><br><span class="line">UUID = <span class="string">'AJDA7XkI9glLBWc85sk-nJ_6F0jqALu4AlY='</span>  </span><br><span class="line">UA = <span class="string">'osee2unifiedRelease/3.28.0 (iPhone; iOS 10.2; Scale/2.00)'</span>  </span><br><span class="line">APP_ZA = <span class="string">'OS=iOS&amp;Release=10.2&amp;Model=iPhone8,1&amp;VersionName=3.28.0&amp;VersionCode=558&amp;Width=750&amp;Height='</span>  </span><br><span class="line">CLIENT_ID = <span class="string">'8d5227e0aaaa4797a763ac64e0c3b8'</span>  </span><br><span class="line">APP_SECRET = <span class="string">b'ecbefbf6b17e47ecb9035107866380'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>其中CLIENT_ID和APP_SECRET基于安全考虑用的是zhihu-<br>oauth中默认的。我之前介绍过用local_config的方法替换config里面的默认配置，让一些关键常量不必放入版本库。<br>有一些一般（严谨点）是不会变的， 比如API地址，所以放进settings.py</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">ZHIHU_API_ROOT = <span class="string">'https://api.zhihu.com'</span>  </span><br><span class="line">LOGIN_URL = ZHIHU_API_ROOT + <span class="string">'/sign_in'</span>  </span><br><span class="line">CAPTCHA_URL = ZHIHU_API_ROOT + <span class="string">'/captcha'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>我们知道requests这个库是支持身份认证的，在这里我们按照人家的玩法，自定义ZhihuOAuth类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> requests.auth <span class="keyword">import</span> AuthBase  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> (  </span><br><span class="line">    API_VERSION, APP_VERSION, APP_BUILD, UUID, UA, APP_ZA, CLIENT_ID)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZhihuOAuth</span><span class="params">(AuthBase)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, token=None)</span>:</span>  </span><br><span class="line">        self._token = token  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span><span class="params">(self, r)</span>:</span>  </span><br><span class="line">        r.headers[<span class="string">'X-API-Version'</span>] = API_VERSION  </span><br><span class="line">        r.headers[<span class="string">'X-APP_VERSION'</span>] = APP_VERSION  </span><br><span class="line">        r.headers[<span class="string">'X-APP-Build'</span>] = APP_BUILD  </span><br><span class="line">        r.headers[<span class="string">'x-app-za'</span>] = APP_ZA  </span><br><span class="line">        r.headers[<span class="string">'X-UDID'</span>] = UUID  </span><br><span class="line">        r.headers[<span class="string">'User-Agent'</span>] = UA  </span><br><span class="line">        <span class="keyword">if</span> self._token <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            auth_str = <span class="string">'oauth &#123;client_id&#125;'</span>.format(  </span><br><span class="line">               client_id=CLIENT_ID  </span><br><span class="line">            )  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            auth_str = <span class="string">'&#123;type&#125; &#123;token&#125;'</span>.format(  </span><br><span class="line">                type=str(self._token.type.capitalize()),  </span><br><span class="line">                token=str(self._token.token)  </span><br><span class="line">            )  </span><br><span class="line">        r.headers[<span class="string">'Authorization'</span>] = auth_str  </span><br><span class="line">        <span class="keyword">return</span> r</span><br></pre></td></tr></table></figure>
+
+
+<p>然后就可以使用诸如<code>requests.get(&#39;https://api.xxx.com/yy,
+auth=ZhihuOAuth())</code>的方式了，不需要粗暴的拼headers。<br>上面的auth_str有2种，这是由于在为登录前是没有token的，使用的是oauth，在登录之后会拿到token。之后在调取其他API接口就需要这个token了。之后还会提到。<br>接着，我们看一下提交的表单和请求登录成功后返回的内容：<br><img src="https://cloud.githubusercontent.com/assets/841395/21921224/79c20966-d9a1-11e6-98e3-d6275960a9f4.jpg" alt><br>这次选择的是Form，返回的结果是切换到JSON Text这个Tab看到的。处于安全性的考虑，我隐去了一些敏感信息。<br>当成功之后，会返回一个access_token，也包含了token类型是bearer。之后的API调用就要使用和这个token了。假如我们在刷首页的feed，会有这样的一个请求：<br><img src="https://cloud.githubusercontent.com/assets/841395/21921351/800c7a08-d9a2-11e6-914b-0006220a1541.jpg" alt><br>注意其中的头信息中的Authorization，就是拿着这个access_token的值和类型去认证的。<br>原理说完了，感受下代码怎么写</p>
+<h3 id="自定义异常"><a href="#自定义异常" class="headerlink" title="自定义异常"></a>自定义异常</h3><p>今天我们讲的是登录，那么就要有登录失败的异常处理。好的习惯是自定义一些异常类exception.py：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginException</span><span class="params">(Exception)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, error)</span>:</span>  </span><br><span class="line">        self.error = error  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__repr__</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Login Fail: &#123;&#125;'</span>.format(self.error)  </span><br><span class="line">          </span><br><span class="line">    __str__ = __repr__</span><br></pre></td></tr></table></figure>
+
+
+<p>可能有同学会问，咦，用复数形式的exceptions.py不是更贴切么？因为exceptions已经被Python占用了 -. -</p>
+<h3 id="Token类"><a href="#Token类" class="headerlink" title="Token类"></a>Token类</h3><p>对access_token的操作应该放到一个类下面。 所以我也是用了单独的ZhihuToken</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZhihuToken</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, user_id, uid, access_token, expires_in, token_type,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 refresh_token, cookie, lock_in=None, unlock_ticket=None)</span>:</span>  </span><br><span class="line">        self._create_at = time.time()  </span><br><span class="line">        self._user_id = uid  </span><br><span class="line">        self._uid = user_id  </span><br><span class="line">        self._access_token = access_token  </span><br><span class="line">        self._expires_in = expires_in  </span><br><span class="line">        self._expires_at = self._create_at + self._expires_in  </span><br><span class="line">        self._token_type = token_type  </span><br><span class="line">        self._refresh_token = refresh_token  </span><br><span class="line">        self._cookie = cookie  </span><br><span class="line">  </span><br><span class="line">        <span class="comment"># Not used  </span></span><br><span class="line">        self._lock_in = lock_in  </span><br><span class="line">        self._unlock_ticket = unlock_ticket  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_file</span><span class="params">(cls, filename)</span>:</span>  </span><br><span class="line">        <span class="keyword">with</span> open(filename) <span class="keyword">as</span> f:  </span><br><span class="line">            <span class="keyword">return</span> cls.from_dict(json.load(f))  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @staticmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save_file</span><span class="params">(filename, data)</span>:</span>  </span><br><span class="line">        <span class="keyword">with</span> open(filename, <span class="string">'w'</span>) <span class="keyword">as</span> f:  </span><br><span class="line">            json.dump(data, f)  </span><br><span class="line">              </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">from_dict</span><span class="params">(cls, json_dict)</span>:</span>  </span><br><span class="line">        <span class="keyword">try</span>:  </span><br><span class="line">            <span class="keyword">return</span> cls(**json_dict)  </span><br><span class="line">        <span class="keyword">except</span> TypeError:  </span><br><span class="line">            <span class="keyword">raise</span> ValueError(  </span><br><span class="line">                <span class="string">'"&#123;json_dict&#125;" is NOT a valid zhihu token json.'</span>.format(  </span><br><span class="line">                    json_dict=json_dict  </span><br><span class="line">                ))</span><br></pre></td></tr></table></figure>
+
+
+<p>如果已经有token，用起来是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In [<span class="number">1</span>]: <span class="keyword">from</span> client <span class="keyword">import</span> ZhihuToken, TOKEN_FILE  </span><br><span class="line">In [<span class="number">2</span>]: token = ZhihuToken.from_file(TOKEN_FILE)  </span><br><span class="line">In [<span class="number">3</span>]: token._token_type  </span><br><span class="line">Out[<span class="number">3</span>]: <span class="string">'bearer'</span>  </span><br><span class="line">In [<span class="number">4</span>]: token._expires_at  </span><br><span class="line">Out[<span class="number">4</span>]: <span class="number">1486884430.011306</span></span><br></pre></td></tr></table></figure>
+
+
+<p>类方法from_dict的返回值是一个该类的实例的玩法现在用的非常普遍。</p>
+<h3 id="Client类"><a href="#Client类" class="headerlink" title="Client类"></a>Client类</h3><p>最后就是实现登录功能，我统一放在ZhihuClient类中，它做了如下事：</p>
+<ol>
+<li>使用requests.session创建一个会话供全局使用。</li>
+<li>构造请求登录的表单dict。</li>
+<li>登录提交前先确认是否需要输入验证码，如果不需要直接提交，如果需要通过API把验证码图片下载到本地，然后等待在终端输入，确认验证成功后再提交。</li>
+<li>提交成功后保存这个访问token，一段时间内就不用再登录了。<br>首先看初始化方法：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">TOKEN_FILE = <span class="string">'token.json'</span>  <span class="comment"># 事实上应该放在config.py里面  </span></span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZhihuClient</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, username=None, passwd=None, token_file=TOKEN_FILE)</span>:</span>  </span><br><span class="line">        self._session = requests.session()  </span><br><span class="line">        self._session.verify = <span class="literal">False</span>  </span><br><span class="line">        self.username = username  </span><br><span class="line">        self.passwd = passwd  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> os.path.exists(token_file):  </span><br><span class="line">            self._token = ZhihuToken.from_file(token_file)  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            self._login_auth = ZhihuOAuth()  </span><br><span class="line">            json_dict = self.login()  </span><br><span class="line">            ZhihuToken.save_file(token_file, json_dict)  </span><br><span class="line">        self._session.auth = ZhihuOAuth(self._token)</span><br></pre></td></tr></table></figure>
+
+
+<p>第一次是需要用户名和密码的，之后它们就不是必选的了，只有token_file是需要的。需要注意，zhihu-oauth项目中还包含如下一句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)</span><br></pre></td></tr></table></figure>
+
+
+<p>要不然在一些环境中可以看到这个warn信息吗，其次是<code>self._session.verify = False</code>也很必要。<br>如果token_file不存在就会触发登录，方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">LOGIN_DATA = &#123;  </span><br><span class="line">     <span class="string">'grant_type'</span>: <span class="string">'password'</span>,  </span><br><span class="line">     <span class="string">'source'</span>: <span class="string">'com.zhihu.ios'</span>,  </span><br><span class="line">     <span class="string">'client_id'</span>: CLIENT_ID  </span><br><span class="line"> &#125;   </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZhihuClient</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self)</span>:</span>  </span><br><span class="line">         data = LOGIN_DATA.copy()  </span><br><span class="line">         data[<span class="string">'username'</span>] = self.username  </span><br><span class="line">         data[<span class="string">'password'</span>] = self.passwd  </span><br><span class="line">         gen_login_signature(data)  </span><br><span class="line">  </span><br><span class="line">         <span class="keyword">if</span> self.need_captcha():  </span><br><span class="line">             captcha_image = self.get_captcha()  </span><br><span class="line">             <span class="keyword">with</span> open(CAPTCHA_FILE, <span class="string">'wb'</span>) <span class="keyword">as</span> f:  </span><br><span class="line">                 f.write(captcha_image)  </span><br><span class="line">             print(<span class="string">'Please open &#123;0&#125; for captcha'</span>.format(  </span><br><span class="line">                 os.path.abspath(CAPTCHA_FILE)))  </span><br><span class="line">  </span><br><span class="line">             captcha = input(<span class="string">'captcha: '</span>)  </span><br><span class="line">             os.remove(os.path.abspath(CAPTCHA_FILE))  </span><br><span class="line">             res = self._session.post(  </span><br><span class="line">                 CAPTCHA_URL,  </span><br><span class="line">                 auth=self._login_auth,  </span><br><span class="line">                 data=&#123;<span class="string">'input_text'</span>: captcha&#125;  </span><br><span class="line">             )  </span><br><span class="line">             <span class="keyword">try</span>:  </span><br><span class="line">                 json_dict = res.json()  </span><br><span class="line">                 <span class="keyword">if</span> <span class="string">'error'</span> <span class="keyword">in</span> json_dict:  </span><br><span class="line">                     <span class="keyword">raise</span> LoginException(json_dict[<span class="string">'error'</span>][<span class="string">'message'</span>])  </span><br><span class="line">             <span class="keyword">except</span> (ValueError, KeyError) <span class="keyword">as</span> e:  </span><br><span class="line">                 <span class="keyword">raise</span> LoginException(<span class="string">'Maybe input wrong captcha value'</span>)   </span><br><span class="line">                   </span><br><span class="line">         res = self._session.post(LOGIN_URL, auth=self._login_auth, data=data)  </span><br><span class="line">         <span class="keyword">try</span>:  </span><br><span class="line">             json_dict = res.json()  </span><br><span class="line">             <span class="keyword">if</span> <span class="string">'error'</span> <span class="keyword">in</span> json_dict:  </span><br><span class="line">                 <span class="keyword">raise</span> LoginException(json_dict[<span class="string">'error'</span>][<span class="string">'message'</span>])  </span><br><span class="line">             self._token = ZhihuToken.from_dict(json_dict)  </span><br><span class="line">             <span class="keyword">return</span> json_dict  </span><br><span class="line">         <span class="keyword">except</span> (ValueError, KeyError) <span class="keyword">as</span> e:  </span><br><span class="line">             <span class="keyword">raise</span> LoginException(str(e))</span><br></pre></td></tr></table></figure>
+
+
+<p>首先是构造表单数据，然后判断是否需要验证码（抽出来放在独立的方法中了）。顺便提一下，我习惯的方法的长度标准一般是一屏可以看完，再多了就会把一部分内容剥离开，但是一般也没必要剥离的那么分散，适用就好。<br>need_captcha方法也比较简单，总之无论哪一步出错我都抛LoginException退出：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">need_captcha</span><span class="params">(self)</span>:</span>  </span><br><span class="line">     res = self._session.get(CAPTCHA_URL, auth=self._login_auth)  </span><br><span class="line">     <span class="keyword">try</span>:  </span><br><span class="line">         j = res.json()  </span><br><span class="line">         <span class="keyword">return</span> j[<span class="string">'show_captcha'</span>]  </span><br><span class="line">     <span class="keyword">except</span> KeyError:  </span><br><span class="line">         <span class="keyword">raise</span> LoginException(<span class="string">'Show captcha fail!'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>gen_login_signature我并没有去研究，直接抄袭了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> hashlib  </span><br><span class="line"><span class="keyword">import</span> hmac  </span><br><span class="line"><span class="keyword">import</span> time  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> APP_SECRET  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_login_signature</span><span class="params">(data)</span>:</span>  </span><br><span class="line">    data[<span class="string">'timestamp'</span>] = str(int(time.time()))  </span><br><span class="line">  </span><br><span class="line">    params = <span class="string">''</span>.join([  </span><br><span class="line">        data[<span class="string">'grant_type'</span>],  </span><br><span class="line">        data[<span class="string">'client_id'</span>],  </span><br><span class="line">        data[<span class="string">'source'</span>],  </span><br><span class="line">        data[<span class="string">'timestamp'</span>],  </span><br><span class="line">    ])  </span><br><span class="line">  </span><br><span class="line">    data[<span class="string">'signature'</span>] = hmac.new(  </span><br><span class="line">        APP_SECRET, params.encode(<span class="string">'utf-8'</span>), hashlib.sha1).hexdigest()</span><br></pre></td></tr></table></figure>
+
+
+<p>这样就实现了知乎登录以及拿到access_token，token都有了，想干什么就去干吧，对，正好明天周末。</p>
+<h3 id="说在最后"><a href="#说在最后" class="headerlink" title="说在最后"></a>说在最后</h3><p>最后作为爬虫爱好者我提点意见，爬虫技术拿来分享，我很赞同；爬到数据去做分析，把分析的结果拿来分享我也支持。<br>但是 <strong>我严重鄙视把被爬取的网站的数据整理好直接放在百度网盘之类的共享行为!!</strong> 我教大家写爬虫，但请不要涉及工程师的道德底线和法律底线，很low。<br>之前我转载过一篇文章，当时也留了百度网盘地址但是里面的内容由于格式错乱并不能直接用，而且为了尊重原作者转载都是全部内容不去改动。但是随着最近这种爬虫文章越来越多，甚至感觉自己也做了帮凶，但以后绝不会再发这样的文章。</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-23.html" rel="next" title="ipython的一些高级用法(二)">
+                <i class="fa fa-chevron-left"></i> ipython的一些高级用法(二)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-03-25.html" rel="prev" title="详解Python元类">
+                详解Python元类 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#IOS抓包"><span class="nav-number">2.</span> <span class="nav-text">IOS抓包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义异常"><span class="nav-number">3.</span> <span class="nav-text">自定义异常</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Token类"><span class="nav-number">4.</span> <span class="nav-text">Token类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Client类"><span class="nav-number">5.</span> <span class="nav-text">Client类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#说在最后"><span class="nav-number">6.</span> <span class="nav-text">说在最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="http://www.miitbeian.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
