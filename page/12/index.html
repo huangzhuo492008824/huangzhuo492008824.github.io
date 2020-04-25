@@ -375,6 +375,334 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-31.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-31.html" itemprop="url">封装pymongo自动关闭连接</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T18:30:58+08:00">
+                2016-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-31.html" class="leancloud_visitors" data-flag-title="封装pymongo自动关闭连接">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言在我工作的项目里面使用了mongodb.自然也用到了pymongo.但是它都是在大片的函数里面使用类似于这样的方式
+123456import db  def test():      ...      db.test.find_one()      ...
+
+
+但是问题是在使用完都没有关闭连接,这样多台服务器连接我这台mongodb服务器，在业务高峰期就会占满我的连接, 我当时总结造成这个原因的问题有以下三种:
+
+上面说的用完db不关闭连接而是等着db超时
+注意上面的import，其实在import文件的时候数据库连接就已经生成了，没有在需要的时候才创建, 占满我连接的应用其实有很多没有用，浪费了
+nginx、uwsgi，celery等应用配置的问题，造成过多的实例，其实根本无益####我今天写的一个封装pymongo和关闭数据库连接的装饰器
+
+123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990#/usr/bin/env python  # coding=utf-8    """  1. 封装数据库操作(INSERT,FIND,UPDATE)  2. 函数执行完MONGODB操作后关闭数据库连接  """    from functools import wraps  from pymongo.database import Database    try:      from pymongo import MongoClient  except ImportError:  
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-31.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-30.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-30.html" itemprop="url">知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-30T18:30:58+08:00">
+                2016-03-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-30.html" class="leancloud_visitors" data-flag-title="知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](https://github.com/dongweiming/weapp-zhihulive/blob/master/screenshot/zhihulive.gif) 。在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战」。我显然承认，也很苦闷，今天顺便来吐个槽。我刚工作的时候特别愿意混各种技术会议和活动。经常有一些专家在上面讲：我们自己实现了一个XXX，它有如下多的特性，现在支持了多少个产品线的多少个应用，每天的数据量YYPB，流量ZZ…通篇在讲架构，摆几张高大上的图，甚至能说几个大家不了解的新的玩法都很少，还不断的问坐在下面的领导或者法务：额，这个我能说嘛；那个我能分享么？最最重要的是，他们讲的这些东西大多不是开源的….也基本没有一个可以拿得出手的论文，甚至说白了，如果你正好专注这一部分，会发现它也是根据了FLAG公司的论文在造轮子罢了，说不定造的还不如你。听过之后，也没有收获，都是「别人家」的，甚至有种炫耀的感觉而已，至于有什么苦可能只有他们自己知道吧。我就越来越不愿意参加这种会议了。写书或者博客也是这样。一切东西脱离了公司能提供的基础设施和环境都是空谈，但是这些铺垫说起来就太大了，先不讨论公司有没有授权你在外面说，就是没开源这点就不好弄。说的人都是在虚化的讲一大坨的东西，最多来几个截图之类的（应该还打了马赛克）。等这一大坨东西说的让大家明白了，一本书的厚度肯定不够。但是这些内容呢，只是你为了写书的某一(几)章做铺垫而已，有些内容太专太偏，读者大部分场景下是用不到的，好吧，又得骂娘说你这本书不实用…今天我将基于我过往的实践，以及最近学习asyncio和ES知识完成一个小程序的API服务。看这
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-30.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-29.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1701,340 +2029,6 @@ www.pydanny.com。博主是《Two Scoops of Django》的作者，我在Twitter�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-21.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-21.html" itemprop="url">给初学python设计模式的pythonista</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-21T18:30:58+08:00">
-                2016-03-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-21.html" class="leancloud_visitors" data-flag-title="给初学python设计模式的pythonista">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言从2011年5月4日买了第一本《python学习手册》到现在，我学python已经2年多了，python也是我第一门除bash外的语言。学’设计模式’这么神秘的东西还是源于去年一次面试，在我说了我想做某个东西，然后有什么思路后，面试官很不屑的问我：你知道设计模式嘛？然后我就懵了-从来没听过。我特别赞赏提供良好扩展功能的项目，比如Sublime Text2,它提供第三方插件功能，你可以使用别人开发的插件，也可以自己写插件，让项目更好的维护和扩展而不需要动基础的代码。后来换工作一直在熟悉业务，学一些东西。但是我一直记得这个’设计模式’，上个月花了一些时间去了解，所以有了此文，假如你也想了解’设计模式’,也很怕它，你会python，希望本文带给你帮助我也写了一组python设计模式的文章: 小明明s Github -设计模式####我的角度GoF（“四人帮”，又称Gang of Four，即Erich Gamma, Richard Helm, Ralph Johnson &amp; JohnVlissides四人）的《设计模式》这本书我没看过，我也不怎么会java，看不懂例子.我没有受到其他语言的毒害(因为python是我一开始的语言)，我的角度应该是最靠近python####什么是设计模式设计模式其实是一些被很多人反复使用而总结出来的代码设计经验，这些技术被GOF在大概20年前编辑成《编程模式》，其实不要害怕，因为 设计模式就在你写代码过程中已经体现了，被叫做’设计模式’只是被很好的总结出来 ，####python程序员的成长
-
-当你初学python，可能还是翻阅手册或者去google出一些你想要问题的答案，而后举一反三修改它符合你想要的东西。那么这是阶段一：堆代码，这个时候主要是为了实现功能，不重视代码编码规范，代码运行效率，代码可读性等
-用过一段时间python
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-21.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-20.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-20.html" itemprop="url">用python跑mapreduce</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-20T18:30:58+08:00">
-                2016-03-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-20.html" class="leancloud_visitors" data-flag-title="用python跑mapreduce">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言mapreduce在我的理解里一直都是java等语言的专利,介于python乃至于pypy的性能局限，一直没想过用python写分布式任务,最多就是多workers从消息队列取任务执行这样,但是最近一件事真的颠覆了我对python的认识.####先说说起因某天分享[sed和awk](http://www.dongwm.com/archives/sed-and-awk/),领导突发奇想让我用一些顾问的实际工作需要去我们的大量数据里面获取想要的数据的需求作为一些演示的例子.其中有这样一个需求(我去掉实际一些专业晦涩的用语,用实际的内容来表达):
-需求12341. 有大量的gz压缩文件, 找到其中某2天的数据, 每一行都是一条实际数据  2. 需要解压缩每个文件,遍历每行找到用逗号隔开的第21列为16233,第23列为27188的行. 以第2列为键计算符合的数量  3. 在全部统计结果里面根据值计算符合的键的数量: 比如&#123;'a':2, 'b':1, 'c':1&#125;,结果就是&#123;1:2, 2:1&#125;,也就是2次的有2个,1次的只有一个
-
-
-分析一上来真的想用awk来搞.但是和其他同事一聊,有几个难点:
-12341. 2天数据总量在400G以上,用awk还要保留2次哈希结果-不可能用awk  2. 用python,据同事经验说:只是解压缩这些小文件后读取什么都不做也大概1天多的时间,完全不能忍  3. 数据还没有放到hadoop, 没有其他更好更快的方法
-
-
-#####解题思路:
-
-最初我想做成这样:
-把需要处理的这些压缩文件放到队列里面
-启动多进程出队列里面获取要处理的文件,执行,把符合的结果放到共享变量叠加
-计算完成后从共享变量里面或者数据在生成上面第三条的结果但是今天讲的是python得mapreduce,也就是我后续的版本,它源于
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-20.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2087,7 +2081,7 @@ www.pydanny.com。博主是《Two Scoops of Django》的作者，我在Twitter�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2205,7 +2199,7 @@ www.pydanny.com。博主是《Two Scoops of Django》的作者，我在Twitter�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

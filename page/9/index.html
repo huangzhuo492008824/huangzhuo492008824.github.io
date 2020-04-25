@@ -375,6 +375,340 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-01.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-05-01.html" itemprop="url">使用Github_webhook服务实现提PR自动检查Flake8并在对应位置发评论</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-01T18:30:58+08:00">
+                2016-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-05-01.html" class="leancloud_visitors" data-flag-title="使用Github_webhook服务实现提PR自动检查Flake8并在对应位置发评论">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          最近参考linty_fresh实现了一个webhook服务,提PR自动检查Flake8, 当有代码风格问题的时候,并在对应位置发评论项目地址是: gandalf在公司内的Github企业版上, 已经用了一段时间, 比较稳定. 现在开源出来, 有兴趣的可以拿去^.^这个项目也是我的学习asyncio的练手作品, 吐槽下TypeHints让代码显的好丑哇…
+项目知识点
+Python3: 项目需要使用Python3， 建议使用Python3.5
+rq: 工作中有一些项目的版本库很大, 实际的检查时间也会长一些, 为了保证应用解耦和更好的提供支持, 使用rq作为任务队列
+aiohttp: 基于asyncio的http库, 用来调用github api, 获取对应pr信息
+pygit2: 使用官方模块实现Python版本的git版本控制功能, 它的安装比较麻烦, 但是官方文档讲的很清楚
+Flask: 作为webhook的服务框架来几张截图看个效果:配置
+
+123456789101112131415161718❯ cat gandalf/config.py  WORK_DIR = '/tmp/repositories'  # 设定克隆的项目版本库代码存放位置  FLAKE8_EXECUTABLE = '/usr/local/bin/flake8'  # 这个项目时Python3的，但是目前大部分应用还是Python2的, 所以需要Python2版本的flake8  HOST = '0.0.0.0'  PORT = 8080  DEBUG = False  REPORT_NO_MATCHING = False  # 没有在diff列表的文件的错误是否也报告  GITHUB_URL = 'http://github.com/'  # 行尾要加反斜杠  GITHUB_API_URL = 'h
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-05-01.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-30.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-30.html" itemprop="url">最近在写一本Python_Web开发的书</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-30T18:30:58+08:00">
+                2016-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-30.html" class="leancloud_visitors" data-flag-title="最近在写一本Python_Web开发的书">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          应某出版社约, 最近一直在写一本Python Web开发的书. 暂时不发大纲全部的章节，主要涵盖如下方面的内容:
+
+使用Python从零开始做一个完善的项目
+源码级别分析产品过程中的各种知识点
+站在运维，运维开发的角度讲解现在互联网Web应用的的方方面面
+排错, 优化, 设计项目等我清晰的知道都写些什么, 但是担心最后遗漏读者们有兴趣，关心的一些方面的内容, 特写本文. 本博客的读者如果有想法和建议, 欢迎和我交流.
+
+版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议python
+
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-04-30.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-29.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1706,346 +2040,6 @@ supe
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-21.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-04-21.html" itemprop="url">使用Python进行并发编程-PoolExecutor篇</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-21T18:30:58+08:00">
-                2016-04-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-04-21.html" class="leancloud_visitors" data-flag-title="使用Python进行并发编程-PoolExecutor篇">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          
-我在2016年12月12日发布了一篇 使用Python进行并发编程-PoolExecutor篇。其中有个例子中concurrent.futures要比multiprocessing.pool版本的快了1.7倍。看起来还是挺振奋人心的，不过这个数据是完全错误的。在我的博客的文章下，NoAnyLove留言对我表示怀疑，我一翻代码，果然：
-
-123results = pool.map(fib, NUMBERS)  for num, result in zip(NUMBERS, pool.map(fib, NUMBERS)):
-
-
-
-map了2次…我一心想推concurrent.futures，当时太主观武断了，以为是Future这种架构带来的这种性能上的质变，没有去深究。在此向各位读者道歉，也感谢NoAnyLove指出这个错误。这个周末我重新写了这篇文章。请大家以此为准，忽略之前那篇。原文如下：—— 分割线 —–之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？答案是： 有的 。从Python3.2开始一个叫做concurrent.futures被纳入了标准库，而在Python2它属于第三方的futures库，需要手动安装：
-
-12❯ pip install futures
-
-
-这个模块中有2个类：ThreadPoolExecutor和ProcessPoolExecutor，也就是对threading和multiprocessing的进行了高级别的抽象，暴露出统一的接口，帮助开发者非常方便的实现异
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-04-21.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-20.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-04-20.html" itemprop="url">豆瓣条目组招聘</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-20T18:30:58+08:00">
-                2016-04-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-04-20.html" class="leancloud_visitors" data-flag-title="豆瓣条目组招聘">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          我来做广告豆瓣是国内python应用最广泛的公司. 没有其二. 我们条目组随着业务变更, 也需要更多地优秀工程师的加入.条目是指什么? 豆瓣的电影/读书/音乐, 以及豆瓣东西都是我们在维护和迭代开发(对, 你没有听错, 你不是在一个产品线).我先列一下作为一个厂公在技术层面, 我对豆瓣的感想(其他层面大家都懂):
-
-豆瓣有很多知名的工程师, 包括但是不限于前后端以及IOS/Android, 你会他们协作, 吐槽他们的代码以及被他们吐槽
-豆瓣多年积累了很多对工作有帮助的工具. 比如CODE, dae, 还有很多的用于运维支持, 数据分析和统计, 爬虫等项目.
-豆瓣有很多开源项目, 被其他公司使用, 比如dpark, OzJS. 你有机会参与到这样的项目中招聘内容简单地需求都在这里: 产品开发工程师我来解读下(以下方面能帮你提高面试通过的几率):
-豆瓣希望你是一个倾向于全栈工程师. 比如你会python, 还能写前端, 或者有移动开发经验. 你可以想到, 我们大多是同时支持多个产品线, 任务重的时候如果你独当一面很好, 要是可以再别的领域帮个忙就更好了
-假如你python初学,但是很熟悉其他语言, 我们相信你很快会上手, 不要害怕. 我组之前就有一个原来是ruby的实习生.
-希望你能有个github/stackoverflow账号, 或者个人博客. 尤其是能看到你的作品, 了解你的代码, 希望看到你对代码的热爱. 我相信你有主动的态度会走的更远
-如果你曾经是某个/些开源项目的贡献者甚至是多次贡献者, 或者你曾经做过分享, 也请记得一并告诉我们.联系我们想想还是先联系我吧. 我会给大家转发到组内. 或者直接在线申请我的邮箱是: ciici123#gmail.com. 请在标题中注明[豆瓣求职]
-
-版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-04-20.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2098,7 +2092,7 @@ map了2次…我一心想推concurrent.futures，当时太主观武断了，以�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2216,7 +2210,7 @@ map了2次…我一心想推concurrent.futures，当时太主观武断了，以�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

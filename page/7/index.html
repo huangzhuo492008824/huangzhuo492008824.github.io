@@ -375,6 +375,335 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-21.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-05-21.html" itemprop="url">使用http和websocket连接服务器</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-21T18:30:58+08:00">
+                2016-05-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-05-21.html" class="leancloud_visitors" data-flag-title="使用http和websocket连接服务器">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言想想吧，通过网页ssh登录服务器是一件多么酷的事情?今天看了[使用浏览器访问 Linux终端](http://www.vpsee.com/2013/06/invoke-a-linux-shell-with-ssh-account-from-browser),也就是这个wssh,你也可以理解为websocket-ssh,觉得有点意思就拿出来####原路它是一个库，很简单，作者写了2个flask+gevent+websocket+paramiko的例子，其中网页版的使用了bootstrap.简单的理解就是不通过ssh连接服务器，而是通过网页或者一个client请求url+相应参数调用shell到服务器的方式，但是遗憾的是作者一年没有再维护，bootstrap的网页竟然没有指定ssh端口的选项，但是很多时候为了安全都会把ssh端口换成其它端口，这样就不能用了,好吧 我动手给它加了这个功能，也提了pullrequest.目前大家可以用我的这版:wssh
+updatewssh作者已经合并了我的修改####使用说明当你使用
+12sudo python setup.py install
+
+
+安装后，就能直接使用wssh和wsshd,wsshd是一个flask作为httpserver和gevent作为wsgi的服务端，默认启动在你本机的5000端口.网页登录就能看见简单大气的选项页面，可以指定用户，服务器ip，端口，以及使用密钥或者密码登录.输入点击连接就会登录到那台服务器,数据通过websocket实时显示到页面上而wssh是一个命令行登录的带选项的命令，其实就是页面输入的参数通过命令行的方式输入然后直接登录服务器，比如我下面的用法:
+12wssh dongwm@dongwm.com -p XXX -s 58404
+
+
+####我觉得有空可以基于这个做点好玩的东西
+版权声明：
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-05-21.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-20.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-05-20.html" itemprop="url">slack上的小黄鸡--SlackBot</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-20T18:30:58+08:00">
+                2016-05-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-05-20.html" class="leancloud_visitors" data-flag-title="slack上的小黄鸡--SlackBot">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言Slack是一个最近一年兴起的团队沟通协作平台.程序员对工具其实是最有品位和要求的，相信国内很多公司和团队都在使用，豆瓣也算比较早在用.相信用过的人会理解本文. 如果你还没有接触它, 尤其是对现有的团队沟通协作工具有些不满, 可以试一下.本文就是介绍我们在最近做出来的一个bot - slack_bot.它的口号是: 立志成为一个可被调戏且有用的Bot
+为什么无论是运维还是开发, 某些时间都会收到一些邮件/提醒, 可能是固定的时间的定时任务跑出来的结果,也可能是某个故障引起的问题邮件. 我们都很烦手头有好几个东西来接收这些消息， 而slack可以使用某些方法让这些问题集中起来.比如很常用的, 使用chat或者incoming-webhooks接收消息. 做什么呢?我可以把一些昨天的数据汇总或者汇总的地址在今天早上发到某个channel下, 这样想要看这个数据的人直接点进去就好了.当然啦, 也可以直接发消息到某个人. 一个具体的例子: 豆瓣的同事都知道, 我们的测试环境时间过期就会被删除,在某段时间里面每天都有很多人在关注我们要新上的一个测试的地址,但是经常被同事@, 说地址怎么找不到了, 那么我就要抽出精力再去创建一个. 后来一想, 索性跑个定时任务, 拉最新的代码, 走逻辑, 生成一个测试环境.每天都会在channel里面发消息给对应关心这个消息的人.一段时间以后, 我们的工作完成了, 同事都有点不适用, 哎， 怎么早上看不到那个消息了…但是今天说的是什么呢? 我们的slack_bot主要借用outgoing-webhooks. incoming表示把消息推到slack里面,outgoing其实就是当有人在某些符合的channel里面说了什么, 会跳到我们提供的回调地址, 根据内容返回对应符合的回复. 大家是不是有点懂了,这就是小黄鸡的原理.说到这里大家应该明白了. 其
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-05-20.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-19.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1702,348 +2031,6 @@ localh
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-11.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-05-11.html" itemprop="url">slack-alert把定时任务的结果发送slack消息的微框架</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-11T18:30:58+08:00">
-                2016-05-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-05-11.html" class="leancloud_visitors" data-flag-title="slack-alert把定时任务的结果发送slack消息的微框架">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言为什么要做slack-alert呢?成因其实是我一直想做的AST相关的一个项目.正好是一个机会. 其次也是业务需要:工程师都比较懒, 在每天的各种问题邮件几百几千封的时候会经常遗漏重要的邮件. 会经常被用户以及公司其他同事发现问题时@到时候才发现.现在大家也接受了slack这个工具. 那么我就在想何不把更重要的消息发送到slack里呢.原来也做过, 就是写一些脚本,会把运行的结果通过slacker里面封装的postMessage发消息进来.先说一下为什么我不用Incoming-webhooks. 最主要的,因为通常slack都是用的免费版, 我担心对webhooks会有限制或者未来会有限制.但是为什么做这个微框架呢? 一则这样的脚本和任务会越来越多, 脚本需要设置的定时任务的间隔也会各不相同. 用系统自带的crontab,每次新增修改删除都要去做调整.代码还需要做抽象; 用celery, rq这些其实一是很浪费, 二也不怎么应景. 所以我写了这个工具.
-优点和特点
-只支持python3
-支持多种调度模式: AsyncIOScheduler, BackgroundScheduler, GeventScheduler, TornadoScheduler. 默认是AsyncIO
-使用AST, 而没有直接import代码.
-代码和项目无关, 没有register. 只需要按格式编写plugin脚本即可, 要被执行的任务加一个装饰器(只需要他是一个装饰器, 不需要存在). 指定运行的间隔就好
-附带常用的配置安装
-
-12pip install slack-alert
-
-
-slack-alert有个默认的配置[slack_alert.conf](https://github.com/dongweiming/slack-alert/blob/master/slack_alert.con
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-05-11.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-10.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-05-10.html" itemprop="url">ipython的一些高级用法(一)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-10T18:30:58+08:00">
-                2016-05-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-05-10.html" class="leancloud_visitors" data-flag-title="ipython的一些高级用法(一)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言以前在我的PPT[python高级编程](http://dongweiming.github.io/Expert-Python/)也提到了一些关于ipython的用法. 今天继续由浅入深的看看ipython,本文作为读者的你已经知道ipython并且用了一段时间了.
-%run这是一个magic命令, 能把你的脚本里面的代码运行, 并且把对应的运行结果存入ipython的环境变量中:
-12345678910$cat t.py  # coding=utf-8  l = range(5)    $ipython  In [1]: %run t.py # `%`可加可不加    In [2]: l # 这个l本来是t.py里面的变量, 这里直接可以使用了  Out[2]: [0, 1, 2, 3, 4]
-
-
-alias12345678910In [3]: %alias largest ls -1sSh | grep %s  In [4]: largest to  total 42M   20K tokenize.py   16K tokenize.pyc  8.0K story.html  4.0K autopep8  4.0K autopep8.bak  4.0K story_layout.html
-
-
-PS 别名需要存储的, 否则重启ipython就不存在了:
-123In [5]: %store largest  Alias stored: largest (ls -1sSh | grep %s)
-
-
-下次进入的时候%store -r
-bookmark - 对目录做别名1234567891011In [2]: %pwd  Out[2]: u'/home/vagrant'    In [3]: %bookmark dongxi ~/shire/dongxi    In [4]
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-05-10.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2096,7 +2083,7 @@ bookmark - 对目录做别名1234567891011In [2]: %pwd  Out[2]: u'/home/vagrant'
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2214,7 +2201,7 @@ bookmark - 对目录做别名1234567891011In [2]: %pwd  Out[2]: u'/home/vagrant'
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

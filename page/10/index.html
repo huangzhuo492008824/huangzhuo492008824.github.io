@@ -375,6 +375,346 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-21.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-21.html" itemprop="url">使用Python进行并发编程-PoolExecutor篇</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-21T18:30:58+08:00">
+                2016-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-21.html" class="leancloud_visitors" data-flag-title="使用Python进行并发编程-PoolExecutor篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+我在2016年12月12日发布了一篇 使用Python进行并发编程-PoolExecutor篇。其中有个例子中concurrent.futures要比multiprocessing.pool版本的快了1.7倍。看起来还是挺振奋人心的，不过这个数据是完全错误的。在我的博客的文章下，NoAnyLove留言对我表示怀疑，我一翻代码，果然：
+
+123results = pool.map(fib, NUMBERS)  for num, result in zip(NUMBERS, pool.map(fib, NUMBERS)):
+
+
+
+map了2次…我一心想推concurrent.futures，当时太主观武断了，以为是Future这种架构带来的这种性能上的质变，没有去深究。在此向各位读者道歉，也感谢NoAnyLove指出这个错误。这个周末我重新写了这篇文章。请大家以此为准，忽略之前那篇。原文如下：—— 分割线 —–之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？答案是： 有的 。从Python3.2开始一个叫做concurrent.futures被纳入了标准库，而在Python2它属于第三方的futures库，需要手动安装：
+
+12❯ pip install futures
+
+
+这个模块中有2个类：ThreadPoolExecutor和ProcessPoolExecutor，也就是对threading和multiprocessing的进行了高级别的抽象，暴露出统一的接口，帮助开发者非常方便的实现异
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-04-21.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-20.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-20.html" itemprop="url">豆瓣条目组招聘</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-20T18:30:58+08:00">
+                2016-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-20.html" class="leancloud_visitors" data-flag-title="豆瓣条目组招聘">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          我来做广告豆瓣是国内python应用最广泛的公司. 没有其二. 我们条目组随着业务变更, 也需要更多地优秀工程师的加入.条目是指什么? 豆瓣的电影/读书/音乐, 以及豆瓣东西都是我们在维护和迭代开发(对, 你没有听错, 你不是在一个产品线).我先列一下作为一个厂公在技术层面, 我对豆瓣的感想(其他层面大家都懂):
+
+豆瓣有很多知名的工程师, 包括但是不限于前后端以及IOS/Android, 你会他们协作, 吐槽他们的代码以及被他们吐槽
+豆瓣多年积累了很多对工作有帮助的工具. 比如CODE, dae, 还有很多的用于运维支持, 数据分析和统计, 爬虫等项目.
+豆瓣有很多开源项目, 被其他公司使用, 比如dpark, OzJS. 你有机会参与到这样的项目中招聘内容简单地需求都在这里: 产品开发工程师我来解读下(以下方面能帮你提高面试通过的几率):
+豆瓣希望你是一个倾向于全栈工程师. 比如你会python, 还能写前端, 或者有移动开发经验. 你可以想到, 我们大多是同时支持多个产品线, 任务重的时候如果你独当一面很好, 要是可以再别的领域帮个忙就更好了
+假如你python初学,但是很熟悉其他语言, 我们相信你很快会上手, 不要害怕. 我组之前就有一个原来是ruby的实习生.
+希望你能有个github/stackoverflow账号, 或者个人博客. 尤其是能看到你的作品, 了解你的代码, 希望看到你对代码的热爱. 我相信你有主动的态度会走的更远
+如果你曾经是某个/些开源项目的贡献者甚至是多次贡献者, 或者你曾经做过分享, 也请记得一并告诉我们.联系我们想想还是先联系我吧. 我会给大家转发到组内. 或者直接在线申请我的邮箱是: ciici123#gmail.com. 请在标题中注明[豆瓣求职]
+
+版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-04-20.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-19.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1736,336 +2076,6 @@ qyuhen/book雨痕前辈从1996年开始从事计算机软件开发工作，从20
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-11.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-04-11.html" itemprop="url">使用celery之深入celery配置</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T18:30:58+08:00">
-                2016-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-04-11.html" class="leancloud_visitors" data-flag-title="使用celery之深入celery配置">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言celery的官方文档其实相对还是写的很不错的.但是在一些深层次的使用上面却显得杂乱甚至就没有某些方面的介绍,通过我的一个测试环境的settings.py来说明一些使用celery的技巧和解决办法####amqp交换类型其实一共有4种交换类型，还有默认类型和自定义类型. 但是对我们配置队列只会用到其中之三，我来一个个说明，英语好的话可以直接去看英文文档首先思考一下流程:
-
-celerybeat生成任务消息，然后发送消息到一个exchange(交换机)
-交换机决定那个(些)队列会接收这个消息，这个其实就是根据下面的exchange的类型和绑定到这个交换机所用的bindingkey我们这里要说的其实就是怎么样决定第二步谁接收的问题
-Direct Exchange如其名，直接交换，也就是指定一个消息被那个队列接收， 这个消息被celerybeat定义个一个routingkey，如果你发送给交换机并且那个队列绑定的bindingkey 那么就会直接转给这个队列
-Topic Exchange你设想一下这样的环境(我举例个小型的应该用场景): 你有三个队列和三个消息,A消息可能希望被X,Y处理,B消息你希望被,X,Z处理,C消息你希望被Y,Z处理.并且这个不是队列的不同而是消息希望被相关的队列都去执行,看一张图可能更好理解:![](https://access.redhat.com/site/documentation/resources/docs/en-US/Red_Hat_Enterprise_MRG/1.1/html/Messaging_User_Guide/images/topic-exchange.png)对，Topic可以根据同类的属性进程通配, 你只需要routing key有’.’分割:比如上图中的usa.news, usa.weather,europe.n
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-04-11.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-10.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-04-10.html" itemprop="url">使用glances监控本地和远程服务器的性能状态，以及我对它的修改</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-10T18:30:58+08:00">
-                2016-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-04-10.html" class="leancloud_visitors" data-flag-title="使用glances监控本地和远程服务器的性能状态，以及我对它的修改">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言首先开始感谢Vpsee的那篇[安装和使用系统监控工具Glances](http://www.vpsee.com/2013/07/a-new-system-monitoring-tool-glances-installation-and-usage/)，让我发现了glances这个新的系统监控工具.并且可以通过xml-rpc监控远程服务器的系统情况显示到本地.它其实类似于top,支持键盘按键.使用了psutil库获取了硬盘分区，负载，内存使用，交换分区使用，进程(支持根据cpu占用,内存占用，进程名和io使用的排序).并且在安装了lm-sensor后还可以监控服务器的温度.记录日志,高亮显示可配置的阀值的预警颜色.就像一个超级版的top,但是它的优点其实就是2个:
-
-它是python的，你可以定制化
-它可以使用rpc获取其他服务端的系统信息,top可不行额####我对它做了些贡献
-首先我给他添加了中文的国际化,但是因为显示英文比汉语占用得长度要小，我没有在太多的地方全部显示中文，而且我觉得作为运维本来就应该好好用英语…如果有必要我可以做一个glance-cn，完全汉化
-我读了它的源码,发现它的代码已经超过4000行，但是好几个地方其实有很大的优化空间,比如它的glancesScreen类，有下面这样的代码:
-
-1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950def __getMemAlert(self, current=0, max=100):                                     # If current &lt; CAREFUL of max then alert = OK           
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-04-10.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2118,7 +2128,7 @@ Topic Exchange你设想一下这样的环境(我举例个小型的应该用场�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2236,7 +2246,7 @@ Topic Exchange你设想一下这样的环境(我举例个小型的应该用场�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

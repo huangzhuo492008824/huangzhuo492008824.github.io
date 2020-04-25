@@ -375,6 +375,336 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-11.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-11.html" itemprop="url">使用celery之深入celery配置</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-11T18:30:58+08:00">
+                2016-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-11.html" class="leancloud_visitors" data-flag-title="使用celery之深入celery配置">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言celery的官方文档其实相对还是写的很不错的.但是在一些深层次的使用上面却显得杂乱甚至就没有某些方面的介绍,通过我的一个测试环境的settings.py来说明一些使用celery的技巧和解决办法####amqp交换类型其实一共有4种交换类型，还有默认类型和自定义类型. 但是对我们配置队列只会用到其中之三，我来一个个说明，英语好的话可以直接去看英文文档首先思考一下流程:
+
+celerybeat生成任务消息，然后发送消息到一个exchange(交换机)
+交换机决定那个(些)队列会接收这个消息，这个其实就是根据下面的exchange的类型和绑定到这个交换机所用的bindingkey我们这里要说的其实就是怎么样决定第二步谁接收的问题
+Direct Exchange如其名，直接交换，也就是指定一个消息被那个队列接收， 这个消息被celerybeat定义个一个routingkey，如果你发送给交换机并且那个队列绑定的bindingkey 那么就会直接转给这个队列
+Topic Exchange你设想一下这样的环境(我举例个小型的应该用场景): 你有三个队列和三个消息,A消息可能希望被X,Y处理,B消息你希望被,X,Z处理,C消息你希望被Y,Z处理.并且这个不是队列的不同而是消息希望被相关的队列都去执行,看一张图可能更好理解:![](https://access.redhat.com/site/documentation/resources/docs/en-US/Red_Hat_Enterprise_MRG/1.1/html/Messaging_User_Guide/images/topic-exchange.png)对，Topic可以根据同类的属性进程通配, 你只需要routing key有’.’分割:比如上图中的usa.news, usa.weather,europe.n
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-04-11.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-10.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-04-10.html" itemprop="url">使用glances监控本地和远程服务器的性能状态，以及我对它的修改</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-10T18:30:58+08:00">
+                2016-04-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-10.html" class="leancloud_visitors" data-flag-title="使用glances监控本地和远程服务器的性能状态，以及我对它的修改">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言首先开始感谢Vpsee的那篇[安装和使用系统监控工具Glances](http://www.vpsee.com/2013/07/a-new-system-monitoring-tool-glances-installation-and-usage/)，让我发现了glances这个新的系统监控工具.并且可以通过xml-rpc监控远程服务器的系统情况显示到本地.它其实类似于top,支持键盘按键.使用了psutil库获取了硬盘分区，负载，内存使用，交换分区使用，进程(支持根据cpu占用,内存占用，进程名和io使用的排序).并且在安装了lm-sensor后还可以监控服务器的温度.记录日志,高亮显示可配置的阀值的预警颜色.就像一个超级版的top,但是它的优点其实就是2个:
+
+它是python的，你可以定制化
+它可以使用rpc获取其他服务端的系统信息,top可不行额####我对它做了些贡献
+首先我给他添加了中文的国际化,但是因为显示英文比汉语占用得长度要小，我没有在太多的地方全部显示中文，而且我觉得作为运维本来就应该好好用英语…如果有必要我可以做一个glance-cn，完全汉化
+我读了它的源码,发现它的代码已经超过4000行，但是好几个地方其实有很大的优化空间,比如它的glancesScreen类，有下面这样的代码:
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950def __getMemAlert(self, current=0, max=100):                                     # If current &lt; CAREFUL of max then alert = OK           
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-04-10.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-09.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1731,334 +2061,6 @@ CODE是一款豆瓣工程师自发组织, 基于我们自己的需要做出来�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-31.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-31.html" itemprop="url">封装pymongo自动关闭连接</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-31T18:30:58+08:00">
-                2016-03-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-31.html" class="leancloud_visitors" data-flag-title="封装pymongo自动关闭连接">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言在我工作的项目里面使用了mongodb.自然也用到了pymongo.但是它都是在大片的函数里面使用类似于这样的方式
-123456import db  def test():      ...      db.test.find_one()      ...
-
-
-但是问题是在使用完都没有关闭连接,这样多台服务器连接我这台mongodb服务器，在业务高峰期就会占满我的连接, 我当时总结造成这个原因的问题有以下三种:
-
-上面说的用完db不关闭连接而是等着db超时
-注意上面的import，其实在import文件的时候数据库连接就已经生成了，没有在需要的时候才创建, 占满我连接的应用其实有很多没有用，浪费了
-nginx、uwsgi，celery等应用配置的问题，造成过多的实例，其实根本无益####我今天写的一个封装pymongo和关闭数据库连接的装饰器
-
-123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990#/usr/bin/env python  # coding=utf-8    """  1. 封装数据库操作(INSERT,FIND,UPDATE)  2. 函数执行完MONGODB操作后关闭数据库连接  """    from functools import wraps  from pymongo.database import Database    try:      from pymongo import MongoClient  except ImportError:  
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-31.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-30.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-30.html" itemprop="url">知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-30T18:30:58+08:00">
-                2016-03-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-30.html" class="leancloud_visitors" data-flag-title="知乎live全文搜索之构建基于asyncio+sanic的RESTful-API服务">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          今天的文章图片就是这个知乎Live全文搜索的效果了。如果在wifi情况下或者土豪不介意流量的同学可以直接[感受实际使用的动态效果](https://github.com/dongweiming/weapp-zhihulive/blob/master/screenshot/zhihulive.gif) 。在我的《Python Web开发实战》一书中，比较少的介绍到豆瓣自己造的轮子。有读者喷「不够实战」。我显然承认，也很苦闷，今天顺便来吐个槽。我刚工作的时候特别愿意混各种技术会议和活动。经常有一些专家在上面讲：我们自己实现了一个XXX，它有如下多的特性，现在支持了多少个产品线的多少个应用，每天的数据量YYPB，流量ZZ…通篇在讲架构，摆几张高大上的图，甚至能说几个大家不了解的新的玩法都很少，还不断的问坐在下面的领导或者法务：额，这个我能说嘛；那个我能分享么？最最重要的是，他们讲的这些东西大多不是开源的….也基本没有一个可以拿得出手的论文，甚至说白了，如果你正好专注这一部分，会发现它也是根据了FLAG公司的论文在造轮子罢了，说不定造的还不如你。听过之后，也没有收获，都是「别人家」的，甚至有种炫耀的感觉而已，至于有什么苦可能只有他们自己知道吧。我就越来越不愿意参加这种会议了。写书或者博客也是这样。一切东西脱离了公司能提供的基础设施和环境都是空谈，但是这些铺垫说起来就太大了，先不讨论公司有没有授权你在外面说，就是没开源这点就不好弄。说的人都是在虚化的讲一大坨的东西，最多来几个截图之类的（应该还打了马赛克）。等这一大坨东西说的让大家明白了，一本书的厚度肯定不够。但是这些内容呢，只是你为了写书的某一(几)章做铺垫而已，有些内容太专太偏，读者大部分场景下是用不到的，好吧，又得骂娘说你这本书不实用…今天我将基于我过往的实践，以及最近学习asyncio和ES知识完成一个小程序的API服务。看这
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-30.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2111,7 +2113,7 @@ nginx、uwsgi，celery等应用配置的问题，造成过多的实例，其实�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">193</span>
+                  <span class="site-state-item-count">195</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2229,7 +2231,7 @@ nginx、uwsgi，celery等应用配置的问题，造成过多的实例，其实�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

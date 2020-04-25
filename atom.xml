@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.myhuangzhuo.com/"/>
-  <updated>2019-12-12T06:23:34.333Z</updated>
+  <updated>2020-04-24T17:22:00.348Z</updated>
   <id>https://www.myhuangzhuo.com/</id>
   
   <author>
@@ -15,6 +15,49 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>nginx开启gzip压缩</title>
+    <link href="https://www.myhuangzhuo.com/2020-4-24.html"/>
+    <id>https://www.myhuangzhuo.com/2020-4-24.html</id>
+    <published>2020-03-25T10:49:32.000Z</published>
+    <updated>2020-04-24T17:22:00.348Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="需求场景："><a href="#需求场景：" class="headerlink" title="需求场景："></a>需求场景：</h3><ul><li>最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉前端这边应该有很大的优化空间，试了好几种方式比如:加优化参数–aot, —-build-optimizer等都试过，生成的文件大小基本没有变化，于是就想从压缩静态文件入手；</li></ul><ol><li><p>angularjs项目中引入打包工具gzipper：</p></li><li><p>将打包命令写入package.json,参考如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod &amp;&amp; gzipper --verbose --level 9 ./dist/my-app //level表示压缩级别：1-9(压缩率依次变高)</span><br></pre></td></tr></table></figure></li><li><p>nginx配置支持gzip压缩:</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在nginx配置http/server/location中加入如下配置:</span></span><br><span class="line">    gzip  on; //开启gzip</span><br><span class="line">    gzip_proxied no-cache no-store private expired auth; //代理的情况</span><br><span class="line">    gzip_min_length 1k; //gzip最小压缩大小</span><br><span class="line">    gzip_buffers 4 16k; </span><br><span class="line">    gzip_comp_level 5; //gzip压缩级别(1-9)</span><br><span class="line">    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png; //支持压缩的文件类型</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_disable "MSIE [1-6]\."; //ie 1-6下禁用压缩</span><br><span class="line">    gzip_static on; //开启本地gzip文件的压缩，要求事先生成gzip文件</span><br><span class="line">    gzip_http_version   1.0; //gzip压缩版本，在多级代理的情况下默认可能会有坑</span><br></pre></td></tr></table></figure></li><li><p>打包配置上线验证：<br>响应header中包含这个说明压缩成功：Content-Encoding:gzip<br>下图是对比<br><img src="/uploads/nginx-gzip/gzip-vs.png" alt><br><a href="https://medium.com/@subodhkumarjc/angular-build-optimization-part-2-compression-b866dd0593c3" target="_blank" rel="noopener">Angular Build貌似还可以用其他的压缩方式</a></p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;需求场景：&quot;&gt;&lt;a href=&quot;#需求场景：&quot; class=&quot;headerlink&quot; title=&quot;需求场景：&quot;&gt;&lt;/a&gt;需求场景：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>求最大公约数和最小公倍数</title>
+    <link href="https://www.myhuangzhuo.com/2020-03-25.html"/>
+    <id>https://www.myhuangzhuo.com/2020-03-25.html</id>
+    <published>2020-03-25T10:49:32.000Z</published>
+    <updated>2020-03-25T09:44:36.083Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="辗转相除法的推导："><a href="#辗转相除法的推导：" class="headerlink" title="辗转相除法的推导："></a>辗转相除法的推导：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">求x和y的最大公约数:</span></span><br><span class="line"><span class="string">假设 k = x / y , b = x % y, 则：</span></span><br><span class="line"><span class="string">1. x = k * y + b;</span></span><br><span class="line"><span class="string">假设 g为x和y的最大公约数: 则：</span></span><br><span class="line"><span class="string">2. x = g * c1 ; </span></span><br><span class="line"><span class="string">3. y = g * c2 ; (c1, c2为某个常数)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">将1带入2，可得：</span></span><br><span class="line"><span class="string">4. k * y + b = g * c1;</span></span><br><span class="line"><span class="string">将3带入4，可得：</span></span><br><span class="line"><span class="string">k * (g * c2) + b = g * c1 ==&gt; b = g * (c1 - k*c2)</span></span><br><span class="line"><span class="string">从而可得: b = g * c3;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">于是求x和y最大公约数函数 f(x, y) = f(y, b),</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x <span class="keyword">if</span> y==<span class="number">0</span> <span class="keyword">else</span> gcd(y, x%y)</span><br></pre></td></tr></table></figure><h3 id="辗转相减法："><a href="#辗转相减法：" class="headerlink" title="辗转相减法："></a>辗转相减法：</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="string">求x和y的最大公约数:</span></span><br><span class="line"><span class="string">假设 g为x和y的最大公约数: 则：</span></span><br><span class="line"><span class="string">1. x = g * c1 ; </span></span><br><span class="line"><span class="string">2. y = g * c2 ; (c1, c2为某个常数)</span></span><br><span class="line"><span class="string">1减去2可得：</span></span><br><span class="line"><span class="string">x-y = g * (c1-c2)</span></span><br><span class="line"><span class="string">则可以推导出 y和x-y的最大公约数也是g ：</span></span><br><span class="line"><span class="string">于是：f(x, y) = f(y, x-y)</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gcd_sub</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">while</span>(y):</span><br><span class="line">        <span class="keyword">if</span> y &gt; x:</span><br><span class="line">            x, y = y, x</span><br><span class="line">        x, y = y, x-y</span><br><span class="line">    <span class="keyword">return</span> x</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;辗转相除法的推导：&quot;&gt;&lt;a href=&quot;#辗转相除法的推导：&quot; class=&quot;headerlink&quot; title=&quot;辗转相除法的推导：&quot;&gt;&lt;/a&gt;辗转相除法的推导：&lt;/h3&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>python3高阶函数库functools</title>
@@ -506,70 +549,6 @@
       <category term="centos7" scheme="https://www.myhuangzhuo.com/tags/centos7/"/>
     
       <category term="ss" scheme="https://www.myhuangzhuo.com/tags/ss/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>google开源python代码规范</title>
-    <link href="https://www.myhuangzhuo.com/2017-07-31-google-opensourse-python-code-standard.html"/>
-    <id>https://www.myhuangzhuo.com/2017-07-31-google-opensourse-python-code-standard.html</id>
-    <published>2017-07-31T09:49:32.000Z</published>
-    <updated>2019-12-12T06:23:34.331Z</updated>
-    
-    <content type="html"><![CDATA[<ul><li><p><strong>1. 行长度</strong></p><ul><li>每行不超过80个字符(例外 a.长的导入模块语句; b. 注释里的url)</li><li>Python会将 圆括号, 中括号和花括号中的行隐式的连接起来 ：<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: print(<span class="string">'hello'</span></span><br><span class="line">   ...: <span class="string">'world'</span>)</span><br><span class="line">helloworld</span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong>2. 文件和sockets</strong></p><blockquote><p>在文件和sockets结束时, 显式的关闭它.</p></blockquote><ul><li>推荐使用 “with”语句 以管理文件;</li><li>对于不支持使用”with”语句的类似文件的对象,使用 contextlib.closing():<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> contextlib</span><br><span class="line"><span class="keyword">with</span> contextlib.closing(urllib.urlopen(<span class="string">"http://www.python.org/"</span>)) <span class="keyword">as</span> front_page:</span><br><span class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> front_page:</span><br><span class="line">        <span class="keyword">print</span> line</span><br></pre></td></tr></table></figure></li></ul></li><li><p><strong>3. todo注释</strong></p><blockquote><p>为临时代码使用TODO注释, 它是一种短期解决方案. 不算完美, 但够好了.</p></blockquote></li><li><p><strong>4. 导入格式</strong></p><blockquote><p>每个导入应该独占一行</p></blockquote><ul><li>导入顺序：<ul><li>标准库导入</li><li>第三方库导入</li><li>应用程序指定导入</li></ul></li></ul></li><li><p><strong>5. 命名约定</strong></p><ul><li>所谓”内部(Internal)”表示仅模块内可用, 或者, 在类内是保护或私有的.</li><li>用单下划线(_)开头表示模块变量或函数是protected的(使用import * from时不会包含).</li><li>用双下划线(__)开头的实例变量或方法表示类内私有.</li><li>将相关的类和顶级函数放在同一个模块里. 不像Java, 没必要限制一个类一个模块.</li><li>对类名使用大写字母开头的单词(如CapWords, 即Pascal风格), 但是模块名应该用小写加下划线的方式(如lower_with_under.py). 尽管已经有很多现存的模块使用类似于CapWords.py这样的命名, 但现在已经不鼓励这样做, 因为如果模块名碰巧和类名一致, 这会让人困扰.</li></ul></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;ul&gt;
-&lt;li&gt;&lt;p&gt;&lt;strong&gt;1. 行长度&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;每行不超过80个字符(例外 a.长的导入模块语句; b. 注释里的url)&lt;/li&gt;
-&lt;li&gt;Python会将 圆括号, 中括号和花括号中的行隐式的连接起来 ：&lt;figure cla
-      
-    
-    </summary>
-    
-      <category term="openstack" scheme="https://www.myhuangzhuo.com/categories/openstack/"/>
-    
-    
-      <category term="python" scheme="https://www.myhuangzhuo.com/tags/python/"/>
-    
-      <category term="google" scheme="https://www.myhuangzhuo.com/tags/google/"/>
-    
-      <category term="opensourse" scheme="https://www.myhuangzhuo.com/tags/opensourse/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>生成PDF文档</title>
-    <link href="https://www.myhuangzhuo.com/2017-07-05-generate-pdf-doc.html"/>
-    <id>https://www.myhuangzhuo.com/2017-07-05-generate-pdf-doc.html</id>
-    <published>2017-07-04T18:32:47.000Z</published>
-    <updated>2019-12-12T06:23:34.331Z</updated>
-    
-    <content type="html"><![CDATA[<p>主要使用pdfkit模块：</p><ol><li>安装pdfkit：</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">$ pip install pdfkit</span><br><span class="line">$ sudo apt-get install wkhtmltopdf</span><br></pre></td></tr></table></figure><p>使用pdfkit的一些高级功能需要研究wkhtmltopdf的一些功能：<br>Warning! Version in debian/ubuntu repos have reduced functionality (because it compiled without the wkhtmltopdf QT patches), such as adding outlines, headers, footers, TOC etc. To use this options you should install static binary from wkhtmltopdf site or you can use this script.</p><p>使用高级功能需要执行以下脚本：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#!/bin/sh</span><br><span class="line">sudo apt-get install -y openssl build-essential xorg libssl-dev</span><br><span class="line">wget http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.10.0_rc2-static-amd64.tar.bz2</span><br><span class="line">tar xvjf wkhtmltopdf-0.10.0_rc2-static-amd64.tar.bz2</span><br><span class="line">sudo chown root:root wkhtmltopdf-amd64</span><br></pre></td></tr></table></figure><ol start="2"><li>基本原理功能：<br>Pdfkit文档链接：<a href="https://pypi.python.org/pypi/pdfkit" target="_blank" rel="noopener">https://pypi.python.org/pypi/pdfkit</a><br>Pdfkit可以渲染url，file，string 成pdf文档，也支持多个file生产一个pdf文档</li></ol><p>Notices：</p><ol><li>pdf正文部分字体调整： css部分：@font-face {    }中添加font-family等字体属性；</li><li>页脚的添加： views.py中 print_entrust()函数中options{}字典里边添加footer-center等属性；</li></ol>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;主要使用pdfkit模块：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;安装pdfkit：&lt;/li&gt;
-&lt;/ol&gt;
-&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/
-      
-    
-    </summary>
-    
-      <category term="文档" scheme="https://www.myhuangzhuo.com/categories/%E6%96%87%E6%A1%A3/"/>
-    
-    
-      <category term="python" scheme="https://www.myhuangzhuo.com/tags/python/"/>
-    
-      <category term="文档" scheme="https://www.myhuangzhuo.com/tags/%E6%96%87%E6%A1%A3/"/>
     
   </entry>
   
