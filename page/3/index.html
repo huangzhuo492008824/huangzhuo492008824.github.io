@@ -375,6 +375,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2017-08-03-CentOS7-shadowsocks-set-start.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017-08-03-CentOS7-shadowsocks-set-start.html" itemprop="url">CentOS7设置ss开机启动</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-03T09:49:32+08:00">
+                2017-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017-08-03-CentOS7-shadowsocks-set-start.html" class="leancloud_visitors" data-flag-title="CentOS7设置ss开机启动">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          CentOS7设置ss开机启动###
+配置自启动新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：
+123456789[Unit]Description=Shadowsocks[Service]TimeoutStartSec=0ExecStart=/usr/bin/ssserver -c /etc/shadowsocks.json[Install]WantedBy=multi-user.target
+
+执行以下命令启动 shadowsocks 服务：
+12$ systemctl enable shadowsocks$ systemctl start shadowsocks
+
+为了检查 shadowsocks 服务是否已成功启动，可以执行以下命令查看服务的状态：
+123456789101112[root@kevin ~]# systemctl status ssserver -l* ssserver.service - Ssserver   Loaded: loaded (/etc/systemd/system/ssserver.service; enabled; vendor preset: disabled)   Active: active (running) since Thu 2017-08-03 05:56:09 UTC; 23s ago Main PID: 691 (ssserver)   CGroup: /system.slice/ssserver.service           `-691 /usr/bin/python2 /usr/bin/ssserver -c /etc/shadowsocks.json --log-file /var/log/shadowsocks.log startAug 0
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017-08-03-CentOS7-shadowsocks-set-start.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2017-07-31-google-opensourse-python-code-standard.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1909,182 +2076,6 @@ traceback.print_exc()跟traceback.format_exc()有什么区别呢？format_exc()�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-12-28-try-do-something.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-12-28-try-do-something.html" itemprop="url">试着去做一些事儿，让自己成为一个有趣儿的人</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-12-28T11:15:06+08:00">
-                2016-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/生活/" itemprop="url" rel="index">
-                    <span itemprop="name">生活</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-12-28-try-do-something.html" class="leancloud_visitors" data-flag-title="试着去做一些事儿，让自己成为一个有趣儿的人">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            
-不知道从什么时候开始，大家喜欢以是否有趣来评价自己对一个人的印象。在整容风靡，美的价值观判断被颠覆之后，能恒久留存下来的，必定是你读过的书，走过的路，写在脸上的气质和刻在骨子里的趣味。
-正如那句话所说：
-你现在的气质里，藏着你走过的路，读过的书和爱过的人。
-时光流逝之后，你就会知道，一个有趣的人比一个外表美丽的人更讨人喜欢。
-有人说，不要把自己置身在模式化的幸福和大规模生产的生活之中，你过着怎样的人生，取决于你用什么角度看待生活。
-努力做一些不一样的事儿，让自己成为一个有趣儿的人吧！
-挑战自己：做不敢做的事儿
-特别喜欢陈意涵，30岁生日的时候，她和闺蜜张钧甯，一起做了好多非常有趣的事儿。到海里裸泳、扎辫子、全世界倒立……
-有时候，尝试着去做一些曾经不敢做的事儿，不仅会终身难忘，更会让生活变得有趣。
-如果你胆子小，就试着蹦极，到飞机上跳伞；如果你性格腼腆，试着在地铁上，冲着外国人微笑；如果你五音不全，就选择一个空旷的下午，尽情享受一个人的ktv；如果你害怕在大庭广众下演讲，就对着镜子背熟一篇演讲稿，然后跑到无人的地方勇敢演讲一次吧！要知道，你是自己最忠实的观众！
-如果你害怕一个人旅行，就随便找个地方，背起行囊，查好攻略，上路吧，相信，你这一路，必定精彩！
-还有什么是你害怕做的呢？试着去做做看吧！
-为自己买花
-认识一个男孩，每周都会为自己订一束花，当黑色的周一来临，黑压压的办公室里充斥着紧张的氛围时，一束鲜花，在角落里散发着暗香，无论寒冷的冬日还是燥热的夏日，都能让心情晴朗起来。
-有位姐姐告诉我，真正有魅力的女人，是会为自己买花的女人。一束花，带给你的不仅仅是一周的好心情和美丽的惊喜，更是在漫长的工作日里，你对它的那份呵护、关注和照顾，修剪花枝，换水，清理杂物，这个用心的过程，不仅让生活充实，更让精神富足，这是个很动人的过程。
-幽默有时，欢笑有时
-幽默的人有多大的魅力？看
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-12-28-try-do-something.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2137,7 +2128,7 @@ traceback.print_exc()跟traceback.format_exc()有什么区别呢？format_exc()�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

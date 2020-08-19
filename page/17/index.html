@@ -375,6 +375,170 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-10.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-02-10.html" itemprop="url">Python元组的赋值谜题</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-10T18:30:58+08:00">
+                2016-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-10.html" class="leancloud_visitors" data-flag-title="Python元组的赋值谜题">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          相信很多人对tuple和list的区别的理解是tuple是一个不可变的序列, 不能对它的元素赋值。我之前也是这么理解的，举个例子：
+123456789101112In : a = (1, 2, 3)  In : a[3] = 4  ---------------------------------------------------------------------------  TypeError                                 Traceback (most recent call last)  &lt;ipython-input-5-d840230b1ac3&gt; in &lt;module&gt;()  ----&gt; 1 a[3] = 4    TypeError: 'tuple' object does not support item assignment    In : a  Out: (1, 2, 3)
+
+
+也就是一个元组生成，它的元素就不再能改变了。但是相信很多人见过下面这样的玩法（有人把它当做Python的一个笑话）：
+123456789101112In : a = (1, 2, [3, 4])  In : a[2] += [5, 6]  ---------------------------------------------------------------------------  TypeError                                 Traceback (most recent call last)  &lt;ipython-input-2-84fb4a701b92&gt; in &lt;module&gt;()  ----&gt; 1 a[2] += [5, 6]    T
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-02-10.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-09.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1902,166 +2066,6 @@ switch $port {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-01-31.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-01-31.html" itemprop="url">使用tornado让你的请求异步非阻塞</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-31T18:30:58+08:00">
-                2016-01-31
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-01-31.html" class="leancloud_visitors" data-flag-title="使用tornado让你的请求异步非阻塞">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言也许有同学很迷惑:tornado不是标榜异步非阻塞解决10K问题的嘛?但是我却发现不是torando不好，而是你用错了.比如最近发现一个事情:某网站打开页面很慢,服务器cpu/内存都正常.网络状态也良好.后来发现，打开页面会有很多请求后端数据库的访问，有一个mongodb的数据库业务api的rest服务.但是它的tornado却用错了,一步步的来研究问题:####说明以下的例子都有2个url,一个是耗时的请求，一个是可以或者说需要立刻返回的请求,我想就算一个对技术不熟，从道理上来说的用户，他希望的是他访问的请求不会影响也不会被其他人的请求影响
-123456789101112131415161718192021222324252627282930#!/bin/env python    import tornado.httpserver  import tornado.ioloop  import tornado.options  import tornado.web  import tornado.httpclient    import time    from tornado.options import define, options  define("port", default=8000, help="run on the given port", type=int)    class SleepHandler(tornado.web.RequestHandler):      def get(self):          time.sleep(5)          self.write("when i sleep 5s")    class JustNowHandler(tornado.web.RequestHandler):      def 
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-01-31.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2114,7 +2118,7 @@ switch $port {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

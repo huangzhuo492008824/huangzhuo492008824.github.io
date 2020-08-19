@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://www.myhuangzhuo.com/"/>
-  <updated>2020-04-24T17:22:00.348Z</updated>
+  <updated>2020-08-19T09:45:30.577Z</updated>
   <id>https://www.myhuangzhuo.com/</id>
   
   <author>
@@ -17,20 +17,22 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>nginx开启gzip压缩</title>
-    <link href="https://www.myhuangzhuo.com/2020-4-24.html"/>
-    <id>https://www.myhuangzhuo.com/2020-4-24.html</id>
-    <published>2020-03-25T10:49:32.000Z</published>
-    <updated>2020-04-24T17:22:00.348Z</updated>
+    <title>leetcode第32题解题报告</title>
+    <link href="https://www.myhuangzhuo.com/2020-08-19.html"/>
+    <id>https://www.myhuangzhuo.com/2020-08-19.html</id>
+    <published>2020-08-19T10:49:32.000Z</published>
+    <updated>2020-08-19T09:45:30.577Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="需求场景："><a href="#需求场景：" class="headerlink" title="需求场景："></a>需求场景：</h3><ul><li>最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉前端这边应该有很大的优化空间，试了好几种方式比如:加优化参数–aot, —-build-optimizer等都试过，生成的文件大小基本没有变化，于是就想从压缩静态文件入手；</li></ul><ol><li><p>angularjs项目中引入打包工具gzipper：</p></li><li><p>将打包命令写入package.json,参考如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod &amp;&amp; gzipper --verbose --level 9 ./dist/my-app //level表示压缩级别：1-9(压缩率依次变高)</span><br></pre></td></tr></table></figure></li><li><p>nginx配置支持gzip压缩:</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在nginx配置http/server/location中加入如下配置:</span></span><br><span class="line">    gzip  on; //开启gzip</span><br><span class="line">    gzip_proxied no-cache no-store private expired auth; //代理的情况</span><br><span class="line">    gzip_min_length 1k; //gzip最小压缩大小</span><br><span class="line">    gzip_buffers 4 16k; </span><br><span class="line">    gzip_comp_level 5; //gzip压缩级别(1-9)</span><br><span class="line">    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png; //支持压缩的文件类型</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_disable "MSIE [1-6]\."; //ie 1-6下禁用压缩</span><br><span class="line">    gzip_static on; //开启本地gzip文件的压缩，要求事先生成gzip文件</span><br><span class="line">    gzip_http_version   1.0; //gzip压缩版本，在多级代理的情况下默认可能会有坑</span><br></pre></td></tr></table></figure></li><li><p>打包配置上线验证：<br>响应header中包含这个说明压缩成功：Content-Encoding:gzip<br>下图是对比<br><img src="/uploads/nginx-gzip/gzip-vs.png" alt><br><a href="https://medium.com/@subodhkumarjc/angular-build-optimization-part-2-compression-b866dd0593c3" target="_blank" rel="noopener">Angular Build貌似还可以用其他的压缩方式</a></p></li></ol>]]></content>
+    <content type="html"><![CDATA[<h3 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h3><ol start="32"><li>Longest Valid Parentheses</li></ol><p>Given a string containing just the characters ‘(‘ and ‘)’, find the length of the longest valid (well-formed) parentheses substring.</p><ul><li><p>Example 1:</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">"(()"</span></span><br><span class="line">Output: <span class="number">2</span></span><br><span class="line">Explanation: The longest valid parentheses substring <span class="keyword">is</span> <span class="string">"()"</span></span><br></pre></td></tr></table></figure></li><li><p>Example 2:</p></li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: <span class="string">")()())"</span></span><br><span class="line">Output: <span class="number">4</span></span><br><span class="line">Explanation: The longest valid parentheses substring <span class="keyword">is</span> <span class="string">"()()"</span></span><br></pre></td></tr></table></figure><h3 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h3><ul><li>符号对的匹配首先想到的是用栈来解决，左括号压栈，右括号匹配和出栈</li></ul><h1 id="解法1"><a href="#解法1" class="headerlink" title="解法1:"></a>解法1:</h1><ul><li>用栈stack存储左括号的索引，start标记栈中最底部左括号索引，遇到右括号判断stack，若为空，则记录当前位置的下一个索引为start；若非空, 则出栈一个元素，再次判断栈是否为空，为空则 max(res, index-start+1), 否则 max(res, index-stack[-1]) ;<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestValidParentheses</span><span class="params">(self, s)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    :type s: str</span></span><br><span class="line"><span class="string">    :rtype: int</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    res, start, stack = <span class="number">0</span>, <span class="number">0</span>, []</span><br><span class="line">    <span class="keyword">for</span> index, c <span class="keyword">in</span> enumerate(s):</span><br><span class="line">        <span class="keyword">if</span> c == <span class="string">"("</span>:</span><br><span class="line">            stack.append(index)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> stack:</span><br><span class="line">                stack.pop()</span><br><span class="line">                res = max(res, index-stack[<span class="number">-1</span>]) <span class="keyword">if</span> stack <span class="keyword">else</span> max(res, index-start+<span class="number">1</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                start = index+<span class="number">1</span> <span class="comment"># next ( position</span></span><br><span class="line">    <span class="keyword">return</span> res</span><br></pre></td></tr></table></figure></li></ul><h1 id="解法2"><a href="#解法2" class="headerlink" title="解法2:"></a>解法2:</h1><ul><li>使用动态规划<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestValidParentheses</span><span class="params">(self, s)</span>:</span></span><br><span class="line">    length = len(s)</span><br><span class="line">    <span class="keyword">if</span> length == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    dp = [<span class="number">0</span>] * length</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,length):</span><br><span class="line">            <span class="comment">#当遇到右括号时，尝试向前匹配左括号</span></span><br><span class="line">        <span class="keyword">if</span> s[i] == <span class="string">')'</span>:</span><br><span class="line">            pre = i - dp[i<span class="number">-1</span>] <span class="number">-1</span>;</span><br><span class="line">            <span class="comment">#如果是左括号，则更新匹配长度</span></span><br><span class="line">            <span class="keyword">if</span> pre&gt;=<span class="number">0</span> <span class="keyword">and</span> s[pre] == <span class="string">'('</span>:</span><br><span class="line">                dp[i] = dp[i<span class="number">-1</span>] + <span class="number">2</span></span><br><span class="line">                <span class="comment">#处理独立的括号对的情形 类似()()、()(())</span></span><br><span class="line">                <span class="keyword">if</span> pre&gt;<span class="number">0</span>:</span><br><span class="line">                    dp[i] += dp[pre<span class="number">-1</span>]</span><br><span class="line">    <span class="keyword">return</span> max(dp);</span><br></pre></td></tr></table></figure></li></ul><p>or</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># dp[i+1]表示前i+1个索引最长括号对</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">longestValidParentheses</span><span class="params">(self, s)</span>:</span></span><br><span class="line">    dp, stack = [<span class="number">0</span>]*(len(s) + <span class="number">1</span>), []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(len(s)):</span><br><span class="line">        <span class="keyword">if</span> s[i] == <span class="string">'('</span>:</span><br><span class="line">            stack.append(i)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> stack:</span><br><span class="line">                p = stack.pop()</span><br><span class="line">                dp[i + <span class="number">1</span>] = dp[p] + i - p + <span class="number">1</span> <span class="comment"># </span></span><br><span class="line">    <span class="keyword">return</span> max(dp)</span><br></pre></td></tr></table></figure>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;需求场景：&quot;&gt;&lt;a href=&quot;#需求场景：&quot; class=&quot;headerlink&quot; title=&quot;需求场景：&quot;&gt;&lt;/a&gt;需求场景：&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉
+        &lt;h3 id=&quot;题目：&quot;&gt;&lt;a href=&quot;#题目：&quot; class=&quot;headerlink&quot; title=&quot;题目：&quot;&gt;&lt;/a&gt;题目：&lt;/h3&gt;&lt;ol start=&quot;32&quot;&gt;
+&lt;li&gt;Longest Valid Parentheses&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Given a s
       
     
     </summary>
@@ -52,6 +54,28 @@
       
       
         &lt;h3 id=&quot;辗转相除法的推导：&quot;&gt;&lt;a href=&quot;#辗转相除法的推导：&quot; class=&quot;headerlink&quot; title=&quot;辗转相除法的推导：&quot;&gt;&lt;/a&gt;辗转相除法的推导：&lt;/h3&gt;&lt;figure class=&quot;highlight python&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>nginx开启gzip压缩</title>
+    <link href="https://www.myhuangzhuo.com/2020-4-24.html"/>
+    <id>https://www.myhuangzhuo.com/2020-4-24.html</id>
+    <published>2020-03-25T10:49:32.000Z</published>
+    <updated>2020-04-24T17:22:00.348Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="需求场景："><a href="#需求场景：" class="headerlink" title="需求场景："></a>需求场景：</h3><ul><li>最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉前端这边应该有很大的优化空间，试了好几种方式比如:加优化参数–aot, —-build-optimizer等都试过，生成的文件大小基本没有变化，于是就想从压缩静态文件入手；</li></ul><ol><li><p>angularjs项目中引入打包工具gzipper：</p></li><li><p>将打包命令写入package.json,参考如下：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng build --prod &amp;&amp; gzipper --verbose --level 9 ./dist/my-app //level表示压缩级别：1-9(压缩率依次变高)</span><br></pre></td></tr></table></figure></li><li><p>nginx配置支持gzip压缩:</p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在nginx配置http/server/location中加入如下配置:</span></span><br><span class="line">    gzip  on; //开启gzip</span><br><span class="line">    gzip_proxied no-cache no-store private expired auth; //代理的情况</span><br><span class="line">    gzip_min_length 1k; //gzip最小压缩大小</span><br><span class="line">    gzip_buffers 4 16k; </span><br><span class="line">    gzip_comp_level 5; //gzip压缩级别(1-9)</span><br><span class="line">    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png; //支持压缩的文件类型</span><br><span class="line">    gzip_vary on;</span><br><span class="line">    gzip_disable "MSIE [1-6]\."; //ie 1-6下禁用压缩</span><br><span class="line">    gzip_static on; //开启本地gzip文件的压缩，要求事先生成gzip文件</span><br><span class="line">    gzip_http_version   1.0; //gzip压缩版本，在多级代理的情况下默认可能会有坑</span><br></pre></td></tr></table></figure></li><li><p>打包配置上线验证：<br>响应header中包含这个说明压缩成功：Content-Encoding:gzip<br>下图是对比<br><img src="/uploads/nginx-gzip/gzip-vs.png" alt><br><a href="https://medium.com/@subodhkumarjc/angular-build-optimization-part-2-compression-b866dd0593c3" target="_blank" rel="noopener">Angular Build貌似还可以用其他的压缩方式</a></p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;需求场景：&quot;&gt;&lt;a href=&quot;#需求场景：&quot; class=&quot;headerlink&quot; title=&quot;需求场景：&quot;&gt;&lt;/a&gt;需求场景：&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉
       
     
     </summary>
@@ -521,34 +545,6 @@
       <category term="for" scheme="https://www.myhuangzhuo.com/tags/for/"/>
     
       <category term="else" scheme="https://www.myhuangzhuo.com/tags/else/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>CentOS7设置ss开机启动</title>
-    <link href="https://www.myhuangzhuo.com/2017-08-03-CentOS7-shadowsocks-set-start.html"/>
-    <id>https://www.myhuangzhuo.com/2017-08-03-CentOS7-shadowsocks-set-start.html</id>
-    <published>2017-08-03T01:49:32.000Z</published>
-    <updated>2019-12-12T06:23:34.331Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="CentOS7设置ss开机启动"><a href="#CentOS7设置ss开机启动" class="headerlink" title="CentOS7设置ss开机启动###"></a>CentOS7设置ss开机启动###</h3><ul><li><p>配置自启动<br>新建启动脚本文件/etc/systemd/system/shadowsocks.service，内容如下：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Shadowsocks</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">TimeoutStartSec=0</span><br><span class="line">ExecStart=/usr/bin/ssserver -c /etc/shadowsocks.json</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure></li><li><p>执行以下命令启动 shadowsocks 服务：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl enable shadowsocks</span><br><span class="line">$ systemctl start shadowsocks</span><br></pre></td></tr></table></figure></li><li><p>为了检查 shadowsocks 服务是否已成功启动，可以执行以下命令查看服务的状态：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">[root@kevin ~]# systemctl status ssserver -l</span><br><span class="line">* ssserver.service - Ssserver</span><br><span class="line">   Loaded: loaded (/etc/systemd/system/ssserver.service; enabled; vendor preset: disabled)</span><br><span class="line">   Active: active (running) since Thu 2017-08-03 05:56:09 UTC; 23s ago</span><br><span class="line"> Main PID: 691 (ssserver)</span><br><span class="line">   CGroup: /system.slice/ssserver.service</span><br><span class="line">           `-691 /usr/bin/python2 /usr/bin/ssserver -c /etc/shadowsocks.json --log-file /var/log/shadowsocks.log start</span><br><span class="line"></span><br><span class="line">Aug 03 05:56:09 kevin systemd[1]: Started Ssserver.</span><br><span class="line">Aug 03 05:56:09 kevin systemd[1]: Starting Ssserver...</span><br><span class="line">Aug 03 05:56:09 kevin ssserver[691]: INFO: loading config from /etc/shadowsocks.json</span><br><span class="line">Aug 03 05:56:09 kevin ssserver[691]: 2017-08-03 05:56:09 INFO     loading libcrypto from libcrypto.so.10</span><br></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h3 id=&quot;CentOS7设置ss开机启动&quot;&gt;&lt;a href=&quot;#CentOS7设置ss开机启动&quot; class=&quot;headerlink&quot; title=&quot;CentOS7设置ss开机启动###&quot;&gt;&lt;/a&gt;CentOS7设置ss开机启动###&lt;/h3&gt;&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;配置自
-      
-    
-    </summary>
-    
-      <category term="linux" scheme="https://www.myhuangzhuo.com/categories/linux/"/>
-    
-    
-      <category term="centos7" scheme="https://www.myhuangzhuo.com/tags/centos7/"/>
-    
-      <category term="ss" scheme="https://www.myhuangzhuo.com/tags/ss/"/>
     
   </entry>
   

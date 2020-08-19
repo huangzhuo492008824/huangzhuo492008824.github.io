@@ -375,6 +375,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-02.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-02.html" itemprop="url">AST-像lisp一样自定义代码行为</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-02T18:30:58+08:00">
+                2016-03-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-02.html" class="leancloud_visitors" data-flag-title="AST-像lisp一样自定义代码行为">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言学common lisp(以下除非特殊需要说明的都简称lisp)以及用emacs的人都有一个体会 - lisp无所不能,可以使用lisp修改lisp的行为. 什么意思呢?我来举个例子. 我希望重置+的行为为实际意义的减法-. 看起来这是语言不可能完成的任务, 对lisp来说很简洁(我使用sbcl):
+12345678910111213141516* (+ 1 1)    2  ; 正确结果  * (shadow '+)    T  * (defgeneric + (a &amp;rest b))    #&lt;STANDARD-GENERIC-FUNCTION + (0)&gt;  * (defmethod + ((a number) &amp;rest b) (apply 'cl:- a b))    #&lt;STANDARD-METHOD + (NUMBER) &#123;1002E43E73&#125;&gt;  * (+ 1 1)    0  ; 这里的加号的意义其实是我们所理解的`减号`
+
+
+是不是很神奇?那么对于python这种高级语言能不能做到呢? 答案是肯定的. 我们马上就来实现它
+123456789In [1]: import ast    In [2]: x = ast.parse('1 + 1', mode='eval')    In [3]: x.body.op = ast.Sub()    In [4]: eval(compile(x, '&lt;string&gt;', 'eval'))  Out[4]: 0
+
+
+我想大家开始明白AST有多大能量了吧?
+AST的故事AST中文叫做抽象语法树,也就是分析当前版本的python代码的语法, 用一种树的结构解析出来.这个模块提供给我们一个在编译代码之前, 用python语言本身去修改.它的作者是
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-02.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-01.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1897,170 +2065,6 @@ gentoolkit|module-rebuild|genl
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-20.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-02-20.html" itemprop="url">（2017）你最不建议使用的Python Web框架？</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-20T18:30:58+08:00">
-                2016-02-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-02-20.html" class="leancloud_visitors" data-flag-title="（2017）你最不建议使用的Python Web框架？">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言这是一篇发在知乎专栏的文章，内容是之前我提的「（2017）你最不建议使用的PythonWeb框架？」下的回答。不过有些话没有说完，比如不建议tornado，却没有说对asyncio的看法，由于它的热度过去了我也没有补充，今天就发在公众号下吧。在知乎可以看到的很多Web框架推荐，有很多内容已经过时，有些直接是从网上搜的，自己根本没有真的用过，不知道推荐的时候他们的良心会不会痛，不过幸好有我来树立正确的价值观了。
-第一不推荐 web.py我以前说过，评价XX是否可以用在生产环境的一部分标准是：
-
-代码质量。web.py的创始人Aaron Swartz自杀（官方说法）后，新的维护者能力实在是…
-社区活跃程度和解决issue的能力。自己去github上去看未解决的issue和未合并的pull request数量
-项目迭代情况。webpy-0.37 on Jun 26, 2012，webpy-0.38 on Jul 8, 2016。到现在一年就这样过去了然鹅什么都还没有发生。第二不推荐 bottlebottle其实是第一个使用装饰器作为路由的框架，不过它也存在社区活跃程度和解决issue的能力的问题，其实这说明了一个问题，它更像是某个（些）人的玩具，并不关心用户反馈。不知道大家是否知道它和Flask的故事（简单的说Flask的作者Armin Ronacher开发了Werkzeug推荐给Bottle作者，但是Bottle作者非常执着于“单文件”和“无依赖”，拒绝了使用Werkzeug，ArminRonacher就自己写了Flask），如果3-4年前你选择bottle我也是没意见的，现在来看Flask完爆它，哪怕是自己写的demo，你说你用了一个不适合在生产环境中使用框架的意义在哪里？完全没有积累啊。不过客观的说读源码学习写框架倒是可以的第三不推荐 tornado别说知乎也在用，用得
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-02-20.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2113,7 +2117,7 @@ gentoolkit|module-rebuild|genl
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

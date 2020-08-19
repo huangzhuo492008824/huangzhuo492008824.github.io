@@ -375,6 +375,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-02.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-05-02.html" itemprop="url">使用celery之怎么让celery跑起来</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-02T18:30:58+08:00">
+                2016-05-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-05-02.html" class="leancloud_visitors" data-flag-title="使用celery之怎么让celery跑起来">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言自从发了上次的文章[使用celery之深入celery配置](http://www.dongwm.com/archives/shi-yong-celeryzhi-shen-ru-celerypei-zhi/),有一些网友再问我怎么让celery跑起来. 其实说来也是,celery在新手眼里真的是比较重量级,不好懂,今天先让他跑起来吧本文大部分代码和使用方法都可以在celery官网看到####我想要的效果我想实现一个定时任务, 每3个小时的12分启动,假如是定时任务大概是这样的:
+1212 */3 * * * python /where/is/the/path/that.py
+
+
+####选择MQ使用消息队列其实就是为了给任务一个时序,保证任务消息不丢失,想想你的一个任务是关乎公司核心业务,犹豫某种原因失败或者丢失怎么办?celery就需要这个消息的存储,我这里还是选择rabbitmq mongodb,redis都无所谓 只是存储的位置的问题.选择其他的工具没有远程控制和监控写法就是:
+12BROKER_URL = 'amqp://myuser:mypassword@localhost:5672/vhost'
+
+
+其中可以这样解析
+12amqp://user:password@hostname:port/vhost
+
+
+vhost是命名空间,就像网站的子域名,在这里由于权限控制我们需要先创建账号和密码
+1234$ rabbitmqctl add_user myuser mypassword  $ rabbitmqctl add_vhost myvhost  $ rabbitmqctl set_permissions -p myvhost myuser ".*" ".*" ".*"
+
+
+编写tasks.py脚本12345678from celery import C
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-05-02.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-05-01.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1863,183 +2038,6 @@ pre-commit玩过svn/git的同学应该都知道他们有各种的hook. 也就是
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-22.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-04-22.html" itemprop="url">分享一个准备给公司讲python高级编程的slide</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-22T18:30:58+08:00">
-                2016-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-04-22.html" class="leancloud_visitors" data-flag-title="分享一个准备给公司讲python高级编程的slide">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言我以前在学习python模块的时候,曾经翻译[pymotw](http://pymotw.com/2/py-modindex.html#)的文章,其实还是有抄袭的嫌疑,从最近开始逐渐直接阅读python标准库源码, 收获颇多.我现在不愿意教一些从网上或者书里提到的知识点,而更愿意根据我工作中常见的需求去挖掘对应的python的解法.也是在过程中对一些东西有了比较深的理解.这个ppt是从[像黑客一样使用 Linux 命令行](https://linuxtoy.org/archives/using-cli-like-a-hacker.html)获得的灵感. 然后角度为&lt;python高级编程&gt;, 还用到了webfonts娃娃体^.^PS: 特别推荐github上看到的”雨痕”的学习笔记. 建议大家都好好看看.
-找到它Expert-Python或者直接下载代码: github但是注意我的字体内嵌项目里面, 请注意流量,避免移动设备直接访问或者强制刷新
-UPDATE: 2015-02-02我已经把视频放到youtube上了: https://www.youtube.com/watch?v=bf5qpFFxo9g 大家可以选择在线看
-目录
-XX不理解python竟然没有end….
-设置全局变量
-字符串格式化
-操作列表
-操作字典
-字典视图
-vars
-from future import unicode_literals
-from future import absolute_import
-不是支持了绝对引入,而是拒绝隐式引入
-我靠,我的需求呢? – 在很多开源项目是拒绝你第一次的隐式用法的,
-一个关于编码的问题
-原因是: encoding_example里面没有对文字自动转化为unicode,默认是ascii编码
-super 当子类调用父类属性时一般的做法是这样
-supe
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-04-22.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2092,7 +2090,7 @@ supe
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

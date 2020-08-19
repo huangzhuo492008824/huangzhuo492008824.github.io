@@ -375,7 +375,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2020-4-24.html">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2020-08-19.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kevin Huang">
@@ -394,7 +394,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2020-4-24.html" itemprop="url">nginx开启gzip压缩</a></h2>
+                <a class="post-title-link" href="/2020-08-19.html" itemprop="url">leetcode第32题解题报告</a></h2>
         
 
         <div class="post-meta">
@@ -406,8 +406,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T18:49:32+08:00">
-                2020-03-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-19T18:49:32+08:00">
+                2020-08-19
               </time>
             
 
@@ -424,7 +424,7 @@
 
           
           
-             <span id="/2020-4-24.html" class="leancloud_visitors" data-flag-title="nginx开启gzip压缩">
+             <span id="/2020-08-19.html" class="leancloud_visitors" data-flag-title="leetcode第32题解题报告">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -457,21 +457,28 @@
       
         
           
-          需求场景：
-最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉前端这边应该有很大的优化空间，试了好几种方式比如:加优化参数–aot, —-build-optimizer等都试过，生成的文件大小基本没有变化，于是就想从压缩静态文件入手；
+          题目：
+Longest Valid Parentheses
+
+Given a string containing just the characters ‘(‘ and ‘)’, find the length of the longest valid (well-formed) parentheses substring.
+
+Example 1:
+123Input: "(()"Output: 2Explanation: The longest valid parentheses substring is "()"
+
+Example 2:
 
 
-angularjs项目中引入打包工具gzipper：
+123Input: ")()())"Output: 4Explanation: The longest valid parentheses substring is "()()"
 
-将打包命令写入package.json,参考如下：
-1ng build --prod &amp;&amp; gzipper --verbose --level 9 ./dist/my-app //level表示压缩级别：1-9(压缩率依次变高)
+解题思路
+符号对的匹配首先想到的是用栈来解决，左括号压栈，右括号匹配和出栈
 
-nginx配置支持gzip压缩:
-1234567891011# 在nginx配置http/server/location中加入如下配置:    gzip  on; //开启gzip    gzip_proxied no-cache no-store private expired auth; //代理的情况    gzip_min_length 1k; //gzip最小压缩大小    gzip_buffers 4 16k;     gzip_comp_level 5; //gzip压缩级别(1-9)    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png; //支持压缩的文件类型    gzip_vary on;    gzip_disable "MSIE [1-6]\."; //ie 1-6下禁用压缩    gzip_static on; //开启本地gz
+解法1:
+用栈stack存储左括号的索引，start标记栈中最底部左括号索引，遇到右括号判断stack，若为空，则记录当前位置的下一个索引为start；若非空, 则出栈一个元素，再次判断栈是否为空，为空则 max(res, index-start+1), 否则 max(res, index-stack[-1]) ;12345678910111213141516def longestValidParentheses(self, s):    """    :type s: str    :rtype: int    """    res, start, stack = 0, 0, []    for index, c in enumerate(s):        if c == "(":            stack.append(index)        else:   
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2020-4-24.html#more" rel="contents">
+            <a class="btn" href="/2020-08-19.html#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -611,6 +618,153 @@ nginx配置支持gzip压缩:
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2020-03-25.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2020-4-24.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020-4-24.html" itemprop="url">nginx开启gzip压缩</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-03-25T18:49:32+08:00">
+                2020-03-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2020-4-24.html" class="leancloud_visitors" data-flag-title="nginx开启gzip压缩">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          需求场景：
+最近在部署公司angularjs前端项目的时候，发现打包生成的一个main.js特别大达到了10M，感觉前端这边应该有很大的优化空间，试了好几种方式比如:加优化参数–aot, —-build-optimizer等都试过，生成的文件大小基本没有变化，于是就想从压缩静态文件入手；
+
+
+angularjs项目中引入打包工具gzipper：
+
+将打包命令写入package.json,参考如下：
+1ng build --prod &amp;&amp; gzipper --verbose --level 9 ./dist/my-app //level表示压缩级别：1-9(压缩率依次变高)
+
+nginx配置支持gzip压缩:
+1234567891011# 在nginx配置http/server/location中加入如下配置:    gzip  on; //开启gzip    gzip_proxied no-cache no-store private expired auth; //代理的情况    gzip_min_length 1k; //gzip最小压缩大小    gzip_buffers 4 16k;     gzip_comp_level 5; //gzip压缩级别(1-9)    gzip_types text/plain application/javascript application/x-javascript text/css application/xml text/javascript image/jpeg image/gif image/png; //支持压缩的文件类型    gzip_vary on;    gzip_disable "MSIE [1-6]\."; //ie 1-6下禁用压缩    gzip_static on; //开启本地gz
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020-4-24.html#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1783,184 +1937,6 @@ GraphQL
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2018-9-10-tesseract-training.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018-9-10-tesseract-training.html" itemprop="url">Tesseract-training-recognize-lib</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-10T18:19:00+08:00">
-                2018-09-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/验证码识别/" itemprop="url" rel="index">
-                    <span itemprop="name">验证码识别</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018-9-10-tesseract-training.html" class="leancloud_visitors" data-flag-title="Tesseract-training-recognize-lib">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          tesseract训练采集样本：
-获取足够多的样本数据，必须是能够覆盖所有被识别的字符集，如果字体比较固定比如印刷体或者是网络的字体库，可以尝试采集到每一个字符然后合成字体库，用完整的一套字体库来训练
-
-三种训练方法对比
-找到需要识别的图片文本的字体，用字体库训练相应的库 (一般验证码很难找到字体库，找到字体的希望很渺茫)；
-采集到足够多的样本，然后切割响应字符串，最后组成一套非重复字符的字体集合，然后训练，亲测有效，特点：准确率高，切割和合并字符可能会麻烦一点;
-采集到尽可能多的样本，用所有的样本来训练，特点：工作量大，效果不一定好
-
-生成tif字体库原始需要识别图片转换成tif字体文件，linux有个convert命令可以转换：
-1convert test.png num.font.exp0.tif
-
-生成训练文件.tr1tesseract num.font.exp2.tif num.font.exp2 batch.nochop makebox -psm 7 digits
-
-
-上面的命令可以更加需求添加相关参数来提高初次识别的准确率下载jTessBoxEditor,运行软件， 然后打开刚刚生成的tif文件来挑战识别有误的字符创建font_properties文件写入：1font 0 0 0 0 0 # 【语法】：&lt;fontname&gt; &lt;italic&gt; &lt;bold&gt; &lt;fixed&gt; &lt;serif&gt; &lt;fraktur&gt;
-
-
-
-tesseract.exe num.font.exp0.tif num.font.exp0 nobatch box.train 
-生成训练库并打包到语言包目录1234567891011unicharset_extractor *.boxshapeclustering -F font
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018-9-10-tesseract-training.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2013,7 +1989,7 @@ tesseract.exe num.font.exp0.tif num.font.exp0 nobatch box.train
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

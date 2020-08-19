@@ -375,6 +375,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-12.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-12.html" itemprop="url">grep,ack,ag的搜索效率对比</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-12T18:30:58+08:00">
+                2016-03-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-12.html" class="leancloud_visitors" data-flag-title="grep,ack,ag的搜索效率对比">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言我经常看到很多程序员, 运维在代码搜索上使用ack, 甚至ag(the_silver_searcher), 而我工作中95%都是用grep,剩下的是ag. 我觉得很有必要聊一聊这个话题.我以前也是一个运维, 我当时也希望找到最好的最快的工具用在工作的方方面面. 但是我很好奇为什么ag和ack没有作为linux发行版的内置部分.内置的一直是grep. 我当初的理解是受各种开源协议的限制, 或者发行版的boss个人喜好. 后来我就做了实验, 研究了下他们到底谁快.当时的做法也无非跑几个真实地线上log看看用时. 然后我也有了我的一个认识: 大部分时候用grep也无妨, 日志很大的时候用ag.ack原来的域名是betterthangrep.com, 现在是beyondgrep.com. 好吧. 其实我理解使用ack的同学,也理解ack产生的原因. 这里就有个故事.最开始我做运维使用shell, 经常做一些分析日志的工作. 那时候经常写比较复杂的shell代码实现一些特定的需求. 后来来了一位会perl的同学.原来我写shell做一个事情, 写了20多行shell代码, 跑一次大概5分钟, 这位同学来了用perl改写, 4行, 一分钟就能跑完. 亮瞎我们的眼,从那时候开始, 我就觉得需要学perl,以至于后来的python.perl是天生用来文本解析的语言, ack的效率确实很高. 我想着可能是大家认为ack要更快更合适的理由吧. 其实这件事要看场景.我为什么还用比较’土’的grep呢? 看一下这篇文章, 希望给大家点启示
+实验条件PS: 严重声明, 本实验经个人实践, 我尽量做到合理. 大家看完觉得有异议可以试着其他的角度来做. 并和我讨论.
+
+我使用了公司的一台开发机(gentoo)
+我测试了纯英文和汉语2种， 汉语使用了结巴分词的字典, 英语使用了miscfiles中提供
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-12.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-11.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1847,174 +2010,6 @@ Web页面上可设置一些需要的功能参数
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-02.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-02.html" itemprop="url">AST-像lisp一样自定义代码行为</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-02T18:30:58+08:00">
-                2016-03-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-02.html" class="leancloud_visitors" data-flag-title="AST-像lisp一样自定义代码行为">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言学common lisp(以下除非特殊需要说明的都简称lisp)以及用emacs的人都有一个体会 - lisp无所不能,可以使用lisp修改lisp的行为. 什么意思呢?我来举个例子. 我希望重置+的行为为实际意义的减法-. 看起来这是语言不可能完成的任务, 对lisp来说很简洁(我使用sbcl):
-12345678910111213141516* (+ 1 1)    2  ; 正确结果  * (shadow '+)    T  * (defgeneric + (a &amp;rest b))    #&lt;STANDARD-GENERIC-FUNCTION + (0)&gt;  * (defmethod + ((a number) &amp;rest b) (apply 'cl:- a b))    #&lt;STANDARD-METHOD + (NUMBER) &#123;1002E43E73&#125;&gt;  * (+ 1 1)    0  ; 这里的加号的意义其实是我们所理解的`减号`
-
-
-是不是很神奇?那么对于python这种高级语言能不能做到呢? 答案是肯定的. 我们马上就来实现它
-123456789In [1]: import ast    In [2]: x = ast.parse('1 + 1', mode='eval')    In [3]: x.body.op = ast.Sub()    In [4]: eval(compile(x, '&lt;string&gt;', 'eval'))  Out[4]: 0
-
-
-我想大家开始明白AST有多大能量了吧?
-AST的故事AST中文叫做抽象语法树,也就是分析当前版本的python代码的语法, 用一种树的结构解析出来.这个模块提供给我们一个在编译代码之前, 用python语言本身去修改.它的作者是
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-02.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2067,7 +2062,7 @@ AST的故事AST中文叫做抽象语法树,也就是分析当前版本的python�
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

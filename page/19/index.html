@@ -375,6 +375,173 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-01-21.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-01-21.html" itemprop="url">python几个特别的__开头的方法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-01-21T18:30:58+08:00">
+                2016-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-01-21.html" class="leancloud_visitors" data-flag-title="python几个特别的__开头的方法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言A Guide to Python’s MagicMethodspython的绝大多数这样的特殊方法都在这里面被提到了. 今天我来说3个他没有提到的[dir, slots, weakref],再强调下他提到的2个[missing, contains]
+dir -&gt; 看个小例子就知道了1234567In [1]: class T(object):     ...:     pass     ...:  In [2]: t = T()  In [3]: t.&lt;Tab&gt;  啥也没有...
+
+
+12345678910In [4]: class T2(object):     ...:     def __dir__(self):     ...:         return ['a', 'b']     ...:  In [5]: t = T2()  In [6]: t.  t.a  t.b  In [7]: dir(t)  Out[7]: ['a', 'b']
+
+
+看出来了把, 不解释, 但是这个dir是相对于类的实例有效果的.
+slots这个在我初学python的时候就被模糊了, 原来的理解是它的出现替代了dict，也就是说你只能给slots这个变量列表项的属性赋值. 对外的接口减少了,也安全了. 后来看了这篇Saving 9 GB of RAM with Python’sslots.好久不做运维了,在生产环境究竟怎么样我无法定论, 也提到了,在对象实例很多的时候他能帮助减少内存,详见&lt;https://www.safaribooksonline.com/library/view/python-cookbook-3rd/9781449357337/ch08s04.html&gt;.这里来个小实验(在Hacker News也被讨论过https://ne
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-01-21.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-01-20.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1861,189 +2028,6 @@ other params configin settings.py
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2015-7-21.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2015-7-21.html" itemprop="url">git常用命令总结</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-07-21T09:49:32+08:00">
-                2015-07-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git/" itemprop="url" rel="index">
-                    <span itemprop="name">git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2015-7-21.html" class="leancloud_visitors" data-flag-title="git常用命令总结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          版本控制系统（VCS）
-版本控制系统（Version Control System）是一种记录一个或若干文件内容变化历史的系统。
-集中化的版本控制系统(CVS，SVN)*
-
-分布式版本控制系统（Git)
-Git 的诞生
-Git是目前世界上最先进的分布式版本控制系统（没有之一）
-好不好用，看看它的开发者是谁就知道了：Linux之父 Linus Torvalds 
-Linux内核社区原本使用的是名为BitKeeper的商业化版本控制工具，2005年，因为社区内有人试图破解BitKeeper的协议，BitMover公司收回了免费使用BitKeeper的权力；
-Linus原本可以出面道个歉，继续使用BitKeeper，然而并没有… Linus大神仅用了两周时间，自已用C写了一个分布式版本控制系统，于是Git诞生了！
-
-Git 与GitHub
-Git： 是一种开源的版本控制系统，可以高效的管理项目版本，同时也是一种协议；
-GitHub： 是一个面向开源及私有软件项目的托管平台, 私有项目收费；
-GitLab： 社区版相当于私有版的github，可以自己搭建GitLab仓库服务器，企业版收费；
-Gitee：码云(gitee.com)是开源中国推出的代码托管平台,支持 Git 和 SVN,提供免费的私有仓库托管；
-linus大叔*
-
-Git基本原理
-
-git add files 把当前文件放入暂存区域。
-git commit 给暂存区域生成快照并提交。
-git reset – files 用来撤销最后一次git add files，你也可以用git reset 撤销所有暂存区域文件。
-git checkout – files 把文件从暂存区域复制到工作目录，用来丢弃本地修改。
-git commit -a 相当于运行 git add 把所有当前目录下的文件加入暂存区域再运行git comm
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2015-7-21.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2096,7 +2080,7 @@ git commit -a 相当于运行 git add 把所有当前目录下的文件加入暂
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">195</span>
+                  <span class="site-state-item-count">196</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
