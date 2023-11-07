@@ -375,6 +375,174 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-23.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-23.html" itemprop="url">ipython的一些高级用法(二)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-23T18:30:58+08:00">
+                2016-03-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-23.html" class="leancloud_visitors" data-flag-title="ipython的一些高级用法(二)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          今天我们学习下写ipython的magic命令. 好, magic是什么? 它是ipython自带的一些扩展命令, 类似%history,%prun, %logstart..想查看全部的magic可以使用ismagic, 列出可用的全部magics
+12%lsmagic
+
+
+magic分为2类:
+
+line magic: 一些功能命令
+cell magic: 主要是渲染ipython notebook页面效果以及执行某语言的代码idb - python db.py shellextensionidb是我最近写的一个magic.主要是给ipython提供db.py的接口,我们直接分析代码(我只截取有代表性的一段):
+
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586import os.path  from functools import wraps  from operator import attrgetter  from urlparse import urlparse    from db import DB # db.py提供的接口  from IPython.core.magic import Magics, magics_class, line_magic # 这三个就是我们需要做magic插件的组件      def get_or_none(attr):      return attr if attr else None      def check_db(func):      @w
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-23.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-22.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1892,166 +2060,6 @@ Strider配置项很多， 可以在Strider目录下添加.striderrc文件：
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-13.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-13.html" itemprop="url">迁移octpress,Rakefile修改以及豆瓣推荐,豆瓣收藏秀,新浪微博分享按钮等实现</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-13T18:30:58+08:00">
-                2016-03-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-13.html" class="leancloud_visitors" data-flag-title="迁移octpress,Rakefile修改以及豆瓣推荐,豆瓣收藏秀,新浪微博分享按钮等实现">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          前言首先感谢吴钊的inove,从博客建立就一直用它,昨天就开始研究迁移成octopress,以下是一些经验和总结####1. octopress目录结构说明#####首先看git出来的octopress目录结构:
-12345678910111213141516171819202122├─ config.rb  #指定额外的compass插件  ├─ config.ru    ├─ Rakefile   #rake的配置文件,类似于makefile,这个我修改了一些内容  ├─ Gemfile    #bundle要下载需要的gem依赖关系的指定文件  ├─ Gemfile.lock  #这些gem依赖的对应关系,比如A的x本依赖于B的y版本,我也修改了  ├─ _config.yml  #站点的配置文件  ├─ public/  #在静态编译完成后的目录,网站只需要这个目录下的文件树  ├─ _deploy/  #deploy时候生成的缓存文件夹,和public目录一样  ├─ sass/  #css文件的源文件,过程中会compass成css  ├─ plugins/  #放置自带以及第三方插件的目录,ruby程序  │  └── xxx.rb  └─ source/  #这个是站点的源文件目录,public目录就是根据这个目录下数据生成的     └─ _includes/        └─ custom/  #自定义的模板目录,被相应上级html include           └─ asides/  #边栏模板自定义模板目录        └─ asides/  #边栏模板目录        └─ post/  #文章页面相应模板目录     └─ _layouts/  #默认网站html相关文件,最底层     └─ _posts/  #新增以及从其它程序迁
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-13.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2104,7 +2112,7 @@ Strider配置项很多， 可以在Strider目录下添加.striderrc文件：
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-count">197</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2126,7 +2134,7 @@ Strider配置项很多， 可以在Strider目录下添加.striderrc文件：
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -375,6 +375,180 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-11.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-02-11.html" itemprop="url">多台服务器进程查看脚本(pexpect+yaml)</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-11T18:30:58+08:00">
+                2016-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-11.html" class="leancloud_visitors" data-flag-title="多台服务器进程查看脚本(pexpect+yaml)">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          ####前言最近做自己开发用相关服务的一个checklist，就写了这个脚本，用来在跳板机去检查各个服务器上面的相关服务是否正常####思路使用expect登录每个机器(因为安全问题，不能直接使用ssh信任),然后根据yaml文件的配置读取服务名字以及启动的进程数量去检查每个服务是否正常PS：难点是没有用端口转发也只有普通用户权限####checklist.py
+#coding=utf-8  
+import sys  
+#因为我这个脚本要让很多人能运行，但是不能给他们看见我的密码算法,所以是pyc  
+#我这个脚本要给很多其他普通用户去用，是用我的ssh登录操作，不能放在我的home目录，所以放在tmp  
+sys.path.append(‘/tmp/local/lib/python2.6/site-packages/PyYAML-3.10-py2.6-linux-x86_64.egg’) #依赖yaml  
+sys.path.append(‘/tmp/local/lib/python2.6/site-packages/pexpect-2.4-py2.6.egg’) #依赖pexpect  
+import yaml  
+import pexpect  
+dataDict = yaml.load(open(‘/tmp/config.yaml’)) #将我的yaml配置load进来  
+
+def myprint(color,mes): #以前写的一个终端彩色打印的函数  
+    ‘’’使用ANSI控制码终端显示彩色’’’  
+    d = dict(r=31, g=32, gb=36, y=33, b=34, p=35, o=37)  
+    color = “\x1B[%d;%dm” % (1, d[color])  
+    print “%s%s\x1B[0m” %
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-02-11.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-10.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1897,175 +2071,6 @@ switch $port {
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-01.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-02-01.html" itemprop="url">优秀开源项目kombu源码分析之可扩展的Transport</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-01T18:30:58+08:00">
-                2016-02-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-02-01.html" class="leancloud_visitors" data-flag-title="优秀开源项目kombu源码分析之可扩展的Transport">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          Kombu里面使用Transport类来表示一个具体的消息代理（Broker），目前包含Redis、MongoDB、Zookeeper、Django、SQLAlchemy等类型。这种对不同类型实现相同接口的需求要求我们要设计成可扩展的方式。我之前写代码，习惯这么设计：
-
-写一个基类Transport，定义还未实现的那些接口。
-继承这个基类，实现对应的接口。
-调用的时候通过一个带有别名和对应类的字典找到这个类。如果新加一种类型，就是实现这个类型的Transport，然后在对应关系的映射里面加在它。Kombu实现的更深入一些。今天我们分析下它是怎么实现的。首先Kombu也有一个基类Transport：
-
-123456789101112131415from kombu.transport import base      class Channel(AbstractChannel, base.StdChannel):      # 队列和消息处理的逻辑      ...    class Transport(base.Transport):      Channel = Channel      implements = base.Transport.implements.extend(          exchange_type=frozenset(['direct', 'topic']),          ...      )       ...
-
-
-这个base.Transport相当于预先定义了一些接口，相当于更加「基类」，这就不看了，权当这个Transport是各种消息代理的基类吧。我们看一下MongoDB类型的实现：
-1234567891011121314151617from . import virtual      class Channel(virtual.
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-02-01.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2118,7 +2123,7 @@ switch $port {
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-count">197</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2140,7 +2145,7 @@ switch $port {
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

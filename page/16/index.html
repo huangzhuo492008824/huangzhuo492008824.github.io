@@ -375,6 +375,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-21.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-02-21.html" itemprop="url">知乎Live全文搜索之模型接口</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-21T18:30:58+08:00">
+                2016-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-21.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之模型接口">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          看这篇文章前推荐阅读相关的如下文章：
+
+知乎Live全文搜索之模型设计和爬虫实现
+知乎Live全文搜索之使用Elasticsearch做聚合分析
+知乎Live全文搜索之使用Elasticsearch做搜索建议
+知乎Live全文搜索之让elasticsearch_dsl支持asyncio 在知乎Live全文搜索之让elasticsearch_dsl支持asyncio
+一文中，我把后端工作分成了4步，今天是完成爬虫和模型接口这2步，接口返回的数据会被微信小程序使用。详细的列一下接口需求：
+搜索。搜索符合输入的关键字的Live和用户，按照之前提到的各种策略排序，也支持通过status状态过滤「已结束」和「未结束」2种类型的Live。支持分页。
+搜索建议。提供符合输入的关键字的Live的建议。
+发现。把全部的Live按照之前提到的各种策略排序，可以通过各种字段排序，可以选择Live开始的时间范围（默认是全部）。
+获取热门话题。
+获取某话题详细信息及话题下的Live，支持分页、排序、时间范围。
+获取全部用户，并且可以按照举办的Live数量、更新Live时间等条件排序。
+获取单个用户信息。
+根据各种策略排序，获取7天热门Live，非知乎排序。
+根据各种策略排序，获取30天热门Live，非知乎排序。添加Topic模型由于4和5的需求，我添加了Topic这个模型，上篇文章说过SQLite不支持并发，所以替换成了MySQL，要把config里面的DB_URI改成如下格式：
+
+12DB_URI = 'mysql+pymysql://localhost/test?charset=utf8mb4'
+
+
+其中test是库的名字，charset要用utf8mb4，因为有些用户信息甚至Live的标题里面包含emoji。MySQL的客户端用的是PyMySQL，需要在schema上指出来。Topic类和之前
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-02-21.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-20.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1861,180 +2040,6 @@ pathlib模块pathlib模块是Python 3新增的模块，让你更方便的处理�
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-11.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-02-11.html" itemprop="url">多台服务器进程查看脚本(pexpect+yaml)</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-11T18:30:58+08:00">
-                2016-02-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-02-11.html" class="leancloud_visitors" data-flag-title="多台服务器进程查看脚本(pexpect+yaml)">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          ####前言最近做自己开发用相关服务的一个checklist，就写了这个脚本，用来在跳板机去检查各个服务器上面的相关服务是否正常####思路使用expect登录每个机器(因为安全问题，不能直接使用ssh信任),然后根据yaml文件的配置读取服务名字以及启动的进程数量去检查每个服务是否正常PS：难点是没有用端口转发也只有普通用户权限####checklist.py
-#coding=utf-8  
-import sys  
-#因为我这个脚本要让很多人能运行，但是不能给他们看见我的密码算法,所以是pyc  
-#我这个脚本要给很多其他普通用户去用，是用我的ssh登录操作，不能放在我的home目录，所以放在tmp  
-sys.path.append(‘/tmp/local/lib/python2.6/site-packages/PyYAML-3.10-py2.6-linux-x86_64.egg’) #依赖yaml  
-sys.path.append(‘/tmp/local/lib/python2.6/site-packages/pexpect-2.4-py2.6.egg’) #依赖pexpect  
-import yaml  
-import pexpect  
-dataDict = yaml.load(open(‘/tmp/config.yaml’)) #将我的yaml配置load进来  
-
-def myprint(color,mes): #以前写的一个终端彩色打印的函数  
-    ‘’’使用ANSI控制码终端显示彩色’’’  
-    d = dict(r=31, g=32, gb=36, y=33, b=34, p=35, o=37)  
-    color = “\x1B[%d;%dm” % (1, d[color])  
-    print “%s%s\x1B[0m” %
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-02-11.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2087,7 +2092,7 @@ def myprint(color,mes): #以前写的一个终端彩色打印的函数
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-count">197</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2109,7 +2114,7 @@ def myprint(color,mes): #以前写的一个终端彩色打印的函数
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

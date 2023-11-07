@@ -375,6 +375,166 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-13.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2016-03-13.html" itemprop="url">迁移octpress,Rakefile修改以及豆瓣推荐,豆瓣收藏秀,新浪微博分享按钮等实现</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-13T18:30:58+08:00">
+                2016-03-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-13.html" class="leancloud_visitors" data-flag-title="迁移octpress,Rakefile修改以及豆瓣推荐,豆瓣收藏秀,新浪微博分享按钮等实现">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          前言首先感谢吴钊的inove,从博客建立就一直用它,昨天就开始研究迁移成octopress,以下是一些经验和总结####1. octopress目录结构说明#####首先看git出来的octopress目录结构:
+12345678910111213141516171819202122├─ config.rb  #指定额外的compass插件  ├─ config.ru    ├─ Rakefile   #rake的配置文件,类似于makefile,这个我修改了一些内容  ├─ Gemfile    #bundle要下载需要的gem依赖关系的指定文件  ├─ Gemfile.lock  #这些gem依赖的对应关系,比如A的x本依赖于B的y版本,我也修改了  ├─ _config.yml  #站点的配置文件  ├─ public/  #在静态编译完成后的目录,网站只需要这个目录下的文件树  ├─ _deploy/  #deploy时候生成的缓存文件夹,和public目录一样  ├─ sass/  #css文件的源文件,过程中会compass成css  ├─ plugins/  #放置自带以及第三方插件的目录,ruby程序  │  └── xxx.rb  └─ source/  #这个是站点的源文件目录,public目录就是根据这个目录下数据生成的     └─ _includes/        └─ custom/  #自定义的模板目录,被相应上级html include           └─ asides/  #边栏模板自定义模板目录        └─ asides/  #边栏模板目录        └─ post/  #文章页面相应模板目录     └─ _layouts/  #默认网站html相关文件,最底层     └─ _posts/  #新增以及从其它程序迁
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2016-03-13.html#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-12.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1851,165 +2011,6 @@ Web页面上可设置一些需要的功能参数
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-03.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Kevin Huang">
-      <meta itemprop="description" content>
-      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="KevinHuang">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016-03-03.html" itemprop="url">我的知乎Live</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-03T18:30:58+08:00">
-                2016-03-03
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/python/" itemprop="url" rel="index">
-                    <span itemprop="name">python</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2016-03-03.html" class="leancloud_visitors" data-flag-title="我的知乎Live">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          刚开始工作的时候，对域名，博客这些当时「很」有技术含量的事情非常好奇，正好老大就有自己的Wordpress博客,就这样从申请域名、租空间到搭环境一步步的走到现在，转眼已经6年多了。很多当年在写博客的人大多不再更新了，有些索性连域名都不再续费了。一开始写技术博客就是当笔记来用的，记录一些工作中和自己玩的东西，有过程、心得、还有踩过的坑儿。本来是自己写给自己看的，渐渐的和我处理相同处境、拥有相同问题的人也觉得有用，就这样每天打开这个网站的人越来越多，订阅的人也越来越多。写的内容也从一开始非常简单的环境搭建，一些类库工具命令的使用，到现在有了自己的思考和总结，这种升华是没有好好写过博客的人是不会理解的。写博客并没有资格不资格的，写什么怎么写自己做主。当你的博客越来越被人熟悉和喜爱，就会有一些责任感在里面，这个和大V一样，不加验证说的话可能会误导很多人，既影响了别人也影响了自己的公信力。随着时代的发展，博客已经不再是别人了解你的唯一入口了，从早期的微博到现在的微信公众号和知乎，有非常多的渠道让大家知道你，而且知识是共享的，哪怕你并没有营销自己的打算，只要你写的东西好别人也会把它分享出去。我对博客的悲观情绪越来越重，所以从去年开始，我开始走出去，在知乎创建专栏、回答问题，去开发者头条分享我的文章，去掘金随手分享了一个月还拐了2.6k的粉丝儿…当然这一切的初衷其实是为了宣传我的书。这个过程其实又是一个进阶，因为之前写文章一般也没人反驳，就算有也可以假装没看见。当你出去了，你就要面对这个「圈子」。我非常认可「市场经济」，就是你能走到哪一步完全由市场决定，比如你的价格、支持你观点的人甚至拥趸。这个和写书一样，你的技术能力，在写了书之后是由读者来决定了，他们只需要一个比较小的价格就能有资格给你一个评价。而且当你要把一个问题给别人讲清楚，会迫使自己想得更深入透彻，同时也可以通过跟别人的讨论来发
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016-03-03.html#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2062,7 +2063,7 @@ Web页面上可设置一些需要的功能参数
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-count">197</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2084,7 +2085,7 @@ Web页面上可设置一些需要的功能参数
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-count">84</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
