@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="15年11月19日，我打开了一个不常用的邮箱，看到了2天前编辑给我发的邮件，问我想不想写本Python相关的书。那个时候正是我的黑暗期，一个专注写代码几年的人开始做一些管理工作，一方面要学习，要转换思想，一方面心情也不好，每天就是在处理各种杂事，别说是技术进步了，哪怕把事情考虑周全的时间都没有。每天一个人当成2个人来用，操碎了各种心，很累。对于我这种写代码的，甚至都不善于逗小孩笑的程序员，总想给女">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="《Python Web开发实战》预售喽">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-04-12.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="15年11月19日，我打开了一个不常用的邮箱，看到了2天前编辑给我发的邮件，问我想不想写本Python相关的书。那个时候正是我的黑暗期，一个专注写代码几年的人开始做一些管理工作，一方面要学习，要转换思想，一方面心情也不好，每天就是在处理各种杂事，别说是技术进步了，哪怕把事情考虑周全的时间都没有。每天一个人当成2个人来用，操碎了各种心，很累。对于我这种写代码的，甚至都不善于逗小孩笑的程序员，总想给女">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-11-07T05:12:38.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="《Python Web开发实战》预售喽">
+<meta name="twitter:description" content="15年11月19日，我打开了一个不常用的邮箱，看到了2天前编辑给我发的邮件，问我想不想写本Python相关的书。那个时候正是我的黑暗期，一个专注写代码几年的人开始做一些管理工作，一方面要学习，要转换思想，一方面心情也不好，每天就是在处理各种杂事，别说是技术进步了，哪怕把事情考虑周全的时间都没有。每天一个人当成2个人来用，操碎了各种心，很累。对于我这种写代码的，甚至都不善于逗小孩笑的程序员，总想给女">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-04-12.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168352917435158" crossorigin="anonymous"></script>
+
+  <title>《Python Web开发实战》预售喽 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-04-12.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">《Python Web开发实战》预售喽</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-04-12T18:30:58+08:00">
+                2016-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-04-12.html" class="leancloud_visitors" data-flag-title="《Python Web开发实战》预售喽">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>15年11月19日，我打开了一个不常用的邮箱，看到了2天前编辑给我发的邮件，问我想不想写本Python相关的书。<br>那个时候正是我的黑暗期，一个专注写代码几年的人开始做一些管理工作，一方面要学习，要转换思想，一方面心情也不好，每天就是在处理各种杂事，别说是技术进步了，哪怕把事情考虑周全的时间都没有。每天<br>一个人当成2个人来用，操碎了各种心，很累。<br>对于我这种写代码的，甚至都不善于逗小孩笑的程序员，总想给女儿点不一样的礼物。希望我带给她一些精神上的帮助。看到邮件的一瞬间，我就想象女儿长大之后，对其他人说：喏，那是我爸写的书，给我做生日礼物…<br>就是这2个理由。我决定写这本书。<br>12月4日，我提交的大纲顺利通过审核。<br>12月6日，[CODE真的开源了](<a href="http://www.dongwm.com/archives/codekai-yuan-" target="_blank" rel="noopener">http://www.dongwm.com/archives/codekai-yuan-</a><br>liao/)，喜大普奔。我靠着情怀坚持做完了。CODE那段时间上了Github Trending，我很欣慰，虽然一切都太晚了。<br>接下来的20多天里面，我正忙着弄CODE开源的事情，只是在构思这本书都要有什么内容，并没有下笔。我天真的觉得同时可以把2件事做好，但是后来发现时间完全是不够的，所以我停止的CODE的进一步的迭代。其他的原因是豆瓣已经决定迁移到Github企业版，我一个人并无力改变什么，如果公司自己都不用，那开源的就没有意义了。再则我也受到了厂内很多质疑和嘲讽，心碎。<br>一些写书的介绍可以看这篇专栏《<a href="https://zhuanlan.zhihu.com/p/22207407" target="_blank" rel="noopener">写一本技术书籍</a>》，并建议大家关注这个专栏，近期将有一大波文章要在专栏发呢。<br>专栏有些结论先发出来：</p>
+<ol>
+<li>开始写书是在圣诞节左右，结束时间是8月15日。也就是差不多240天。</li>
+<li>写这本书能让我挣2W多，嗯，时薪23块钱。<br>现在开始介绍这本书。<h3 id="谁应该看本书"><a href="#谁应该看本书" class="headerlink" title="谁应该看本书"></a>谁应该看本书</h3>看书名可知这是一本Web开发相关的书，但事实上里面有大概一半的内容其实是Python工程师都能用到的。我对书的受众的理解是：</li>
+<li>Web开发者</li>
+<li>运维开发</li>
+<li>想提高Python技能的开发者</li>
+<li>其他想了解Python Web开发的其他开发者<br>需要注意，阅读本书需要有一定的Python基础，因为书中没有基础语法教程，如果你之前没用Python写过程序阅读起来可能会受到影响。<h3 id="为什么值得看"><a href="#为什么值得看" class="headerlink" title="为什么值得看"></a>为什么值得看</h3>我阅读过大量和Python有关的纸质书和开源图书，渐渐学到了很多控制自己“剁手”买书的方法。我来分析一下为什么你值得拥有本书。:)<br>为什么要买书来看？我认为不外乎两个原因：有趣和能学到东西。技术书肯定不会太有趣，那么最重要的就是能学到东西。市面上Python相关的书相当多，但是有些内容陈旧或者不符合国情，经常能看到并非开发第一线的人写或者翻译的书，这些书显然价值就要低一些；其次是同质化和向入门级别靠拢，我个人认为市面上关于Python入门或者教授语法知识的书不少，而再深入一点的就很匮乏了。<br>本书有几个特点： 第一，使用了当前主流和前瞻性的技术，如Docker、Ubuntu 16.04<br>LTS、Cython、CFFI、Py.test、asyncio、IPython 5.0 LTS等，书中一部分内容是在Python<br>3下完成的。本书中全部工具都使用当前最新版，能保证在相当长的时间内书中的内容都不会过时。<br>第二，笔者在国内应用Python最大的豆瓣网做产品开发，一直在第一线写代码，大量例子和经验都是根据实际经验出发的。<br>第三，笔者非常关注Github和Python社区，会第一时间了解到新的趋势和思想，并在书中体现。举个例子，代码检查工具pep8已经在Guido van<br>Rossum的要求下改名为pycodestyle了。<br>叔本华在《人生的智慧》中说过一段话，大意是人要么庸俗，要么孤独。笔者认为这个道理在阅读上面也成立：读什么样的书，就会逐渐成为什么样的人。本书提供了很多笔者在其他书中没有看到过的思考方式和Python的用法，这也是本书存在的意义。<h3 id="本书涵盖的内容"><a href="#本书涵盖的内容" class="headerlink" title="本书涵盖的内容"></a>本书涵盖的内容</h3><h4 id="第一章-「初识Python-Web开发」"><a href="#第一章-「初识Python-Web开发」" class="headerlink" title="第一章.「初识Python Web开发」"></a>第一章.「初识Python Web开发」</h4>将回答Python工程师关心的如下3个问题：</li>
+<li>为什么应该选择Python作为Web开发语言？</li>
+<li>在Python 2和Python 3之间如何选择？</li>
+<li>在这么多的Python Web框架中哪些是主流的，它们的特点是什么，该如何选择？<h4 id="第二章-「Web开发前的准备」"><a href="#第二章-「Web开发前的准备」" class="headerlink" title="第二章. 「Web开发前的准备」"></a>第二章. 「Web开发前的准备」</h4></li>
+<li>环境的准备，以便读者能够使用Vagrant或者Docker提供的Ubuntu环境运行书中的例子。</li>
+<li>介绍包管理工具pip及一些高级用法。</li>
+<li>实现PYPI的缓存代理和完全镜像。</li>
+<li>使用virtualenv及其扩展实现虚拟环境管理。<h4 id="第三章-「Flask-Web开发」"><a href="#第三章-「Flask-Web开发」" class="headerlink" title="第三章. 「Flask Web开发」"></a>第三章. 「Flask Web开发」</h4></li>
+<li>通过多个应用例子了解Flask框架使用的一些精髓。</li>
+<li>介绍目前最流行的模板引擎Jinja2和Mako的使用，以及实践总结和做选择时的建议。</li>
+<li>通过一些例子让读者熟悉MySQLdb的使用，并演示如何和Flask应用集成。</li>
+<li>通过源码帮助读者理解Flask的上下文设计，并演示大型应用中使用上下文钩子的例子。</li>
+<li>通过一个真实的案例学以致用。先分析需求，接着从零开始实现一个文件托管应用。<h4 id="第四章-「Flask-开发进阶」"><a href="#第四章-「Flask-开发进阶」" class="headerlink" title="第四章. 「Flask 开发进阶」"></a>第四章. 「Flask 开发进阶」</h4></li>
+<li>Flask的信号机制。利用信号可以实现一部分的业务解耦。</li>
+<li>Flask的一些常用、主流的扩展，如Flask-Script、Flask-DebugToolbar、Flask-Migrate、Flask-WTF、Flask-Security、Flask-RESTful、Flask-Admin和Flask-Assets。每个扩展都包含至少一个完整的真实例子。</li>
+<li>Flask的依赖库Werkzeug的使用。<h4 id="第五章-「REST和Ajax」"><a href="#第五章-「REST和Ajax」" class="headerlink" title="第五章. 「REST和Ajax」"></a>第五章. 「REST和Ajax」</h4></li>
+<li>帮助读者理解REST。</li>
+<li>学习如何设计一个合理、好用、符合标准的API。</li>
+<li>使用jQuery和fetch分别完成一个前后端交互的Ajax应用。<h4 id="第六章-「网站架构」"><a href="#第六章-「网站架构」" class="headerlink" title="第六章. 「网站架构」"></a>第六章. 「网站架构」</h4></li>
+<li>了解WSGI协议。</li>
+<li>主流的Python应用服务器的特点和使用方法。</li>
+<li>使用Nginx和Python应用服务器部署Flask应用。</li>
+<li>介绍豆瓣开源的Libmc和豆瓣常用的缓存使用方式。</li>
+<li>举例说明Redis的几个应用场景，包含使用MessagePack进行序列化和反序列化工作。</li>
+<li>介绍使用NoSQL的原因和场景。</li>
+<li>使用pymongo，并用Mongoengine重构文件托管服务的模型。</li>
+<li>MongoDB索引、高可用和分片的经验。</li>
+<li>以豆瓣的基础架构为原型，展示主流大型网站的架构模式，并详细介绍相关重要模式，以及Web前端的性能优化经验。<h4 id="第七章-「系统管理」"><a href="#第七章-「系统管理」" class="headerlink" title="第七章. 「系统管理」"></a>第七章. 「系统管理」</h4></li>
+<li>使用Supervisor管理进程。</li>
+<li>使用Fabric进行应用部署。</li>
+<li>通过部署Redis了解配置管理工具SaltStack和Ansible。</li>
+<li>使用Psutil获取系统CPU、内存、硬盘和网络等信息。</li>
+<li>配图演示Sentry的安装和收集错误信息的效果。</li>
+<li>使用StatsD、Graphite、Diamond和Grafana搭建Web监控，并介绍常见的运维监控工具及其主要应用场景。<h4 id="第八章-「测试和持续集成」"><a href="#第八章-「测试和持续集成」" class="headerlink" title="第八章. 「测试和持续集成」"></a>第八章. 「测试和持续集成」</h4></li>
+<li>介绍和使用Python内置测试模块unittest和doctest。</li>
+<li>介绍和使用第三方测试工具py.test和mock。</li>
+<li>深入持续集成，并通过Buildbot实际地对一个Github项目进行集成。<h4 id="第九章-「消息队列和Celery」"><a href="#第九章-「消息队列和Celery」" class="headerlink" title="第九章. 「消息队列和Celery」"></a>第九章. 「消息队列和Celery」</h4></li>
+<li>使用Beanstalkd。</li>
+<li>解释AMQP，深入理解RabbitMQ，介绍RabbitMQ插件系统，RabbitMQ集群的故障转移方法等。</li>
+<li>介绍Celery的架构，运行起一个真实的应用，在Flask应用中使用Celery等功能。</li>
+<li>深入Celery，介绍Celery的依赖及独立用法、Worker管理、监控等高级功能。</li>
+<li>笔者总结的一些Celery实践经验。<h4 id="第十章-「服务化」"><a href="#第十章-「服务化」" class="headerlink" title="第十章. 「服务化」"></a>第十章. 「服务化」</h4></li>
+<li>为什么需要服务化。</li>
+<li>使用Thrift对文件托管服务改造。</li>
+<li>介绍豆瓣服务化实践——PIDL的起因、基本原理和基本架构。<h4 id="第十一章-「数据处理」"><a href="#第十一章-「数据处理」" class="headerlink" title="第十一章. 「数据处理」"></a>第十一章. 「数据处理」</h4></li>
+<li>使用纯Python代码实现MapReduce功能。</li>
+<li>配置DPark环境，深入了解DPark，演示如何用DPark对业务日志进行PV和UV的分析。</li>
+<li>通过发送带有样式和附件的邮件，创建包含带样式和Sparkline图表的xlsx文件，以及创建包含多工作表和4. 图表的xlsx文件这三个有用的例子，展示笔者对数据报表的理解和运用。</li>
+<li>基于数据报表中的数据，用Pandas进行分析和展示。<h4 id="第十二章-「帮助工具」"><a href="#第十二章-「帮助工具」" class="headerlink" title="第十二章. 「帮助工具」"></a>第十二章. 「帮助工具」</h4></li>
+<li>解释为什么应该使用IPython，配置IPython、调试复杂代码、并行计算等。</li>
+<li>介绍Jupyter Notebook的用途，配置Jupyter Notebook，在Notebook里使用Echarts自定义JavaScript和CSS样式等高级功能。</li>
+<li>介绍常用的获得Linux服务器相关情况的工具。</li>
+<li>介绍性能测试工具Boom和tcpcopy，并演示如何搭建一个tcpcopy环境。</li>
+<li>介绍分析Python程序性能瓶颈的工具。</li>
+<li>演示如何定制基于IPython的交互解释环境。</li>
+<li>演示豆瓣东西在2014年双十一进行的Jupyter Notebook实践。<h4 id="第十三章-「Python并发编程」"><a href="#第十三章-「Python并发编程」" class="headerlink" title="第十三章. 「Python并发编程」"></a>第十三章. 「Python并发编程」</h4>使用多线程、多进程、Gevent、Future和asyncio这五种方式实现一个爬取微信公众号的抓取。其中还揭秘了一些写爬虫的经验。尤其是告诉读者如何选择并发方式。<h4 id="第十四章-「Python进阶」"><a href="#第十四章-「Python进阶」" class="headerlink" title="第十四章. 「Python进阶」"></a>第十四章. 「Python进阶」</h4></li>
+<li>介绍errno、subprocess、contextlib、glob、operator、functools、collections模块的使用方法。</li>
+<li>笔者对《Python之禅》的理解。</li>
+<li>笔者总结的一些Python实践经验，并列举了两篇最佳实践的文章。</li>
+<li>介绍一些Python 3的有用功能，并移植到Python 2。</li>
+<li>通过真实的例子演示如何使用CFFI/Cython编写Python扩展，并对比二者的执行效率。</li>
+<li>演示使用PyObjC发送通知的例子，让开发者收到的通知更有针对性。<h4 id="第十五章-「Web开发项目实践」"><a href="#第十五章-「Web开发项目实践」" class="headerlink" title="第十五章. 「Web开发项目实践」"></a>第十五章. 「Web开发项目实践」</h4></li>
+<li>介绍笔者的Web项目开发流程和经验。</li>
+<li>介绍开源的代码质量保证工具，以及豆瓣的一些质量保证实践。</li>
+<li>使用AST对真实的业务逻辑做静态检查，实现业务流程的检查。</li>
+<li>谈谈代码评审的意义和实际经验。<br>PS: 本书还有其他惊喜，我就不打广告了。感谢大家支持，也希望通过本书能让你有所收获。</li>
+</ol>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-04-11.html" rel="next" title="使用celery之深入celery配置">
+                <i class="fa fa-chevron-left"></i> 使用celery之深入celery配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-04-13.html" rel="prev" title="推荐 + 赠书 《Python 3学习笔记（上卷）》">
+                推荐 + 赠书 《Python 3学习笔记（上卷）》 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#谁应该看本书"><span class="nav-number">1.</span> <span class="nav-text">谁应该看本书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么值得看"><span class="nav-number">2.</span> <span class="nav-text">为什么值得看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#本书涵盖的内容"><span class="nav-number">3.</span> <span class="nav-text">本书涵盖的内容</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#第一章-「初识Python-Web开发」"><span class="nav-number">3.1.</span> <span class="nav-text">第一章.「初识Python Web开发」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第二章-「Web开发前的准备」"><span class="nav-number">3.2.</span> <span class="nav-text">第二章. 「Web开发前的准备」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第三章-「Flask-Web开发」"><span class="nav-number">3.3.</span> <span class="nav-text">第三章. 「Flask Web开发」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第四章-「Flask-开发进阶」"><span class="nav-number">3.4.</span> <span class="nav-text">第四章. 「Flask 开发进阶」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第五章-「REST和Ajax」"><span class="nav-number">3.5.</span> <span class="nav-text">第五章. 「REST和Ajax」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第六章-「网站架构」"><span class="nav-number">3.6.</span> <span class="nav-text">第六章. 「网站架构」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第七章-「系统管理」"><span class="nav-number">3.7.</span> <span class="nav-text">第七章. 「系统管理」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第八章-「测试和持续集成」"><span class="nav-number">3.8.</span> <span class="nav-text">第八章. 「测试和持续集成」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第九章-「消息队列和Celery」"><span class="nav-number">3.9.</span> <span class="nav-text">第九章. 「消息队列和Celery」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十章-「服务化」"><span class="nav-number">3.10.</span> <span class="nav-text">第十章. 「服务化」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十一章-「数据处理」"><span class="nav-number">3.11.</span> <span class="nav-text">第十一章. 「数据处理」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十二章-「帮助工具」"><span class="nav-number">3.12.</span> <span class="nav-text">第十二章. 「帮助工具」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十三章-「Python并发编程」"><span class="nav-number">3.13.</span> <span class="nav-text">第十三章. 「Python并发编程」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十四章-「Python进阶」"><span class="nav-number">3.14.</span> <span class="nav-text">第十四章. 「Python进阶」</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#第十五章-「Web开发项目实践」"><span class="nav-number">3.15.</span> <span class="nav-text">第十五章. 「Web开发项目实践」</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="https://beian.miit.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

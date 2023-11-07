@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="学习东西一定要给自己找个相对复杂到能比较深入了解要学习的内容的项目。「知乎Live全文搜索」是我用来学习elasticsearch、elasticsearch_dsl、asyncio、sanic和微信小程序项目。我想做时知乎还不提供Live的搜索，现在虽然提供了一个入口，但是感觉搜索的效果我觉得并不好。前面在公众号我已经发了很多相关的asyncio、elasticsearch_dsl和sanic的">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎Live全文搜索之让elasticsearch_dsl支持asyncio">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-02-27.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="学习东西一定要给自己找个相对复杂到能比较深入了解要学习的内容的项目。「知乎Live全文搜索」是我用来学习elasticsearch、elasticsearch_dsl、asyncio、sanic和微信小程序项目。我想做时知乎还不提供Live的搜索，现在虽然提供了一个入口，但是感觉搜索的效果我觉得并不好。前面在公众号我已经发了很多相关的asyncio、elasticsearch_dsl和sanic的">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-11-07T05:12:38.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎Live全文搜索之让elasticsearch_dsl支持asyncio">
+<meta name="twitter:description" content="学习东西一定要给自己找个相对复杂到能比较深入了解要学习的内容的项目。「知乎Live全文搜索」是我用来学习elasticsearch、elasticsearch_dsl、asyncio、sanic和微信小程序项目。我想做时知乎还不提供Live的搜索，现在虽然提供了一个入口，但是感觉搜索的效果我觉得并不好。前面在公众号我已经发了很多相关的asyncio、elasticsearch_dsl和sanic的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-02-27.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168352917435158" crossorigin="anonymous"></script>
+
+  <title>知乎Live全文搜索之让elasticsearch_dsl支持asyncio | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-27.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎Live全文搜索之让elasticsearch_dsl支持asyncio</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-27T18:30:58+08:00">
+                2016-02-27
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-27.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之让elasticsearch_dsl支持asyncio">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>学习东西一定要给自己找个相对复杂到能比较深入了解要学习的内容的项目。「知乎Live全文搜索」是我用来学习elasticsearch、elasticsearch_dsl、asyncio、sanic和微信小程序项目。我想做时知乎还不提供Live的搜索，现在虽然提供了一个入口，但是感觉搜索的效果我觉得并不好。<br>前面在公众号我已经发了很多相关的asyncio、elasticsearch_dsl和sanic的内容，前面那些全部是给从今天开始的内容做铺垫。下面是这样文章的快速链接，如果你没看过或者忘记了可以回顾一下：</p>
+<ol>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(一)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87-%E4%BA%8C/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(二)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B-asyncio%E7%AF%87-%E4%B8%89/" target="_blank" rel="noopener">使用Python进行并发编程-asyncio篇(三)</a></li>
+<li><a href="http://www.dongwm.com/archives/%E4%BD%BF%E7%94%A8API%E7%99%BB%E5%BD%95%E7%9F%A5%E4%B9%8E%E5%B9%B6%E8%8E%B7%E5%BE%97token/" target="_blank" rel="noopener">使用API登录知乎并获得token</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%92%8C%E7%88%AC%E8%99%AB%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">知乎Live全文搜索之模型设计和爬虫实现</a><br>现在列一下需求清单，并挨个完成。这里插一句，需求是否清晰明确是任务按期完成的最重要的条件之一，所以细化需求能力是每一个工程师都要熟悉和掌握的，这要求工程师对业务和所需要的技术很熟悉。<br>现在我先大致描绘要做的4件事情：</li>
+</ol>
+<ul>
+<li>继续完善爬虫。主要是以下2点：<ol>
+<li>之前分享过的爬虫的协程带来并发速度的提升优势还没有完全发挥出来。</li>
+<li>之前的爬虫是纯信息抓取，没有考虑数据的可视化（比如没有考虑Live背景图，用户头像，Live所属话题信息等），需要增加字段并重新抓取。</li>
+</ol>
+</li>
+<li>让elasticsearch_dsl支持asyncio，虽然官方提供了elasticsearch-py-async这个包，但是没有对elasticsearch_dsl的异步封装，而且由于我们将要使用sanic这个使用了第三方uvloop的Web框架，不能通过<code>asyncio.get_event_loop</code>的方式获取到loop而给elasticsearch_dsl用，需要处理。</li>
+<li>完成微信小程序需要的数据model接口。</li>
+<li>实现一个RESTful的sanic API功能，让elasticsearch和sqlalchemy的返回内容能非常方便的通用处理。<br>当然也并不是能预先清晰制定好100%需求，因为会有一些外部不可控的因素或者不小心踩了个深坑儿。比如一开始我只是抓知乎的图片链接，但是后来发现在微信小程序开发工具中这些图片资源是不能访问的（可能是没有Referfer），所以后来又改成把图片都下载到本地。另外一个是当时存储用户用了SQLite，现在要存话题数据，发现SQLite不支持并发，这对asyncio来说是不合理的选择，所以后来换成了MySQL。看，这就是选择sqlallchemy的好处，我完全不用改model，只是把DB_URI改一下就好了。<br>本文是上面的第二项，也就是让elasticsearch_dsl支持asyncio。我并且尽量拆分任务成可以团队多成员可以同时协作完成，也就是不用等着A做完B才能开始去做。我继续细节需求,<br>并挨个完成<h3 id="让sanic暴露loop给elasticsearch-dsl用"><a href="#让sanic暴露loop给elasticsearch-dsl用" class="headerlink" title="让sanic暴露loop给elasticsearch_dsl用"></a>让sanic暴露loop给elasticsearch_dsl用</h3>通过看sanic和elasticsearch_dsl的源码，我用sanic提供的before_start事件就可以完成：</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> sanic <span class="keyword">import</span> Sanic  </span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span> connections  </span><br><span class="line">  </span><br><span class="line">app = Sanic(__name__)  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">set_loop</span><span class="params">(sanic, loop)</span>:</span>  </span><br><span class="line">    conns = connections._conns  </span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> conns:  </span><br><span class="line">        conns[c].transport.loop = loop  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    app.run(host=<span class="string">'0.0.0.0'</span>, port=<span class="number">8300</span>,  </span><br><span class="line">            before_start=[set_loop], workers=<span class="number">4</span>, debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>elasticsearch创建链接后会保存在connections._conns，在Sanic启动后把这些链接中用的loop替换成sanic创建那个就可以了。</p>
+<h3 id="让elasticsearch-py-async支持Sanic"><a href="#让elasticsearch-py-async支持Sanic" class="headerlink" title="让elasticsearch-py-async支持Sanic"></a>让elasticsearch-py-async支持Sanic</h3><p>我fork了[elasticsearch-py-async](<a href="https://github.com/dongweiming/elasticsearch-" target="_blank" rel="noopener">https://github.com/dongweiming/elasticsearch-</a><br>py-<br>async)，虽然它已经是支持asyncio的了，但是还不支持外部loop，我的修改具体的可以看[这里](<a href="https://github.com/dongweiming/elasticsearch-" target="_blank" rel="noopener">https://github.com/dongweiming/elasticsearch-</a><br>py-<br>async/commit/416e7f02d7842c4efb4c3ed0f6159abb3d67e937)。说白了也是为了成替换sanic创建的那个loop。<br>elasticsearch-py-async加载的时候loop已经创建了，所以需要hack一下，让main_loop使用我设置的那个：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Transport  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AsyncTransport</span><span class="params">(Transport)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @asyncio.coroutine  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">main_loop</span><span class="params">(self, method, url, params, body, ignore=<span class="params">()</span>, timeout=None)</span>:</span>  </span><br><span class="line">        <span class="keyword">for</span> attempt <span class="keyword">in</span> range(self.max_retries + <span class="number">1</span>):  </span><br><span class="line">            connection = self.get_connection()  </span><br><span class="line">            connection.loop = self.loop  </span><br><span class="line">  </span><br><span class="line">            <span class="keyword">try</span>:  </span><br><span class="line">                status, headers, data = <span class="keyword">yield</span> <span class="keyword">from</span> connection.perform_request(  </span><br><span class="line">                        method, url, params, body, ignore=ignore, timeout=timeout)  </span><br><span class="line">            <span class="keyword">except</span> TransportError <span class="keyword">as</span> e:  </span><br><span class="line">                <span class="keyword">if</span> method == <span class="string">'HEAD'</span> <span class="keyword">and</span> e.status_code == <span class="number">404</span>:  </span><br><span class="line">                    <span class="keyword">return</span> <span class="literal">False</span>  </span><br><span class="line">            ...</span><br></pre></td></tr></table></figure>
+
+
+<p>[<code>@asyncio.coroutine](mailto:</code>@asyncio.coroutine)<code>和</code>yield<br>from<code>是老式用法了，我新写的代码都统一都改成Python 3.5增加的async/await关键字了。
+其中我加了一句</code>connection.loop = self.loop<code>，这样之前做的</code>conns[c].transport.loop =<br>loop`就有意义的。另外一个问题是aiohttp.session的用法，会造成在类初始化的时候就生成了self.session被未来使用，现在需要换成我们的loop，就需要让self.session在用时才生成，而且类初始化时候就创建session是一种不好的用法，我在多个地方见过，包含之前提到的500lines项目中的爬虫也是这样用的，本来是这样用的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crawler</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, roots,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 exclude=None, strict=True,  <span class="comment"># What to crawl.  </span></span></span></span><br><span class="line"><span class="function"><span class="params">                 max_redirect=<span class="number">10</span>, max_tries=<span class="number">4</span>,  <span class="comment"># Per-url limits.  </span></span></span></span><br><span class="line"><span class="function"><span class="params">                 max_tasks=<span class="number">10</span>, *, loop=None)</span>:</span>  </span><br><span class="line">        ...  </span><br><span class="line">        self.session = aiohttp.ClientSession(loop=self.loop)  </span><br><span class="line">        ...</span><br></pre></td></tr></table></figure>
+
+
+<p>现在aiohttp会抛<code>Creating a client session outside of
+coroutine</code>的警告，也就是还没有开始协程就创建了。好的用法应该是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Crawler</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, roots,  </span></span></span><br><span class="line"><span class="function"><span class="params">                 exclude=None, strict=True,  <span class="comment"># What to crawl.  </span></span></span></span><br><span class="line"><span class="function"><span class="params">                 max_redirect=<span class="number">10</span>, max_tries=<span class="number">4</span>,  <span class="comment"># Per-url limits.  </span></span></span></span><br><span class="line"><span class="function"><span class="params">                 max_tasks=<span class="number">10</span>, *, loop=None)</span>:</span>  </span><br><span class="line">        ...  </span><br><span class="line">        self._session = <span class="literal">None</span>  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">session</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">if</span> self._session <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            self.session = aiohttp.ClientSession(loop=self.loop)  </span><br><span class="line">            self._session = session  </span><br><span class="line">        <span class="keyword">return</span> self._session</span><br></pre></td></tr></table></figure>
+
+
+<p>这种编程方式使用非常广泛，体会一下。</p>
+<h3 id="让elasticsearch-dsl-py支持Sanic"><a href="#让elasticsearch-dsl-py支持Sanic" class="headerlink" title="让elasticsearch-dsl-py支持Sanic"></a>让elasticsearch-dsl-py支持Sanic</h3><p>前面说到elasticsearch-dsl-py底层用的是elasticsearch-<br>py，并不支持异步化。所以我还是fork了[一份](<a href="https://github.com/dongweiming/elasticsearch-dsl-" target="_blank" rel="noopener">https://github.com/dongweiming/elasticsearch-dsl-</a><br>py/)，目前除了为支持Sanic，还修了一个我认为的BUG,已经提了PR还没有被处理, 有兴趣的同学可以移步[Fix IllegalOperation<br>when use custom analyzer](<a href="https://github.com/elastic/elasticsearch-dsl-" target="_blank" rel="noopener">https://github.com/elastic/elasticsearch-dsl-</a><br>py/pull/576)。<br>我发现有的同学很惧怕Python 3内置的协程方案asyncio。我想原因主要是2点：</p>
+<ol>
+<li>对async/await这种异步编程方式不习惯</li>
+<li>asyncio的生态还不够丰富，非常有可能你要自己去封装还不支持的客户端<br>人都是习惯在自己的舒适区，但其实可能没那么难习惯。这个就像成天用python写代码，突然要写个shell脚本或者就像没做过组件式开发第一次用React一样的不适应。这个时候需要你忍着不习惯，坚持的做1-2个项目，等你了解了，熟悉了，就会发现新的编程方式其实也就是那么回事，但是不去尝试和深入永远也学不会。<br>大家没事可以翻翻[aio-libs](<a href="https://github.com/aio-" target="_blank" rel="noopener">https://github.com/aio-</a><br>libs/)这个汇集了多个常用工具的asyncio的封装库，其实不复杂，把一个同步的程序改成asyncio的，我总结就是一句话：<blockquote>
+<p>给内部有异步操作的函数添加async关键字，在有网络请求和I/O操作并且希望协程化的地方添加await关键字<br>对于elasticsearch-dsl-py的修改，差不多就是一种模式。举个get方法的例子。原来是这样写的：</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@add_metaclass(DocTypeMeta)  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DocType</span><span class="params">(ObjectBase)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(cls, id, using=None, index=None, **kwargs)</span>:</span>  </span><br><span class="line">        es = connections.get_connection(using <span class="keyword">or</span> cls._doc_type.using)  </span><br><span class="line">        doc = es.get(  </span><br><span class="line">            index=index <span class="keyword">or</span> cls._doc_type.index,  </span><br><span class="line">            doc_type=cls._doc_type.name,  </span><br><span class="line">            id=id,  </span><br><span class="line">            **kwargs  </span><br><span class="line">        )  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> doc[<span class="string">'found'</span>]:  </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span>  </span><br><span class="line">        <span class="keyword">return</span> cls.from_es(doc)</span><br></pre></td></tr></table></figure>
+
+
+<p>现在改成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">@add_metaclass(DocTypeMeta)  </span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DocType</span><span class="params">(ObjectBase)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(cls, id, using=None, index=None, **kwargs)</span>:</span>  </span><br><span class="line">        es = connections.get_connection(using <span class="keyword">or</span> cls._doc_type.using)  </span><br><span class="line">        doc = <span class="keyword">await</span> es.get(  </span><br><span class="line">            index=index <span class="keyword">or</span> cls._doc_type.index,  </span><br><span class="line">            doc_type=cls._doc_type.name,  </span><br><span class="line">            id=id,  </span><br><span class="line">            **kwargs  </span><br><span class="line">        )  </span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> doc[<span class="string">'found'</span>]:  </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">None</span>  </span><br><span class="line">        <span class="keyword">return</span> cls.from_es(doc)</span><br></pre></td></tr></table></figure>
+
+
+<p>所以不是每一步都需要加await，只有es.get是有网络请求的，其他的地方加了也没有意义。<br>另外的一个地方是把初始化Elasticsearch对象的地方改成elasticsearch-py-async的封装后的类，原来是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch <span class="keyword">import</span> Elasticsearch  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connections</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_connection</span><span class="params">(self, alias=<span class="string">'default'</span>, **kwargs)</span>:</span>  </span><br><span class="line">        kwargs.setdefault(<span class="string">'serializer'</span>, serializer)  </span><br><span class="line">        conn = self._conns[alias] = Elasticsearch(**kwargs)  </span><br><span class="line">        <span class="keyword">return</span> conn</span><br></pre></td></tr></table></figure>
+
+
+<p>改成：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch_async <span class="keyword">import</span> AsyncElasticsearch  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Connections</span><span class="params">(object)</span>:</span>  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">create_connection</span><span class="params">(self, alias=<span class="string">'default'</span>, **kwargs)</span>:</span>  </span><br><span class="line">        kwargs.setdefault(<span class="string">'serializer'</span>, serializer)  </span><br><span class="line">        conn = self._conns[alias] = AsyncElasticsearch(**kwargs)  </span><br><span class="line">        <span class="keyword">return</span> conn</span><br></pre></td></tr></table></figure>
+
+
+<p>明天我将分享完善后的爬虫，以及第三项「完成微信小程序需要的数据model接口」。</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-25.html" rel="next" title="多master/develop分支使用gitflow">
+                <i class="fa fa-chevron-left"></i> 多master/develop分支使用gitflow
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-28.html" rel="prev" title="使用codecs自定义编/解码方案">
+                使用codecs自定义编/解码方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#让sanic暴露loop给elasticsearch-dsl用"><span class="nav-number">1.</span> <span class="nav-text">让sanic暴露loop给elasticsearch_dsl用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#让elasticsearch-py-async支持Sanic"><span class="nav-number">2.</span> <span class="nav-text">让elasticsearch-py-async支持Sanic</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#让elasticsearch-dsl-py支持Sanic"><span class="nav-number">3.</span> <span class="nav-text">让elasticsearch-dsl-py支持Sanic</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="https://beian.miit.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

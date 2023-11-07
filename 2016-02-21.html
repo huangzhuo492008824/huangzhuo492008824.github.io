@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="看这篇文章前推荐阅读相关的如下文章：  知乎Live全文搜索之模型设计和爬虫实现 知乎Live全文搜索之使用Elasticsearch做聚合分析 知乎Live全文搜索之使用Elasticsearch做搜索建议 知乎Live全文搜索之让elasticsearch_dsl支持asyncio 在知乎Live全文搜索之让elasticsearch_dsl支持asyncio 一文中，我把后端工作分成了4步，">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎Live全文搜索之模型接口">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-02-21.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="看这篇文章前推荐阅读相关的如下文章：  知乎Live全文搜索之模型设计和爬虫实现 知乎Live全文搜索之使用Elasticsearch做聚合分析 知乎Live全文搜索之使用Elasticsearch做搜索建议 知乎Live全文搜索之让elasticsearch_dsl支持asyncio 在知乎Live全文搜索之让elasticsearch_dsl支持asyncio 一文中，我把后端工作分成了4步，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-11-07T05:12:38.819Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎Live全文搜索之模型接口">
+<meta name="twitter:description" content="看这篇文章前推荐阅读相关的如下文章：  知乎Live全文搜索之模型设计和爬虫实现 知乎Live全文搜索之使用Elasticsearch做聚合分析 知乎Live全文搜索之使用Elasticsearch做搜索建议 知乎Live全文搜索之让elasticsearch_dsl支持asyncio 在知乎Live全文搜索之让elasticsearch_dsl支持asyncio 一文中，我把后端工作分成了4步，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-02-21.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168352917435158" crossorigin="anonymous"></script>
+
+  <title>知乎Live全文搜索之模型接口 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-21.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎Live全文搜索之模型接口</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-21T18:30:58+08:00">
+                2016-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-21.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之模型接口">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看这篇文章前推荐阅读相关的如下文章：</p>
+<ol>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E6%A8%A1%E5%9E%8B%E8%AE%BE%E8%AE%A1%E5%92%8C%E7%88%AC%E8%99%AB%E5%AE%9E%E7%8E%B0/" target="_blank" rel="noopener">知乎Live全文搜索之模型设计和爬虫实现</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E4%BD%BF%E7%94%A8Elasticsearch%E5%81%9A%E8%81%9A%E5%90%88%E5%88%86%E6%9E%90/" target="_blank" rel="noopener">知乎Live全文搜索之使用Elasticsearch做聚合分析</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E4%BD%BF%E7%94%A8Elasticsearch%E5%81%9A%E6%90%9C%E7%B4%A2%E5%BB%BA%E8%AE%AE/" target="_blank" rel="noopener">知乎Live全文搜索之使用Elasticsearch做搜索建议</a></li>
+<li><a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E8%AE%A9elasticsearch_dsl%E6%94%AF%E6%8C%81asyncio/" target="_blank" rel="noopener">知乎Live全文搜索之让elasticsearch_dsl支持asyncio </a><br>在<a href="http://www.dongwm.com/archives/%E7%9F%A5%E4%B9%8ELive%E5%85%A8%E6%96%87%E6%90%9C%E7%B4%A2%E4%B9%8B%E8%AE%A9elasticsearch_dsl%E6%94%AF%E6%8C%81asyncio/" target="_blank" rel="noopener">知乎Live全文搜索之让elasticsearch_dsl支持asyncio
+</a>一文中，我把后端工作分成了4步，今天是完成爬虫和模型接口这2步，接口返回的数据会被微信小程序使用。<br>详细的列一下接口需求：</li>
+<li>搜索。搜索符合输入的关键字的Live和用户，按照之前提到的各种策略排序，也支持通过status状态过滤「已结束」和「未结束」2种类型的Live。支持分页。</li>
+<li>搜索建议。提供符合输入的关键字的Live的建议。</li>
+<li>发现。把全部的Live按照之前提到的各种策略排序，可以通过各种字段排序，可以选择Live开始的时间范围（默认是全部）。</li>
+<li>获取热门话题。</li>
+<li>获取某话题详细信息及话题下的Live，支持分页、排序、时间范围。</li>
+<li>获取全部用户，并且可以按照举办的Live数量、更新Live时间等条件排序。</li>
+<li>获取单个用户信息。</li>
+<li>根据各种策略排序，获取7天热门Live，非知乎排序。</li>
+<li>根据各种策略排序，获取30天热门Live，非知乎排序。<h3 id="添加Topic模型"><a href="#添加Topic模型" class="headerlink" title="添加Topic模型"></a>添加Topic模型</h3>由于4和5的需求，我添加了Topic这个模型，上篇文章说过SQLite不支持并发，所以替换成了MySQL，要把config里面的DB_URI改成如下格式：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">DB_URI = <span class="string">'mysql+pymysql://localhost/test?charset=utf8mb4'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>其中test是库的名字，charset要用utf8mb4，因为有些用户信息甚至Live的标题里面包含emoji。MySQL的客户端用的是PyMySQL，需要在schema上指出来。<br>Topic类和之前的User格式差不多，只是不同的字段，限于篇幅就不列出来了。</p>
+<h3 id="实现用户相关方法"><a href="#实现用户相关方法" class="headerlink" title="实现用户相关方法"></a>实现用户相关方法</h3><p>为了实现可以按照举办的Live数量、更新Live时间排序，我添加了2个字段，也改了字符集：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> config <span class="keyword">import</span> SUGGEST_USER_LIMIT, PEOPLE_URL, LIVE_USER_URL  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span>  </span><br><span class="line">    __tablename__ = <span class="string">'users'</span>  </span><br><span class="line">    __table_args__ = &#123;  </span><br><span class="line">        <span class="string">'mysql_engine'</span>: <span class="string">'InnoDB'</span>,  </span><br><span class="line">        <span class="string">'mysql_charset'</span>: <span class="string">'utf8mb4'</span>  </span><br><span class="line">    &#125;  </span><br><span class="line">      </span><br><span class="line">    ...  </span><br><span class="line">    live_count = Column(Integer, default=<span class="number">0</span>)  </span><br><span class="line">    updated_time = Column(DateTime, default=datetime.now)</span><br></pre></td></tr></table></figure>
+
+
+<p>接着添加一些必要的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">      </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">incr_live_count</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        self.live_count += <span class="number">1</span>  </span><br><span class="line">        session.commit()  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">url</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> PEOPLE_URL.format(self.speaker_id)  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">lives_url</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> LIVE_USER_URL.format(self.speaker_id)  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_dict</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        d = &#123;c.name: getattr(self, c.name, <span class="literal">None</span>)  </span><br><span class="line">             <span class="keyword">for</span> c <span class="keyword">in</span> self.__table__.columns&#125;  </span><br><span class="line">        d.update(&#123;  </span><br><span class="line">            <span class="string">'type'</span>: <span class="string">'user'</span>,  </span><br><span class="line">            <span class="string">'url'</span>: self.url,  </span><br><span class="line">            <span class="string">'lives_url'</span>: self.lives_url  </span><br><span class="line">        &#125;)  </span><br><span class="line">        <span class="keyword">return</span> d</span><br></pre></td></tr></table></figure>
+
+
+<p>我习惯给model添加一个to_dict方法，把需要的字段和值拼成一个dict返回。当然有些API实际不需要这么多的字段，在下一篇中我会介绍怎么处理schema的问题。<br>最后是3个接口方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(Base)</span>:</span>  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(cls, **kwargs)</span>:</span>  </span><br><span class="line">        speaker_id = kwargs.get(<span class="string">'speaker_id'</span>, <span class="literal">None</span>)  </span><br><span class="line">        r = <span class="literal">None</span>  </span><br><span class="line">        <span class="keyword">if</span> id <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            q = session.query(cls).filter_by(speaker_id=speaker_id)  </span><br><span class="line">            r = q.first()  </span><br><span class="line">            <span class="keyword">if</span> r:  </span><br><span class="line">                q.update(kwargs)  </span><br><span class="line">  </span><br><span class="line">        <span class="keyword">if</span> r <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            r = cls(**kwargs)  </span><br><span class="line">            session.add(r)  </span><br><span class="line">        <span class="keyword">try</span>:  </span><br><span class="line">            session.commit()  </span><br><span class="line">        <span class="keyword">except</span>:  </span><br><span class="line">            session.rollback()  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">return</span> r  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">suggest</span><span class="params">(cls, q, start=<span class="number">0</span>, limit=SUGGEST_USER_LIMIT)</span>:</span>  </span><br><span class="line">        query = session.query(User)  </span><br><span class="line">        users = query.filter(User.name.like(<span class="string">'%&#123;&#125;%'</span>.format(q))).offset(  </span><br><span class="line">            start).limit(limit).all()  </span><br><span class="line">        <span class="keyword">return</span> [user.to_dict() <span class="keyword">for</span> user <span class="keyword">in</span> users]  </span><br><span class="line">          </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_all</span><span class="params">(cls, order_by=<span class="string">'id'</span>, start=<span class="number">0</span>, limit=<span class="number">10</span>, desc=False)</span>:</span>  </span><br><span class="line">        <span class="string">'''  </span></span><br><span class="line"><span class="string">        :param order_by:  One of ``'id'``, ``'live_count'`` or  </span></span><br><span class="line"><span class="string">                          ``'updated_time'``  </span></span><br><span class="line"><span class="string">        '''</span>  </span><br><span class="line">        query = session.query(User)  </span><br><span class="line">        order_by = getattr(User, order_by)  </span><br><span class="line">        <span class="keyword">if</span> desc:  </span><br><span class="line">            order_by = _desc(order_by)  </span><br><span class="line">        users = query.order_by(order_by).offset(start).limit(limit).all()  </span><br><span class="line">        <span class="keyword">return</span> [user.to_dict() <span class="keyword">for</span> user <span class="keyword">in</span> users]</span><br></pre></td></tr></table></figure>
+
+
+<p>需要注意add方法，其实叫做add_or_update更合适，需要使用session一定要commit才能提交数据。<br>sqlalchemy没有自带的suggest功能，只能用Like来实现。get_all方法就是上面第6个需求接口。</p>
+<h3 id="完成Live模型字段"><a href="#完成Live模型字段" class="headerlink" title="完成Live模型字段"></a>完成Live模型字段</h3><p>首先道歉，之前我理解的自定义analyzer的用法是错误的，下面的才是正确的姿势：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl.analysis <span class="keyword">import</span> CustomAnalyzer  </span><br><span class="line">  </span><br><span class="line">ik_analyzer = CustomAnalyzer(  </span><br><span class="line">    <span class="string">'ik_analyzer'</span>, tokenizer=<span class="string">'ik_max_word'</span>,  </span><br><span class="line">    filter=[<span class="string">'lowercase'</span>]  </span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+<p>tokenizer字段是必选的，这里使用ik分词插件提供的ik_max_word。我还给Live添加了2个字段：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    cover = Text(index=<span class="string">'not_analyzed'</span>)  <span class="comment"># 对应专栏头图(如果有)  </span></span><br><span class="line">    zhuanlan_url = Text(index=<span class="string">'not_analyzed'</span>) <span class="comment"># 对应专栏地址</span></span><br></pre></td></tr></table></figure>
+
+
+<p>加上参数<code>index=&#39;not_analyzed&#39;</code>是因为这2个字段不用于搜索和聚合，没必要分词，就当成数据库使用了。<br>也给Live添加一些属性和方法，方便最后用to_dict()生成需要的全部数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> .speaker <span class="keyword">import</span> User, session  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">id</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> self._id  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">speaker</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> session.query(User).get(self.speaker_id)  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @property  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">url</span><span class="params">(self)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> LIVE_URL.format(self.id)  </span><br><span class="line">  </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span>  </span><br><span class="line">        index = <span class="string">'live130'</span>  </span><br><span class="line">  </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">to_dict</span><span class="params">(self, include_extended=True)</span>:</span>  </span><br><span class="line">        d = super().to_dict()  </span><br><span class="line">        <span class="keyword">if</span> include_extended:  </span><br><span class="line">            d.update(&#123;  </span><br><span class="line">                <span class="string">'id'</span>: self._id,  </span><br><span class="line">                <span class="string">'type'</span>: <span class="string">'live'</span>,  </span><br><span class="line">                <span class="string">'speaker'</span>: self.speaker.to_dict(),  </span><br><span class="line">                <span class="string">'url'</span>: self.url  </span><br><span class="line">            &#125;)  </span><br><span class="line">        <span class="keyword">return</span> d</span><br></pre></td></tr></table></figure>
+
+
+<p>其中speaker属性是常见的关联多个model的快捷方式，但是需要注意，竟然不要设计成A的model里面某个方法返回了B的model数据，B的model里面也返回了A的model的数据而造成只能进行方法内import。<br>用<code>super().to_dict()</code>的原因是DocType内置了to_dict方法，随便提一下，而且接收include_meta参数，为True会包含index和doc_type的元数据。</p>
+<h3 id="把Live设计成异步的"><a href="#把Live设计成异步的" class="headerlink" title="把Live设计成异步的"></a>把Live设计成异步的</h3><p>这个是今天的重点，昨天说的「让elasticsearch_dsl支持asyncio」就是给今天做准备。换汤不换药，说白了就是在合适的地方添加async/await关键字，先看个add的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">add</span><span class="params">(cls, **kwargs)</span>:</span>  </span><br><span class="line">        id = kwargs.pop(<span class="string">'id'</span>, <span class="literal">None</span>)  </span><br><span class="line">        <span class="keyword">if</span> id <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            <span class="keyword">return</span> <span class="literal">False</span>  </span><br><span class="line">        live = cls(meta=&#123;<span class="string">'id'</span>: int(id)&#125;, **kwargs)  </span><br><span class="line">        <span class="keyword">await</span> live.save()  </span><br><span class="line">        <span class="keyword">return</span> live</span><br></pre></td></tr></table></figure>
+
+
+<p>现在我们挨个实现需求，首先是搜索接口，由于DocType包含了search方法，得换个名字了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">_execute</span><span class="params">(cls, s, order_by=None)</span>:</span>  </span><br><span class="line">        <span class="comment"># 可以选择字段的排序，前面加-表示desc，不加就是默认的asc   </span></span><br><span class="line">        <span class="keyword">if</span> order_by <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            s = s.sort(order_by)  </span><br><span class="line">        lives = <span class="keyword">await</span> s.execute()  <span class="comment"># 执行，要在这步之前拼好查询条件  </span></span><br><span class="line">        <span class="keyword">return</span> [live.to_dict() <span class="keyword">for</span> live <span class="keyword">in</span> lives]  </span><br><span class="line">          </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">apply_weight</span><span class="params">(cls, s, start, limit)</span>:</span>  </span><br><span class="line">        <span class="keyword">return</span> s.query(Q(<span class="string">'function_score'</span>, functions=[gauss_sf, log_sf])).extra(  </span><br><span class="line">            **&#123;<span class="string">'from'</span>: start, <span class="string">'size'</span>: limit&#125;)  </span><br><span class="line">           </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">ik_search</span><span class="params">(cls, query, status=None, start=<span class="number">0</span>, limit=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        s = cls.search()  </span><br><span class="line">        <span class="comment"># 多字段匹配要搜索的内容，SEARCH_FIELDS中不同字段权重不同  </span></span><br><span class="line">        s = s.query(<span class="string">'multi_match'</span>, query=query,  </span><br><span class="line">                    fields=SEARCH_FIELDS)  </span><br><span class="line">        <span class="keyword">if</span> status <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  <span class="comment"># 根据结束状态过滤  </span></span><br><span class="line">            s = s.query(<span class="string">'match'</span>, status=status)  </span><br><span class="line">        <span class="comment"># 搜索是带权重的，按照之前的设计做了时间衰减和归一化  </span></span><br><span class="line">        s = cls.apply_weight(s, start, limit)  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> cls._execute(s)</span><br></pre></td></tr></table></figure>
+
+
+<p>就是根据需求，按照DSL的方式来拼。我添加了些注释，看不懂的话可以按照文章开始的链接去找找答案。<br>然后是发现接口，7/30天热门都是基于这个接口，只不过划定了时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">      </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">explore</span><span class="params">(cls, from_date=None, to_date=None, order_by=None,  </span></span></span><br><span class="line"><span class="function"><span class="params">                      start=<span class="number">0</span>, limit=<span class="number">10</span>, topic=None)</span>:</span>  </span><br><span class="line">        s = cls.search()  </span><br><span class="line">        <span class="keyword">if</span> topic <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            s = s.query(Q(<span class="string">'term'</span>, topic_names=topic))  </span><br><span class="line">        starts_at = &#123;&#125;  </span><br><span class="line">        <span class="keyword">if</span> from_date <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            starts_at[<span class="string">'from'</span>] = from_date  </span><br><span class="line">        <span class="keyword">if</span> to_date <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:  </span><br><span class="line">            starts_at[<span class="string">'to'</span>] = to_date  </span><br><span class="line">        <span class="keyword">if</span> starts_at:  </span><br><span class="line">            s = s.query(Q(<span class="string">'range'</span>, starts_at=starts_at))  </span><br><span class="line">        <span class="keyword">if</span> order_by <span class="keyword">is</span> <span class="literal">None</span>:  </span><br><span class="line">            s = cls.apply_weight(s, start, limit)  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> cls._execute(s, order_by)  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_hot_weekly</span><span class="params">(cls)</span>:</span>  </span><br><span class="line">        today = date.today()  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> cls.explore(from_date=today - timedelta(days=<span class="number">7</span>),  </span><br><span class="line">                                  to_date=today, limit=<span class="number">20</span>)  </span><br><span class="line">  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_hot_monthly</span><span class="params">(cls)</span>:</span>  </span><br><span class="line">        today = date.today()  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> cls.explore(from_date=today - timedelta(days=<span class="number">30</span>),  </span><br><span class="line">                                 to_date=today, limit=<span class="number">50</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>注意，explore方法如果指定了排序方案，就不会添加时间衰减和归一化的处理了。<br>然后是获取用户举报的全部Live的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">ik_search_by_speaker_id</span><span class="params">(cls, speaker_id, order_by=<span class="string">'-starts_at'</span>)</span>:</span>  </span><br><span class="line">        s = cls.search()  </span><br><span class="line">        s = s.query(Q(<span class="string">'bool'</span>, should=Q(<span class="string">'match'</span>, speaker_id=speaker_id)))  </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">await</span> cls._execute(s, order_by)</span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到_execute方法抽象后被重复利用了。<br>再然后是suggest接口：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">ik_suggest</span><span class="params">(cls, query, size=<span class="number">10</span>)</span>:</span>  </span><br><span class="line">        s = cls.search()  </span><br><span class="line">        s = s.suggest(<span class="string">'live_suggestion'</span>, query, completion=&#123;  </span><br><span class="line">            <span class="string">'field'</span>: <span class="string">'live_suggest'</span>, <span class="string">'fuzzy'</span>: &#123;<span class="string">'fuzziness'</span>: <span class="number">2</span>&#125;, <span class="string">'size'</span>: size  </span><br><span class="line">        &#125;)  </span><br><span class="line">        suggestions = <span class="keyword">await</span> s.execute_suggest()  </span><br><span class="line">        matches = suggestions.live_suggestion[<span class="number">0</span>].options  </span><br><span class="line">        ids = [match._id <span class="keyword">for</span> match <span class="keyword">in</span> matches]  </span><br><span class="line">        lives = <span class="keyword">await</span> Live.mget(ids)  </span><br><span class="line">        <span class="keyword">return</span> [live.to_dict() <span class="keyword">for</span> live <span class="keyword">in</span> lives]</span><br></pre></td></tr></table></figure>
+
+
+<p>其中支持2个编辑距离的模糊搜索。这个实现的比较简单，没有考虑拼音，也没有考虑搜索用户。值得一提的是DocType提供了mget这个获取多个id的接口，请善用减少网络请求，也就是给ES后端减压。<br>第4个获得热门话题的需求是本项目唯一用到聚合功能的地方了:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> .topic <span class="keyword">import</span> Topic  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line"><span class="meta">    @classmethod  </span></span><br><span class="line">    <span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_hot_topics</span><span class="params">(cls, size=<span class="number">50</span>)</span>:</span>  </span><br><span class="line">        s = cls.search()  </span><br><span class="line">        s.aggs.bucket(<span class="string">'topics'</span>, A(<span class="string">'terms'</span>, field=<span class="string">'topics'</span>, size=size))  </span><br><span class="line">        rs = <span class="keyword">await</span> s.execute()  </span><br><span class="line">        buckets = rs.aggregations.topics.buckets  </span><br><span class="line">        topic_names = [r[<span class="string">'key'</span>] <span class="keyword">for</span> r <span class="keyword">in</span> buckets]  </span><br><span class="line">        topics = session.query(Topic).filter(Topic.name.in_(topic_names)).all()  </span><br><span class="line">        topics = sorted(topics, key=<span class="keyword">lambda</span> t: topic_names.index(t.name))  </span><br><span class="line">        <span class="keyword">return</span> [topic.to_dict() <span class="keyword">for</span> topic <span class="keyword">in</span> topics]</span><br></pre></td></tr></table></figure>
+
+
+<p>每个Live都会打话题标签，越多的live打这个话题就说明它越热门。<br>最后要说的是init()方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">init</span><span class="params">()</span>:</span>  </span><br><span class="line">    <span class="keyword">await</span> Live.init()</span><br></pre></td></tr></table></figure>
+
+
+<p>原来import模块的时候直接就init了，现在由于异步化了，直接init没人所以要在loop中用，比如在爬虫中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> models.live <span class="keyword">import</span> init <span class="keyword">as</span> live_init  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:  </span><br><span class="line">    loop = asyncio.get_event_loop()  </span><br><span class="line">    crawler = Crawler()  </span><br><span class="line">    loop.run_until_complete(live_init())  </span><br><span class="line">    loop.run_until_complete(crawler.crawl())  </span><br><span class="line">    print(<span class="string">'Finished in &#123;:.3f&#125; secs'</span>.format(crawler.t1 - crawler.t0))  </span><br><span class="line">    crawler.close()  </span><br><span class="line">  </span><br><span class="line">    loop.close()  </span><br><span class="line">    es.transport.close()</span><br></pre></td></tr></table></figure>
+
+
+<p>理解了嘛？<br>好了全部接口都完成了，但是大家有木有感觉，异步编程调试起来很麻烦，我来教一个好用的方法.</p>
+<h3 id="调试async程序"><a href="#调试async程序" class="headerlink" title="调试async程序"></a>调试async程序</h3><p>asyncio要求把需要协程化的函数都放进一个loop，通过run_until_complete方法让它执行完成。<br>但是现在非常不好玩：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> models <span class="keyword">import</span> Live  </span><br><span class="line">In : live = Live.get(<span class="number">789840559912009728</span>)  </span><br><span class="line">  </span><br><span class="line">In : live  </span><br><span class="line">Out: &lt;coroutine object DocType.get at <span class="number">0x10a0d1fc0</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : live.subject  </span><br><span class="line">---------------------------------------------------------------------------  </span><br><span class="line">AttributeError                            Traceback (most recent call last)  </span><br><span class="line">&lt;ipython-input<span class="number">-4</span><span class="number">-8</span>c237874146c&gt; <span class="keyword">in</span> &lt;module&gt;()  </span><br><span class="line">----&gt; 1 live.subject  </span><br><span class="line">  </span><br><span class="line">AttributeError: <span class="string">'coroutine'</span> object has no attribute <span class="string">'subject'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>异步化的函数(方法)用起来很不直观。一开始可以写个脚本把要调试的东西放进去用(test_es.py)：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> asyncio  </span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl.connections <span class="keyword">import</span>  connections  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">from</span> models.live <span class="keyword">import</span> Live, SEARCH_FIELDS, init <span class="keyword">as</span> live_init  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">s = Live.search()  </span><br><span class="line">es = connections.get_connection(Live._doc_type.using)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">print_info</span><span class="params">()</span>:</span>  </span><br><span class="line">    rs = <span class="keyword">await</span> s.query(<span class="string">'multi_match'</span>, query=<span class="string">'python'</span>,  </span><br><span class="line">                       fields=SEARCH_FIELDS).execute()  </span><br><span class="line">    print(rs)  </span><br><span class="line">  </span><br><span class="line">loop = asyncio.get_event_loop()  </span><br><span class="line">loop.run_until_complete(live_init())  </span><br><span class="line">loop.run_until_complete(print_info())  </span><br><span class="line">loop.close()  </span><br><span class="line">es.transport.close()</span><br></pre></td></tr></table></figure>
+
+
+<p>这样也是可以调试的，很麻烦，对吧？<br>抽象一下，其实写个函数就好了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> asyncio  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">execute</span><span class="params">(coro)</span>:</span>  </span><br><span class="line">    loop = asyncio.get_event_loop()  </span><br><span class="line">    rs = loop.run_until_complete(coro)  </span><br><span class="line">    <span class="keyword">return</span> rs</span><br></pre></td></tr></table></figure>
+
+
+<p>OK, 再用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> models <span class="keyword">import</span> Live, execute  </span><br><span class="line">In : live = Live.get(<span class="number">789840559912009728</span>)  </span><br><span class="line">In : live = execute(live)  </span><br><span class="line">In : live.subject  </span><br><span class="line">Out: <span class="string">'Python 工程师的入门和进阶'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>这样就方便多了。</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-20.html" rel="next" title="（2017）你最不建议使用的Python Web框架？">
+                <i class="fa fa-chevron-left"></i> （2017）你最不建议使用的Python Web框架？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-22.html" rel="prev" title="跨操作系统初始化安装工具(laptop)">
+                跨操作系统初始化安装工具(laptop) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加Topic模型"><span class="nav-number">1.</span> <span class="nav-text">添加Topic模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现用户相关方法"><span class="nav-number">2.</span> <span class="nav-text">实现用户相关方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完成Live模型字段"><span class="nav-number">3.</span> <span class="nav-text">完成Live模型字段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#把Live设计成异步的"><span class="nav-number">4.</span> <span class="nav-text">把Live设计成异步的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调试async程序"><span class="nav-number">5.</span> <span class="nav-text">调试async程序</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="https://beian.miit.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

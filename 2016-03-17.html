@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="ES除了全文搜索以外还有一个主要功能, 就是数据的聚合分析。我会在微信小程序里用到聚合功能。今天先介绍一下。目前DSL库支持如下三种常用聚合模式 Metrics Aggregations顾名思义, 主要是用于计算特定的度量字段，Metric很像SQL中的avg、max、min等方法。我们找一下最多的Live有多少人感兴趣： 123456789In : from elasticsearch_dsl">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="知乎Live全文搜索之使用Elasticsearch做聚合分析">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-03-17.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="ES除了全文搜索以外还有一个主要功能, 就是数据的聚合分析。我会在微信小程序里用到聚合功能。今天先介绍一下。目前DSL库支持如下三种常用聚合模式 Metrics Aggregations顾名思义, 主要是用于计算特定的度量字段，Metric很像SQL中的avg、max、min等方法。我们找一下最多的Live有多少人感兴趣： 123456789In : from elasticsearch_dsl">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-11-07T05:12:38.826Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎Live全文搜索之使用Elasticsearch做聚合分析">
+<meta name="twitter:description" content="ES除了全文搜索以外还有一个主要功能, 就是数据的聚合分析。我会在微信小程序里用到聚合功能。今天先介绍一下。目前DSL库支持如下三种常用聚合模式 Metrics Aggregations顾名思义, 主要是用于计算特定的度量字段，Metric很像SQL中的avg、max、min等方法。我们找一下最多的Live有多少人感兴趣： 123456789In : from elasticsearch_dsl">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-03-17.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168352917435158" crossorigin="anonymous"></script>
+
+  <title>知乎Live全文搜索之使用Elasticsearch做聚合分析 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-03-17.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">知乎Live全文搜索之使用Elasticsearch做聚合分析</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-03-17T18:30:58+08:00">
+                2016-03-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-03-17.html" class="leancloud_visitors" data-flag-title="知乎Live全文搜索之使用Elasticsearch做聚合分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>ES除了全文搜索以外还有一个主要功能, 就是数据的聚合分析。我会在微信小程序里用到聚合功能。今天先介绍一下。<br>目前DSL库支持如下三种常用聚合模式</p>
+<h3 id="Metrics-Aggregations"><a href="#Metrics-Aggregations" class="headerlink" title="Metrics Aggregations"></a>Metrics Aggregations</h3><p>顾名思义, 主要是用于计算特定的度量字段，Metric很像SQL中的avg、max、min等方法。我们找一下最多的Live有多少人感兴趣：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> A  </span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.metric(<span class="string">'max_liked_num'</span>, A(<span class="string">'max'</span>, field=<span class="string">'liked_num'</span>))  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a47b550</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : r.aggregations.max_liked_num  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">6918.0</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>嚯。看看是哪一个吧：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In [<span class="number">27</span>]: s.query(<span class="string">'match'</span>, liked_num=<span class="number">6918</span>).execute()[<span class="number">0</span>].subject  </span><br><span class="line">Out[<span class="number">27</span>]: <span class="string">'致所有近视想摘掉眼镜的你们'</span></span><br></pre></td></tr></table></figure>
+
+
+<p>有点出人意料哦~<br>其实度量的也不一定是文档的某个特定字段值, 可以是文档通过脚本生成的值。比如我们看看全部Live平均收入，收入=票价*参与人数，是2个字段。要这样用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : <span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> A  </span><br><span class="line">  </span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.metric(<span class="string">'avg_income'</span>, A(<span class="string">'scripted_metric'</span>, init_script=<span class="string">"params._agg['incomes'] = []"</span>, map_script=<span class="string">"params._agg.incomes.add(doc.amou  </span></span><br><span class="line"><span class="string">...: nt.value * doc.seats_taken.value)"</span>, combine_script=<span class="string">'double total=0; int num_of_income=0; for (i in params._agg.incomes) &#123; total += i; nu  </span></span><br><span class="line"><span class="string">...: m_of_income += 1 &#125; return [total, num_of_income]'</span>, reduce_script=<span class="string">'double total=0; int num_of_income=0; for (item in params._aggs) &#123; tota  </span></span><br><span class="line"><span class="string">...: l += item[0]; num_of_income += item[1]&#125; return total / num_of_income'</span>))  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a512898</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : rs = s.execute()  </span><br><span class="line">  </span><br><span class="line">In : rs.aggregations.avg_income  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">32934.61029513591</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>有点长，我们把scripted_metric的参数分开说：</p>
+<ol>
+<li>init_script。 初始化时运行，一般是设置初始的全局变量</li>
+<li>map_script。会对每个文档做循环，把每个计算好的收入用add方法加到每个分片的params._agg.incomes里面。</li>
+<li>combine_script。我们知道ES是分布式的，数据有多个分片，当map_script完成后，它用来对每个分片的那部分结果做求和和计数的预处理</li>
+<li>reduce_script。如果你了解MapReduce，我想对2和4步就能更好的理解了，这一步能通过params._aggs把每个分片的预处理结果拿来再做处理，最后通过总收入和live数求得平均值。<br>很庆幸没有给平均值拖后腿。BTW，有兴趣的同学可以继续挖掘为啥平均收入这么高。而且注意额，我考虑的只是普通票价，没有算那些「聊表心意」、「鼎力支持」的票，这会让平均值更高一些。<br>上面的例子也的好长啊。我不太满意，那么是不是可以简化一下呢? 也就是combine_script不预计算，统一在reduce_script计算：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.metric(<span class="string">'avg_income'</span>, A(<span class="string">'scripted_metric'</span>, init_script=<span class="string">"params._agg['incomes'] = []"</span>, map_script=<span class="string">"params._agg.incomes.add(doc.amou  </span></span><br><span class="line"><span class="string">...: nt.value * doc.seats_taken.value)"</span>, combine_script=<span class="string">'return params._agg.incomes'</span>, reduce_script=<span class="string">'double total=0; int num_of_income=0; for  </span></span><br><span class="line"><span class="string">...:  (shard in params._aggs) &#123; for (income in shard) &#123;total += income; num_of_income += 1&#125;&#125; return total / num_of_income'</span>))  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a53a470</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : r.aggregations.avg_income  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">32934.61029513591</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>只是在combine_script用了个嵌套循环。</p>
+<h3 id="Bucket-Aggregations"><a href="#Bucket-Aggregations" class="headerlink" title="Bucket Aggregations"></a>Bucket Aggregations</h3><p>Bucket在英语里面有「桶」的意思，Bucket Aggregations会把符合某种条件的文档丢进一个Bucket，而且还可以实现子聚合（sub-<br>aggregations）。<br>Elasticsearch是基于Lucene构建的。如果你了解过Lucene，相信知道docValue，它节省内存、做排序，分组等聚合操作时能够大大提升性能。我们之前的model里面大多使用了文本字段（Text），这是用作进行全文搜索的，而希望做聚合计算，需要使用Keyword类型的字段。所以我添加了一个topics字段：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> elasticsearch_dsl <span class="keyword">import</span> Keyword, DocType  </span><br><span class="line">  </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Live</span><span class="params">(DocType)</span>:</span>  </span><br><span class="line">    ...  </span><br><span class="line">    topic_names = Text(analyzer=<span class="string">'ik_max_word'</span>)  </span><br><span class="line">    topics = Keyword()  <span class="comment"># 新增</span></span><br></pre></td></tr></table></figure>
+
+
+<p>其实DSL还支持一种用子字段的写法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">topic_names = Text(analyzer=<span class="string">'ik_max_word'</span>, fields=&#123;<span class="string">'raw'</span>: Keyword()&#125;)</span><br></pre></td></tr></table></figure>
+
+
+<p>由于担心未来Live的Topic会有多个，所以topic_names是一个用join把topic列表串起来的字符串，而需求上topics是一个或者多个topic的列表，还是额外新加一个字段吧。<br>这样重新跑爬虫，补充下topics字段之后，按toics符合数量排序，看看live中那些类型的Live更多：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.bucket(<span class="string">'categories'</span>, A(<span class="string">'terms'</span>, field=<span class="string">'topics'</span>))  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a532d30</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">  </span><br><span class="line">In : r.aggregations.categories.buckets  </span><br><span class="line">Out:  </span><br><span class="line">[&#123;<span class="string">'key'</span>: <span class="string">'生活方式'</span>, <span class="string">'doc_count'</span>: <span class="number">145</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'金融'</span>, <span class="string">'doc_count'</span>: <span class="number">94</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'音乐'</span>, <span class="string">'doc_count'</span>: <span class="number">87</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'艺术'</span>, <span class="string">'doc_count'</span>: <span class="number">73</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'教育'</span>, <span class="string">'doc_count'</span>: <span class="number">59</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'科技'</span>, <span class="string">'doc_count'</span>: <span class="number">59</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'心理学'</span>, <span class="string">'doc_count'</span>: <span class="number">56</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'职业'</span>, <span class="string">'doc_count'</span>: <span class="number">56</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'互联网'</span>, <span class="string">'doc_count'</span>: <span class="number">48</span>&#125;,  </span><br><span class="line"> &#123;<span class="string">'key'</span>: <span class="string">'医学'</span>, <span class="string">'doc_count'</span>: <span class="number">42</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+
+<p>看到了吧，彰显逼格的「生活方式」话题的Live最多，象征更多钱的金融话题次之…<br>现在是不是有种熟悉的感觉：聚合短语terms这不是SQL里面的group by嘛？<br>PS: 如果要使结果返回所有聚合结果的话, 需要加上size参数:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">s.aggs.bucket(<span class="string">'categories'</span>, A(<span class="string">'terms'</span>, field=<span class="string">'topics'</span>, size=<span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+
+
+<p>PS: 从ES5.0开始，size不再能指定0而返回全部结果了，需要明确指定一个大于0的整数。<br>Bucket聚合支持多种类型，我们再演示下范围聚合。 现在把票价分成三个范围：</p>
+<ol>
+<li>小于20的</li>
+<li>20-100之间的</li>
+<li>大于100的<br>这样写：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.bucket(<span class="string">'amount_eq_100'</span>, A(<span class="string">'range'</span>, field=<span class="string">'amount'</span>, ranges=[&#123;<span class="string">'from'</span>: <span class="number">100</span>&#125;, &#123;<span class="string">'from'</span>: <span class="number">20</span>, <span class="string">'to'</span>: <span class="number">100</span>&#125;, &#123;<span class="string">'to'</span>: <span class="number">20</span>&#125;]))  </span><br><span class="line">Out: Range(field=<span class="string">'amount'</span>, ranges=[&#123;<span class="string">'from'</span>: <span class="number">100</span>&#125;, &#123;<span class="string">'from'</span>: <span class="number">20</span>, <span class="string">'to'</span>: <span class="number">100</span>&#125;, &#123;<span class="string">'to'</span>: <span class="number">20</span>&#125;])  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : buckets = r.aggregations.amount_eq_100.buckets  </span><br><span class="line">In : <span class="keyword">for</span> bucket <span class="keyword">in</span> buckets:  </span><br><span class="line">...:     print(<span class="string">'&#123;&#125;: &#123;&#125;'</span>.format(bucket[<span class="string">'key'</span>], bucket[<span class="string">'doc_count'</span>]))  </span><br><span class="line">...:  </span><br><span class="line">*<span class="number">-20.0</span>: <span class="number">1159</span>  </span><br><span class="line"><span class="number">20.0</span><span class="number">-100.0</span>: <span class="number">683</span>  </span><br><span class="line"><span class="number">100.0</span>-*: <span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+
+<p>最后演示下date_histogram型的聚合，histogram顾名思义是直方图的意思，我们看看从Live诞生到现在，每个月（即将）举行Live的数量分别是多少：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.buckets(<span class="string">'start_at'</span>, A(<span class="string">'date_histogram'</span>, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>))  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a6ea3c8</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : r.aggregations.start_at.buckets  </span><br><span class="line">Out:  </span><br><span class="line">[&#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-05-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-06-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-07-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-08-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-09-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-10-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-11-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-12-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-01-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-02-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-03-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-04-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-05-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;]  </span><br><span class="line">  </span><br><span class="line">In : q = r.aggregations.start_at.buckets[<span class="number">0</span>]  </span><br><span class="line">In : q.doc_count  </span><br><span class="line">Out: <span class="number">20</span>  </span><br><span class="line">In : q.key  </span><br><span class="line">Out: datetime.datetime(<span class="number">2016</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>interval支持多种类型：如year, quarter, month, week, day, hour, minute, second等。</p>
+<h3 id="Pipeline-Aggregations"><a href="#Pipeline-Aggregations" class="headerlink" title="Pipeline Aggregations"></a>Pipeline Aggregations</h3><p>管道聚合是在Elasticsearch 2.x新增的一种聚合类型，可以在现有的聚合数据之上，再对其做一次运算。这类似SQL的Subquery。<br>Pipeline分为2类：</p>
+<ol>
+<li>parent。聚合的输入是非Pipeline聚合的输出，并对其进行进一步处理。一般不生成新的桶，而是对父聚合桶信息的replace。</li>
+<li>sibling。聚合的输入是其他Pipeline聚合的输出。并能在同级上计算新的聚合。<br>管道聚合通过buckets_path参数指定他们要进行聚合计算的权值对象，格式如下：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">AGG_SEPARATOR       =  <span class="string">'&gt;'</span> ;  指定父子聚合关系  </span><br><span class="line">METRIC_SEPARATOR    =  <span class="string">'.'</span> ;  指定聚合的特定权值  </span><br><span class="line">AGG_NAME            =  &lt;the name of the aggregation&gt; ;  直接指定聚合的名称  </span><br><span class="line">METRIC              =  &lt;the name of the metric (<span class="keyword">in</span> case of multi-value metrics aggregation)&gt; ;  直接指定权值  </span><br><span class="line">PATH                =  &lt;AGG_NAME&gt; [ &lt;AGG_SEPARATOR&gt;, &lt;AGG_NAME&gt; ]* [ &lt;METRIC_SEPARATOR&gt;, &lt;METRIC&gt; ] ; 综合上面的方式指定完整路径</span><br></pre></td></tr></table></figure>
+
+
+<p>看2个例子就好懂了。首先演示sibling类型的，基于上节date_histogram聚合例子了，我们算一下每个月的Live总收入</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : agg = A(<span class="string">'date_histogram'</span>, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>)  </span><br><span class="line">In : agg.bucket(<span class="string">'incomes'</span>, A(<span class="string">'sum'</span>, script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;))  </span><br><span class="line">Out: Sum(script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;)  </span><br><span class="line">In : s.aggs.bucket(<span class="string">'incomes_per_month'</span>, agg)  </span><br><span class="line">Out: DateHistogram(aggs=&#123;<span class="string">'incomes'</span>: Sum(script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;)&#125;, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>)</span><br></pre></td></tr></table></figure>
+
+
+<p>为了构造更好理解的聚合语句，先生成一个agg变量，可以看到Buckets和Metrics可以用函数式的方式用多个，也要注意当需求复杂的时候都是可以通过script来实现的。接着加入2个管道，再分别获得最大月收入和全部月收入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : s.aggs.pipeline(<span class="string">'max_monthly_incomes'</span>, agg_type=<span class="string">'max_bucket'</span>, buckets_path=<span class="string">'incomes_per_month&gt;incomes'</span>)  </span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a75b518</span>&gt;  </span><br><span class="line">In : s.aggs.pipeline(<span class="string">'sum_monthly_incomes'</span>, agg_type=<span class="string">'sum_bucket'</span>, buckets_path=<span class="string">'incomes_per_month&gt;incomes'</span>)  <span class="comment"># 注意agg_type不一样  </span></span><br><span class="line">Out: &lt;elasticsearch_dsl.search.Search at <span class="number">0x10a75b518</span>&gt;  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : r.aggregations.incomes_per_month.buckets  </span><br><span class="line">Out:  </span><br><span class="line">[&#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-05-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-06-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-07-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-08-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-09-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-10-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-11-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2016-12-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-01-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-02-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-03-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-04-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;,  </span><br><span class="line"> &#123;<span class="string">'key_as_string'</span>: <span class="string">'2017-05-01T00:00:00.000Z'</span>, <span class="string">'key'</span>: datetim...&#125;]  </span><br><span class="line">  </span><br><span class="line">In : a = r.aggregations.incomes_per_month.buckets[<span class="number">0</span>]  </span><br><span class="line">In : a.doc_count  </span><br><span class="line">Out: <span class="number">20</span>  </span><br><span class="line">In : a.incomes  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">210088.48763275146</span>&#125;  </span><br><span class="line">  </span><br><span class="line">In : r.aggregations.max_monthly_incomes  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">18330342.949926138</span>, <span class="string">'keys'</span>: [<span class="string">'2016-10-01T00:00:00....&#125;  # 十月份收入最多  </span></span><br><span class="line"><span class="string">  </span></span><br><span class="line"><span class="string">In : r.aggregations.sum_monthly_incomes  </span></span><br><span class="line"><span class="string">Out: &#123;'</span>value<span class="string">': 61324244.369543076&#125;  # 满眼的钱，现金🐂啊</span></span><br></pre></td></tr></table></figure>
+
+
+<p>数完了钱，思考下。这个例子就是sibling聚合，因为sum_monthly_incomes、max_monthly_incomes和incomes_per_month在一个区间内的（都是aggs的键）。<br>我之前我们算过么每个月Live的总收入，全部Live的平均收入。我们现在算一下每个月Live的平均收入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">In : agg = A(<span class="string">'date_histogram'</span>, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>)  </span><br><span class="line">In : agg.bucket(<span class="string">'total_incomes'</span>, A(<span class="string">'sum'</span>, script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;))  </span><br><span class="line">Out: Sum(script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;)  </span><br><span class="line">  </span><br><span class="line">In : agg.pipeline(<span class="string">'avg_income'</span>, agg_type=<span class="string">'bucket_script'</span>, buckets_path=&#123;<span class="string">'total'</span>: <span class="string">'total_incomes'</span>, <span class="string">'count'</span>: <span class="string">'_count'</span>&#125;, script=<span class="string">'params.total/params.count'</span>)  <span class="comment"># _count是一个特殊的路径，表示当前bucket里面的文档数量  </span></span><br><span class="line">Out: DateHistogram(aggs=&#123;<span class="string">'total_incomes'</span>: Sum(script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;), <span class="string">'avg_income'</span>: BucketScript(buckets_path=&#123;<span class="string">'total'</span>: <span class="string">'total_incomes'</span>, <span class="string">'count'</span>: <span class="string">'_count'</span>&#125;, script=<span class="string">'params.total/params.count'</span>)&#125;, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>)  </span><br><span class="line">  </span><br><span class="line">In : s = Live.search()  </span><br><span class="line">In : s.aggs.bucket(<span class="string">'avg_income_per_month'</span>, agg)  </span><br><span class="line">Out: DateHistogram(aggs=&#123;<span class="string">'total_incomes'</span>: Sum(script=&#123;<span class="string">'inline'</span>: <span class="string">"doc['seats_taken'].value* doc['amount'].value"</span>&#125;), <span class="string">'avg_income'</span>: BucketScript(buckets_path=&#123;<span class="string">'total'</span>: <span class="string">'total_incomes'</span>, <span class="string">'count'</span>: <span class="string">'_count'</span>&#125;, script=<span class="string">'params.total/params.count'</span>)&#125;, field=<span class="string">'starts_at'</span>, interval=<span class="string">'month'</span>)  </span><br><span class="line">  </span><br><span class="line">In : r = s.execute()  </span><br><span class="line">In : buckets = r.aggregations.avg_income_per_month.buckets  </span><br><span class="line">In : b = buckets[<span class="number">0</span>]  </span><br><span class="line">  </span><br><span class="line">In : b.total_incomes  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">210088.48763275146</span>&#125;  </span><br><span class="line">In : b.doc_count  </span><br><span class="line">Out: <span class="number">20</span>  </span><br><span class="line">In : b.avg_income  </span><br><span class="line">Out: &#123;<span class="string">'value'</span>: <span class="number">10504.424381637573</span>&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>这就是parent类型的管道聚合了，它对每个桶自己去做运算。<br>今天先到这里了，下一篇将基于这几天对ES的学习实现一个对知乎Live进行全文搜索的微信小程序了</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-03-16.html" rel="next" title="speakerdeck">
+                <i class="fa fa-chevron-left"></i> speakerdeck
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-03-18.html" rel="prev" title="Python3.6全揭秘">
+                Python3.6全揭秘 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Metrics-Aggregations"><span class="nav-number">1.</span> <span class="nav-text">Metrics Aggregations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Bucket-Aggregations"><span class="nav-number">2.</span> <span class="nav-text">Bucket Aggregations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pipeline-Aggregations"><span class="nav-number">3.</span> <span class="nav-text">Pipeline Aggregations</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="https://beian.miit.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

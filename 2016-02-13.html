@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/favicon.ico?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="python,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="KevinHuang" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？答案是： 有的 。从Python3.2开始一个叫做concurr">
+<meta name="keywords" content="python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用Python进行并发编程-PoolExecutor篇">
+<meta property="og:url" content="https://www.myhuangzhuo.com/2016-02-13.html">
+<meta property="og:site_name" content="KevinHuang">
+<meta property="og:description" content="之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？答案是： 有的 。从Python3.2开始一个叫做concurr">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2023-11-07T05:12:38.818Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="使用Python进行并发编程-PoolExecutor篇">
+<meta name="twitter:description" content="之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？答案是： 有的 。从Python3.2开始一个叫做concurr">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.myhuangzhuo.com/2016-02-13.html">
+
+
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9168352917435158",
+    enable_page_level_ads: true
+  });
+</script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9168352917435158" crossorigin="anonymous"></script>
+
+  <title>使用Python进行并发编程-PoolExecutor篇 | KevinHuang</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?4964074496f64a25a39f8b205270162e";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">KevinHuang</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">KevinHuang的博客</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-certificate"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-book"></i> <br>
+            
+            一些书
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-linux">
+          <a href="/cmd/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-linux"></i> <br>
+            
+            常用命令
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-pythonic">
+          <a href="/pythonic/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-magic"></i> <br>
+            
+            python tips
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br>
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-rss">
+          <a href="/atom.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-feed"></i> <br>
+            
+            rss
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.myhuangzhuo.com/2016-02-13.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevin Huang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/uploads/avatar-kevin.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="KevinHuang">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">使用Python进行并发编程-PoolExecutor篇</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-02-13T18:30:58+08:00">
+                2016-02-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/python/" itemprop="url" rel="index">
+                    <span itemprop="name">python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2016-02-13.html" class="leancloud_visitors" data-flag-title="使用Python进行并发编程-PoolExecutor篇">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前我们使用多线程(threading)和多进程(multiprocessing)完成常规的需求，在启动的时候start、jon等步骤不能省，复杂的需要还要用1-2个队列。随着需求越来越复杂，如果没有良好的设计和抽象这部分的功能层次，代码量越多调试的难度就越大。有没有什么好的方法把这些步骤抽象一下呢，让我们不关注这些细节，轻装上阵呢？<br>答案是： <strong>有的</strong> 。<br>从Python3.2开始一个叫做concurrent.futures被纳入了标准库，而在Python2它属于第三方的futures库，需要手动安装：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ pip install futures</span><br></pre></td></tr></table></figure>
+
+
+<p>这个模块中有2个类：ThreadPoolExecutor和ProcessPoolExecutor，也就是对threading和multiprocessing的进行了高级别的抽象，<br>暴露出统一的接口，帮助开发者非常方便的实现异步调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time  </span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ProcessPoolExecutor, as_completed  </span><br><span class="line">  </span><br><span class="line">NUMBERS = range(<span class="number">25</span>, <span class="number">38</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> n&lt;= <span class="number">2</span>:  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">return</span> fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">start = time.time()  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:  </span><br><span class="line">    <span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, executor.map(fib, NUMBERS)):  </span><br><span class="line">        <span class="keyword">print</span> <span class="string">'fib(&#123;&#125;) = &#123;&#125;'</span>.format(num, result)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">print</span> <span class="string">'COST: &#123;&#125;'</span>.format(time.time() - start)</span><br></pre></td></tr></table></figure>
+
+
+<p>感受下是不是很轻便呢？看一下花费的时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python fib_executor.py  </span><br><span class="line">fib(<span class="number">25</span>) = <span class="number">75025</span>  </span><br><span class="line">fib(<span class="number">26</span>) = <span class="number">121393</span>  </span><br><span class="line">fib(<span class="number">27</span>) = <span class="number">196418</span>  </span><br><span class="line">fib(<span class="number">28</span>) = <span class="number">317811</span>  </span><br><span class="line">fib(<span class="number">29</span>) = <span class="number">514229</span>  </span><br><span class="line">fib(<span class="number">30</span>) = <span class="number">832040</span>  </span><br><span class="line">fib(<span class="number">31</span>) = <span class="number">1346269</span>  </span><br><span class="line">fib(<span class="number">32</span>) = <span class="number">2178309</span>  </span><br><span class="line">fib(<span class="number">33</span>) = <span class="number">3524578</span>  </span><br><span class="line">fib(<span class="number">34</span>) = <span class="number">5702887</span>  </span><br><span class="line">fib(<span class="number">35</span>) = <span class="number">9227465</span>  </span><br><span class="line">fib(<span class="number">36</span>) = <span class="number">14930352</span>  </span><br><span class="line">fib(<span class="number">37</span>) = <span class="number">24157817</span>  </span><br><span class="line">COST: <span class="number">10.8920350075</span></span><br></pre></td></tr></table></figure>
+
+
+<p>除了用map，另外一个常用的方法是submit。如果你要提交的任务的函数是一样的，就可以简化成map。但是假如提交的任务函数是不一样的，或者执行的过程之可能出现异常（使用map执行过程中发现问题会直接抛出错误）就要用到submit：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor, as_completed  </span><br><span class="line">  </span><br><span class="line">NUMBERS = range(<span class="number">30</span>, <span class="number">35</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">34</span>:  </span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">"Don't do this"</span>)  </span><br><span class="line">    <span class="keyword">if</span> n&lt;= <span class="number">2</span>:  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">return</span> fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:  </span><br><span class="line">    future_to_num = &#123;executor.submit(fib, num): num <span class="keyword">for</span> num <span class="keyword">in</span> NUMBERS&#125;  </span><br><span class="line">    <span class="keyword">for</span> future <span class="keyword">in</span> as_completed(future_to_num):  </span><br><span class="line">        num = future_to_num[future]  </span><br><span class="line">        <span class="keyword">try</span>:  </span><br><span class="line">            result = future.result()  </span><br><span class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:  </span><br><span class="line">            <span class="keyword">print</span> <span class="string">'raise an exception: &#123;&#125;'</span>.format(e)  </span><br><span class="line">        <span class="keyword">else</span>:  </span><br><span class="line">            <span class="keyword">print</span> <span class="string">'fib(&#123;&#125;) = &#123;&#125;'</span>.format(num, result)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">with</span> ThreadPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:  </span><br><span class="line">    <span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, executor.map(fib, NUMBERS)):  </span><br><span class="line">        <span class="keyword">print</span> <span class="string">'fib(&#123;&#125;) = &#123;&#125;'</span>.format(num, result)</span><br></pre></td></tr></table></figure>
+
+
+<p>执一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python fib_executor_with_raise.py  </span><br><span class="line">fib(<span class="number">30</span>) = <span class="number">832040</span>  </span><br><span class="line">fib(<span class="number">31</span>) = <span class="number">1346269</span>  </span><br><span class="line"><span class="keyword">raise</span> an exception: Don<span class="string">'t do this  </span></span><br><span class="line"><span class="string">fib(32) = 2178309  </span></span><br><span class="line"><span class="string">fib(33) = 3524578  </span></span><br><span class="line"><span class="string">Traceback (most recent call last):  </span></span><br><span class="line"><span class="string">  File "fib_executor_with_raise.py", line 28, in &lt;module&gt;  </span></span><br><span class="line"><span class="string">    for num, result in zip(NUMBERS, executor.map(fib, NUMBERS)):  </span></span><br><span class="line"><span class="string">  File "/Library/Python/2.7/site-packages/concurrent/futures/_base.py", line 580, in map  </span></span><br><span class="line"><span class="string">     yield future.result()  </span></span><br><span class="line"><span class="string">  File "/Library/Python/2.7/site-packages/concurrent/futures/_base.py", line 400, in result  </span></span><br><span class="line"><span class="string">    return self.__get_result()  </span></span><br><span class="line"><span class="string">  File "/Library/Python/2.7/site-packages/concurrent/futures/_base.py", line 359, in __get_result  </span></span><br><span class="line"><span class="string">    reraise(self._exception, self._traceback)  </span></span><br><span class="line"><span class="string">  File "/Library/Python/2.7/site-packages/concurrent/futures/_compat.py", line 107, in reraise  </span></span><br><span class="line"><span class="string">    exec('</span><span class="keyword">raise</span> exc_type, exc_value, traceback<span class="string">', &#123;&#125;, locals_)  </span></span><br><span class="line"><span class="string">  File "/Library/Python/2.7/site-packages/concurrent/futures/thread.py", line 61, in run  </span></span><br><span class="line"><span class="string">    result = self.fn(*self.args, **self.kwargs)  </span></span><br><span class="line"><span class="string">  File "fib_executor_with_raise.py", line 9, in fib  </span></span><br><span class="line"><span class="string">    raise Exception("Don'</span>t do this<span class="string">")  </span></span><br><span class="line"><span class="string">Exception: Don't do this</span></span><br></pre></td></tr></table></figure>
+
+
+<p>可以看到，第一次捕捉到了异常，但是第二次执行的时候错误直接抛出来了。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>我们就拿ProcessPoolExecutor介绍下它的原理，引用官方代码注释中的流程图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">|======================= In-process =====================|== Out-of-process ==|  </span><br><span class="line">  </span><br><span class="line">+----------+     +----------+       +--------+     +-----------+    +---------+  </span><br><span class="line">|          |  =&gt; | Work Ids |    =&gt; |        |  =&gt; | Call Q    | =&gt; |         |  </span><br><span class="line">|          |     +----------+       |        |     +-----------+    |         |  </span><br><span class="line">|          |     | ...      |       |        |     | ...       |    |         |  </span><br><span class="line">|          |     | <span class="number">6</span>        |       |        |     | <span class="number">5</span>, call() |    |         |  </span><br><span class="line">|          |     | <span class="number">7</span>        |       |        |     | ...       |    |         |  </span><br><span class="line">| Process  |     | ...      |       | Local  |     +-----------+    | Process |  </span><br><span class="line">|  Pool    |     +----------+       | Worker |                      |  <span class="comment">#1..n  |  </span></span><br><span class="line">| Executor |                        | Thread |                      |         |  </span><br><span class="line">|          |     +----------- +     |        |     +-----------+    |         |  </span><br><span class="line">|          | &lt;=&gt; | Work Items | &lt;=&gt; |        | &lt;=  | Result Q  | &lt;= |         |  </span><br><span class="line">|          |     +------------+     |        |     +-----------+    |         |  </span><br><span class="line">|          |     | <span class="number">6</span>: call()  |     |        |     | ...       |    |         |  </span><br><span class="line">|          |     |    future  |     |        |     | <span class="number">4</span>, result |    |         |  </span><br><span class="line">|          |     | ...        |     |        |     | <span class="number">3</span>, <span class="keyword">except</span> |    |         |  </span><br><span class="line">+----------+     +------------+     +--------+     +-----------+    +---------+</span><br></pre></td></tr></table></figure>
+
+
+<p>我们结合源码和上面的数据流分析一下：</p>
+<ol>
+<li>executor.map会创建多个_WorkItem对象，每个对象都传入了新创建的一个Future对象。</li>
+<li>把每个_WorkItem对象然后放进一个叫做「Work Items」的dict中，键是不同的「Work Ids」。</li>
+<li>创建一个管理「Work Ids」队列的线程「Local worker thread」，它能做2件事：<ol>
+<li>从「Work Ids」队列中获取Work Id, 通过「Work Items」找到对应的_WorkItem。如果这个Item被取消了，就从「Work Items」里面把它删掉，否则重新打包成一个_CallItem放入「Call Q」这个队列。executor的那些进程会从队列中取_CallItem执行，并把结果封装成_ResultItems放入「Result Q」队列中。</li>
+<li>从「Result Q」队列中获取_ResultItems，然后从「Work Items」更新对应的Future对象并删掉入口。<br>看起来就是一个「生产者/消费者」模型，不过要注意，整个过程并不是多个进程与任务+结果-2个队列直接通信的，而是通过一个中间的「Local worker<br>thread」。<br>设想，当某一段程序提交了一个请求，期望得到一个答复。但服务程序对这个请求可能很慢，在传统的单线程环境下，调用函数是同步的，也就是说它必须等到服务程序返回结果后，才能进行其他处理。而在Future模式下，调用方式改为异步，而原先等待返回的时间段，在主调用函数中，则可用于处理其他事物。<h3 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h3>Future是常见的一种并发设计模式，在多个其他语言中都可以见到这种解决方案。<br>一个Future对象代表了一些尚未就绪（完成）的结果，在「将来」的某个时间就绪了之后就可以获取到这个结果。比如上面的例子，我们期望并发的执行一些参数不同的fib函数，获取全部的结果。传统模式就是在等待queue.get返回结果，这个是同步模式，而在Future模式下，</li>
+</ol>
+<strong>调用方式改为异步，而原先等待返回的时间段，由于「Local worker thread」的存在，这个时候可以完成其他工作</strong><br>在tornado中也有对应的实现。2013年的时候，我曾经写过一篇博客[使用tornado让你的请求异步非阻塞](<a href="http://www.dongwm.com/archives/shi-" target="_blank" rel="noopener">http://www.dongwm.com/archives/shi-</a><br>yong-tornadorang-ni-de-qing-qiu-yi-bu-fei-zu-<br>sai/)，最后也提到了用concurrent.futures实现异步非阻塞的完成耗时任务。<h3 id="用multiprocessing中的Pool还是concurrent-futures中的PoolExecutor？"><a href="#用multiprocessing中的Pool还是concurrent-futures中的PoolExecutor？" class="headerlink" title="用multiprocessing中的Pool还是concurrent.futures中的PoolExecutor？"></a>用multiprocessing中的Pool还是concurrent.futures中的PoolExecutor？</h3>上面说到的map，有些同学马上会说，这不是进程（线程）池的效果吗？看起来确实是的：</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">import</span> time  </span><br><span class="line"><span class="keyword">from</span> multiprocessing.pool <span class="keyword">import</span> Pool  </span><br><span class="line">  </span><br><span class="line">NUMBERS = range(<span class="number">25</span>, <span class="number">38</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span>  </span><br><span class="line">    <span class="keyword">if</span> n&lt;= <span class="number">2</span>:  </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>  </span><br><span class="line">    <span class="keyword">return</span> fib(n<span class="number">-1</span>) + fib(n<span class="number">-2</span>)  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">start = time.time()  </span><br><span class="line">  </span><br><span class="line">pool = Pool(<span class="number">3</span>)  </span><br><span class="line"><span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, pool.map(fib, NUMBERS)):  </span><br><span class="line">    <span class="keyword">print</span> <span class="string">'fib(&#123;&#125;) = &#123;&#125;'</span>.format(num, result)  </span><br><span class="line">  </span><br><span class="line"><span class="keyword">print</span> <span class="string">'COST: &#123;&#125;'</span>.format(time.time() - start)</span><br></pre></td></tr></table></figure>
+
+
+<p>好像代码量更小。好吧，看一下花费的时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python fib_pool.py  </span><br><span class="line">fib(<span class="number">25</span>) = <span class="number">75025</span>  </span><br><span class="line">fib(<span class="number">26</span>) = <span class="number">121393</span>  </span><br><span class="line">fib(<span class="number">27</span>) = <span class="number">196418</span>  </span><br><span class="line">fib(<span class="number">28</span>) = <span class="number">317811</span>  </span><br><span class="line">fib(<span class="number">29</span>) = <span class="number">514229</span>  </span><br><span class="line">fib(<span class="number">30</span>) = <span class="number">832040</span>  </span><br><span class="line">fib(<span class="number">31</span>) = <span class="number">1346269</span>  </span><br><span class="line">fib(<span class="number">32</span>) = <span class="number">2178309</span>  </span><br><span class="line">fib(<span class="number">33</span>) = <span class="number">3524578</span>  </span><br><span class="line">fib(<span class="number">34</span>) = <span class="number">5702887</span>  </span><br><span class="line">fib(<span class="number">35</span>) = <span class="number">9227465</span>  </span><br><span class="line">fib(<span class="number">36</span>) = <span class="number">14930352</span>  </span><br><span class="line">fib(<span class="number">37</span>) = <span class="number">24157817</span>  </span><br><span class="line">COST: <span class="number">11.8551170826</span></span><br></pre></td></tr></table></figure>
+
+
+<p>是的，使用multiprocessing.pool中的ThreadPool/Pool其实是更快一点的。<br>既然他们都是面向线程/进程提供相同的API，甚至在一些方法上的参数和使用方式上都是一样的，为什么要保存2份用起来差不多的方案呢（甚至可以说后期实现的concurrent.futures慢一点）？<br>我翻了下源码，试着分析下：</p>
+<ol>
+<li>concurrent.futures的架构明显要复杂一些，不过更利于写出高效、异步、非阻塞的并行代码，而ThreadPeool/Pool更像一个黑盒，你用就好了，细节不仅屏蔽定制性也差。</li>
+<li>concurrent.futures的接口更简单一些。ThreadPool/Pool的API中有processes, initializer，initargs，maxtasksperchild，context等参数，新人看起来容易不解，而concurrent.futures的参数就一个max_workers。<br>其实concurrent.futures底层还是用着threading和multiprocessing，相当于在其上又封装了一层，并且重新设计了架构，所以会慢一点。<br>然后我开始查找各种证据，找到了一个[SO的链接](<a href="https://stackoverflow.com/questions/24896193/whats-" target="_blank" rel="noopener">https://stackoverflow.com/questions/24896193/whats-</a><br>the-difference-between-pythons-multiprocessing-and-concurrent-<br>futures)，其中引用了Python核心贡献者Jesse<br>Noller说的<a href="http://bugs.python.org/issue9205#msg132661" target="_blank" rel="noopener">一段话</a>：<blockquote>
+<p>Brian and I need to work on the consolidation we intend(ed) to occur<br>as people got comfortable with the APIs. My eventual goal is to remove<br>anything but the basic multiprocessing.Process/Queue stuff out of MP<br>and into concurrent.* and support threading backends for it.<br>和我的理解差不多吧。<br>不过我尝试让待处理的任务量比较大（上面的NUMBERS才包含13个），结果发现multiprocessing版本的速度差距成倍的扩大（下面会有实验代码）：concurrent.futures不可思议的要慢很多！<br>这个时候我回忆了一下标准库的实现，没找到这2种架构性能差别能这么大的原因，正在疑惑中，以为自己使用的姿势不对。不过正好在上面的链接中作者还特别说明了如下一段：<br>multiprocessing.Pool.map outperforms ProcessPoolExecutor.map. Note that the<br>performance difference is very small per work item, so you’ll probably only<br>notice a large performance difference if you’re using map on a very large<br>iterable. The reason for the performance difference is that<br>multiprocessing.Pool will batch the iterable passed to map into chunks, and<br>then pass the chunks to the worker processes, which reduces the overhead of<br>IPC between the parent and children. ProcessPoolExecutor always passes one<br>item from the iterable at a time to the children, which can lead to much<br>slower performance with large iterables, due to the increased IPC overhead.<br>The good news is this issue will be fixed in Python 3.5, as as chunksize<br>keyword argument has been added to ProcessPoolExecutor.map, which can be used<br>to specify a larger chunk size if you know you’re dealing with large<br>iterables. See this bug(<a href="http://bugs.python.org/issue11271" target="_blank" rel="noopener">http://bugs.python.org/issue11271</a>) for more info.<br>简单说明一下。multiprocessing.Pool.map要优于ProcessPoolExecutor.map，不过性能的差别是很小，如我上面说的，是由于架构和接口实现上的取舍。但是如果要处理的是一个很大的可迭代对象，就会有非常大的性能差别。这是因为multiprocessing.Pool是批量提交任务的，可以节省IPC(进程间通信)开销。而ProcessPoolExecutor每次都只提交一个任务。不过在Python3.5的时候已经通过给map方法添加chunksize参数解决了。<br>你可能比较迷惑，我们看一段代码就好了：</p>
+</blockquote>
+</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># coding=utf-8  </span></span><br><span class="line"><span class="keyword">import</span> time  </span><br><span class="line"><span class="keyword">from</span> multiprocessing.pool <span class="keyword">import</span> Pool  </span><br><span class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> as_completed, ProcessPoolExecutor  </span><br><span class="line">  </span><br><span class="line">NUMBERS = range(<span class="number">1</span>, <span class="number">100000</span>)  </span><br><span class="line">K = <span class="number">50</span>  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">f</span><span class="params">(x)</span>:</span>  </span><br><span class="line">    r = <span class="number">0</span>  </span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>, K+<span class="number">2</span>):  </span><br><span class="line">        r += x ** (<span class="number">1</span> / k**<span class="number">1.5</span>)  </span><br><span class="line">    <span class="keyword">return</span> r  </span><br><span class="line">  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'multiprocessing.pool.Pool:\n'</span>)  </span><br><span class="line">start = time.time()  </span><br><span class="line">  </span><br><span class="line">l = []  </span><br><span class="line">pool = Pool(<span class="number">3</span>)  </span><br><span class="line"><span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, pool.map(f, NUMBERS)):  </span><br><span class="line">    l.append(result)  </span><br><span class="line">print(len(l))  </span><br><span class="line">print(<span class="string">'COST: &#123;&#125;'</span>.format(time.time() - start))  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'ProcessPoolExecutor without chunksize:\n'</span>)  </span><br><span class="line">start = time.time()  </span><br><span class="line">  </span><br><span class="line">l = []  </span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:  </span><br><span class="line">    <span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, executor.map(f, NUMBERS)):  </span><br><span class="line">        l.append(result)  </span><br><span class="line">  </span><br><span class="line">print(len(l))  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'COST: &#123;&#125;'</span>.format(time.time() - start))  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'ProcessPoolExecutor with chunksize:\n'</span>)  </span><br><span class="line">start = time.time()  </span><br><span class="line">  </span><br><span class="line">l = []  </span><br><span class="line"><span class="keyword">with</span> ProcessPoolExecutor(max_workers=<span class="number">3</span>) <span class="keyword">as</span> executor:  </span><br><span class="line">    <span class="comment"># 保持和multiprocessing.pool的默认chunksize一样  </span></span><br><span class="line">    chunksize, extra = divmod(len(NUMBERS), executor._max_workers * <span class="number">4</span>)  </span><br><span class="line">  </span><br><span class="line">    <span class="keyword">for</span> num, result <span class="keyword">in</span> zip(NUMBERS, executor.map(f, NUMBERS, chunksize=chunksize)):  </span><br><span class="line">        l.append(result)  </span><br><span class="line">  </span><br><span class="line">print(len(l))  </span><br><span class="line">  </span><br><span class="line">print(<span class="string">'COST: &#123;&#125;'</span>.format(time.time() - start))</span><br></pre></td></tr></table></figure>
+
+
+<p>先运行一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">❯ python map_comparison.py  </span><br><span class="line">multiprocessing.pool.Pool:  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">COST: <span class="number">0.7973268032073975</span>  </span><br><span class="line">ProcessPoolExecutor without chunksize:  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">COST: <span class="number">28.467172861099243</span>  </span><br><span class="line">ProcessPoolExecutor <span class="keyword">with</span> chunksize:  </span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">COST: <span class="number">0.8141732215881348</span></span><br></pre></td></tr></table></figure>
+
+
+<p>其中第一段使用multiprocessing.pool，最快。<br>第二段使用没有加chunksize， 这个速度不忍直视。大家不要再这样犯错了。<br>第三段加上了chunksize，分块的原则和第一段标准库实现的一样，速度又回到同一个水平了。<br>迷惑这么久的原因其实是我一直在看Python 2的对应的代码，当我看了最新版的代码就懂了。<br>最后我的建议是：虽然会慢一点点，还是推荐使用接口更简单的concurrent.futures，不过<br><strong>大家使用的时候注意要用Python3.及以后的版本啦！</strong><br>PS：本文全部代码可以在<a href="https://github.com/dongweiming/mp/tree/master/2017-06-12" target="_blank" rel="noopener">微信公众号文章代码库项目</a>中找到。</p>
+<p>版权声明：本文由 董伟明 原创，未经作者授权禁止任何微信公众号和向掘金(juejin.im)转载，<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh" target="_blank" rel="noopener">技术博客转载采用 保留署名-非商业性使用-禁止演绎 4.0-国际许可协议</a><br>python</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/python/" rel="tag"># python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016-02-12.html" rel="next" title="我的知乎Live:Python工程师的入门和进阶">
+                <i class="fa fa-chevron-left"></i> 我的知乎Live:Python工程师的入门和进阶
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016-02-14.html" rel="prev" title="Python3新特性汇总">
+                Python3新特性汇总 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/uploads/avatar-kevin.jpg" alt="Kevin Huang">
+            
+              <p class="site-author-name" itemprop="name">Kevin Huang</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">196</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">82</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:huangzhuo492008824@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.dongwm.com/" title="董伟明" target="_blank">董伟明</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://foofish.net" title="FOOFISH" target="_blank">FOOFISH</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://coolshell.cn/" title="酷壳" target="_blank">酷壳</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.knownsec.com/" title="知道创宇" target="_blank">知道创宇</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="阮一峰" target="_blank">阮一峰</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.xiemx.com/" title="求索" target="_blank">求索</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.sdandroid.com/" title="Sdandroid" target="_blank">Sdandroid</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.inlab.me/" title="全栈实验室" target="_blank">全栈实验室</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Future"><span class="nav-number">2.</span> <span class="nav-text">Future</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用multiprocessing中的Pool还是concurrent-futures中的PoolExecutor？"><span class="nav-number">3.</span> <span class="nav-text">用multiprocessing中的Pool还是concurrent.futures中的PoolExecutor？</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Huang</span>
+<a href="https://beian.miit.gov.cn/" target="_blank" title="工业和信息化部ICP/IP地址/域名信息备案管理系统">豫ICP备16018730号-1</a>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user">本站访客数</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人次
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye">本站总访问量</i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("N3To5uAGXOFj7WwQzEzGe3TR-gzGzoHsz", "GS4clcC15beb1OAdUpnrp9mY");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
